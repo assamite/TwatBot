@@ -60,6 +60,7 @@ class ColorMap(models.Model):
     color = models.CharField(max_length = 40, blank = True)
     html = models.CharField(max_length = 7, blank = True)
 
+
 class ColorUnigrams(models.Model):
     """Color unigrams.
     
@@ -114,20 +115,19 @@ class PluralColorBigrams(models.Model):
         
     Sample entries:
     
-        =======    ======    ===========    =
-        w1         w2        singular       f
-        =======    ======    ===========    =
-        bile       salts     30370          salt
-        tree       leaves    30015          leaf
-        maple      leafs     29701          leaf
-        =======    ======    ===========    =  
+        =======    ======    =====    ========
+        w1         w2        f        singular
+        =======    ======    =====    ========
+        bile       salts     30370    salt
+        tree       leaves    30015    leaf
+        maple      leafs     29701    leaf
+        =======    ======    =====    ========  
         
     """
     w1 = models.CharField(max_length = 40, blank = True)
     w2 = models.CharField(max_length = 40, blank = True)
     singular = models.CharField(max_length = 40, blank = True)
     f = models.PositiveIntegerField(blank = True)
-
 
 
 class UnbracketedColorBigrams(models.Model):

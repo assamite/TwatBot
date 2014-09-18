@@ -1,11 +1,13 @@
 TwatBot
 ==========
 
-TwatBot is a twitter bot built for a course "Computational foundations of linguistic creativity"
+TwatBot is a twitter bot built for a course "Computational foundations of linguistic creativity",
 held in University of Helsinki, fall 2014.
 
-TwatBot generates color names based on the knowledge it has on different colors, 
-and their relations.
+TwatBot generates color names for color codes, e.g. ``0x081960``, based on the 
+linguistic knowledge it has on different colors, and their relations. The project 
+is developed as a Django app, so that its reasoning for giving certain names to 
+certain color codes is easy to follow from a web site.
 
 
 Weekly reports

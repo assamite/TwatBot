@@ -1,13 +1,12 @@
 .. toctree::
 		color_tweets_models
+		color_tweets_views
 		color_utilities
 
 Color Tweets
 ================
 
-Main package of the project, developed as a `Django <https://www.djangoproject.com/>`_ app.
-
-Package has currently following modules:
+Main package of the project, developed as a Django app, which has currently following modules:
 
 * Basic Django app modules
 	* :py:mod:`color_tweets.models` - Django models for resources given on the course.
