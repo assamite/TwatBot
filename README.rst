@@ -1,4 +1,24 @@
 TwatBot
-=======
+==========
 
-Twitter Bot for course work.
+TwatBot is a twitter bot built for a course "Computational foundations of lingquistic creativity"
+held in University of Helsinki, fall 2014.
+
+TwatBot generates color names based on the knowledge it has on different colors, 
+and their relations.
+
+
+Weekly reports
+-----------------
+Here are some comments on weekly development during the course.
+
+Week 2
+****************
+I have made some color utilities into the ``colorbot/color_utilities.py``, otherwise
+the project is still a clean Django-project skeleton. The documentation of
+the project can be found `here <http://assamite.github.io/TwatBot>`_. Most of my 
+weeks work has went to setting up and learning Sphinx (and how to hook it to be
+nearly automatically served in github pages) as I haven't used it before and now 
+seemed like a good time to start using it!
+
+

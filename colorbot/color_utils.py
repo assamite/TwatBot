@@ -1,14 +1,16 @@
-'''Different utility function for working with colors.
+"""Different utility functions for working with colors.
 
 Supports three types of color definitions:
-- hex: str in form of '0xrrggbb', where r, g, b are hex codes
-- html: str in form of '#rrggbb', where r, g, b are hex codes
-- rgb: tuple in form of (r, g, b), where r, g, b are integers in [0, 255]
 
-Functions defined in this module are semantic ignorant, and you should do your
-reasoning, e.g. what to blend and how to blend, before calling functions in 
-this module.
-'''
+* hex:    ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.
+* html:    ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.
+* rgb:    ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].
+
+.. note:: 
+    Functions defined in this module are ignorant of semantics, and you should do your
+    reasoning, e.g. what to blend and how to blend, before calling functions in 
+    this module.
+"""
 import re
 
 re_html = re.compile(r'^#[0-9a-fA-F]{6}$')
@@ -19,11 +21,11 @@ def is_rgb(rgb = None):
     
     Accepted rgb-format is an integer 3-tuple with all values in [0, 255]
     
-    Args:
-        rgb (tuple): Variable to be verified.
+    **Args:**
+        rgb (``tuple``): Variable to be verified.
         
-    Returns:
-        True if variable is in rgb-format, False otherwise.   
+    **Returns:**
+        ``True`` if variable is in rgb-format, ``False`` otherwise.   
     """
     if type(rgb) is not tuple:
         return False
@@ -37,13 +39,14 @@ def is_rgb(rgb = None):
 def is_html(html = None):
     """Verify that color variable is in accepted html-format.
     
-    Accepted html-format is a string in form of '#rrggbb', where r, g, b are hex codes.
+    Accepted html-format is a string in form of `#rrggbb``, where ``r``, ``g`` 
+    and ``b`` are hex codes..
     
-    Args:
-        html (str): Variable to be verified.
+    **Args:**
+        html (``str``): Variable to be verified.
         
-    Returns:
-        True if variable is in html-format, False otherwise.  
+    **Returns:**
+        ``True`` if variable is in html-format, ``False`` otherwise.  
     """
     if type(html) is not str:
         return False
@@ -55,13 +58,14 @@ def is_html(html = None):
 def is_hex(hex = None):
     """Verify that color variable is in accepted hex-format.
     
-    Accepted hex-format is a string in form of '0xrrggbb', where r, g, b are hex codes.
+    Accepted hex-format is a string in form of ``0xrrggbb``, where ``r``, ``g`` 
+    and ``b`` are hex codes.
     
-    Args:
-        hex (str): Variable to be verified.
+    **Args:**
+        hex (``str``): Variable to be verified.
         
-    Returns:
-        True if variable is in hex-format, False otherwise.  
+    **Returns:**
+        ``True`` if variable is in hex-format, ``False`` otherwise.  
     """
     if type(hex) is not str:
         return False
@@ -73,11 +77,11 @@ def is_hex(hex = None):
 def hex2rgb(hex = None):
     """Convert hex-string color into rgb-tuple.
     
-    Args:
-        hex (str): color in hex-format, e.g. '0xffeedd'
+    **Args:**
+        hex (``str``): Color in hex-format, e.g. ``0xffeedd``.
     
-    Returns:
-        Color in rgb as 3-tuple, e.g. (255, 255, 255).
+    **Returns:**
+        Color in rgb as 3-tuple, e.g. ``(255, 255, 255)``.
     """
     if not is_hex(hex):
         raise TypeError("Given variable is not in accepted hex-format.")
@@ -87,11 +91,11 @@ def hex2rgb(hex = None):
 def rgb2hex(rgb = None):
     """Convert rgb-tuple into hex-color string.
     
-    Args:
-        rgb (tuple): color in rgb-format, e.g. (255, 255, 255)
+    **Args:**
+        rgb (``tuple``): Color in rgb-format, e.g. ``(255, 255, 255)``.
     
-    Returns:
-        Color as hex-string, e.g. '0xffeedd'.
+    **Returns:**
+        Color as hex-string, e.g. ``0xffeedd``.
     """
     if not is_rgb(rgb): 
         raise TypeError("Given variable is not in accepted rgb-format.")
@@ -101,11 +105,11 @@ def rgb2hex(rgb = None):
 def html2rgb(html = None):
     """Convert html color format string into rgb-tuple.
     
-    Args:
-        html (str): color in html-format, e.g. '#ffeedd'
+    **Args:**
+        html (``str``): color in html-format, e.g. ``#ffeedd``
     
-    Returns:
-        Color in rgb as 3-tuple, e.g. (255, 255, 255).
+    **Returns:**
+        Color in rgb as 3-tuple, e.g. ``(255, 255, 255)``.
     """
     if not is_html(html):
         raise TypeError("Given variable is not in accepted html-format.")
@@ -115,29 +119,29 @@ def html2rgb(html = None):
 def rgb2html(rgb = None):
     """Convert rgb-tuple into html color format string.
     
-    Args:
-        rgb (tuple): color in rgb-format, e.g. (255, 255, 255)
+    **Args:**
+        rgb (``tuple``): color in rgb-format, e.g. ``(255, 255, 255)``
     
-    Returns:
-        Color in html-format string, e.g. "#ffeedd".
+    **Returns:**
+        Color in html-format string, e.g. ``#ffeedd``.
     """
     if not is_rgb(rgb): 
         raise TypeError("Given variable is not in accepted rgb-format.")
     return "#{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2]) 
 
 
-def blend_html(head = None, modifier = None, **kwargs):
+def blend_html(head, modifier, **kwargs):
     """Blend two html-formatted colors.
     
     Convenience function to pass html-formatted colors to the blender.
     
-    Args:
-        modifier (str): modifier color in html-format, e.g. '#ffeedd'
-        head (str): head color in html-format, e.g. '#ffeedd'
-        kwargs: key-word arguments as explained in ``blend_rgb``
+    **Args:**
+        | modifier (``str``): modifier color in html-format, e.g. ``#ffeedd``.
+        | head (``str``): head color in html-format, e.g. ``#ffeedd``.
+        | kwargs: keyword arguments as explained in :func:`blend_rgb`.
     
-    Returns:
-        Blended color in html-format string.
+    **Returns:**
+        Blended color as html-format string.
     """
     mrgb = html2rgb(modifier)
     hrgb = html2rgb(head)
@@ -148,18 +152,19 @@ def blend_html(head = None, modifier = None, **kwargs):
 def blend_rgb(head, modifier, **kwargs):
     """Blend two rgb-formatted colors.
     
-    Args:
-        modifier (tuple): modifier color in rgb-format, e.g. (255, 255, 255)
-        head (tuple): head color in rgb-format, e.g. (255, 255, 255)
-        kwargs: currently supported keyword arguments are:
-            a_head (float): amount of head color to mix. Should be in [0, 1].
-            a_rgb (3-tuple of floats): amount of each head color component to 
-            mix, each value in tuple should be in [0, 1]. 
+    **Args:**     
+        | modifier (``tuple``): modifier color in rgb-format, e.g. ``(255, 255, 255)``.
+        | head (``tuple``): head color in rgb-format, e.g. ``(255, 255, 255)``.
+        | kwargs: Optional blending instructions, currently supported keyword arguments are:
+        
+            | a_head (``float``): amount of head color to mix. Should be in [0, 1]. 
+            | a_rgb (``tuple``): amount of each head color component to 
+            | mix, each value in tuple should be in [0, 1].
             
-            If a_rgb is present, a_head is ignored. If neither of arguments are 
-            present, blending is a mean between head and modifier colors.
+        | If a_rgb is present, a_head is ignored. If neither of arguments are 
+        | present, blending is a mean between head and modifier colors.
     
-    Returns:
+    **Returns:**
         Blended color as rgb-tuple.
     """
     if not is_rgb(head): 
