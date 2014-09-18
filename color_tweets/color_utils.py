@@ -1,4 +1,10 @@
-"""Different utility functions for working with colors.
+"""
+
+.. py:module:: color_utils
+    :platform: Unix
+    :synopsis: Different utility functions for working with colors.
+    
+Utility functions for working with colors.
 
 Supports three types of color definitions:
 
@@ -12,11 +18,12 @@ Supports three types of color definitions:
     this module.
 """
 import re
+from math import sqrt
 
 re_html = re.compile(r'^#[0-9a-fA-F]{6}$')
 re_hex = re.compile(r'^0x[0-9a-fA-F]{6}$')
 
-def is_rgb(rgb = None):
+def is_rgb(rgb):
     """Verify that color variable is in accepted rgb-format.
     
     Accepted rgb-format is an integer 3-tuple with all values in [0, 255]
@@ -36,7 +43,7 @@ def is_rgb(rgb = None):
     return True
 
 
-def is_html(html = None):
+def is_html(html):
     """Verify that color variable is in accepted html-format.
     
     Accepted html-format is a string in form of `#rrggbb``, where ``r``, ``g`` 
@@ -55,7 +62,7 @@ def is_html(html = None):
     return True
 
 
-def is_hex(hex = None):
+def is_hex(hex):
     """Verify that color variable is in accepted hex-format.
     
     Accepted hex-format is a string in form of ``0xrrggbb``, where ``r``, ``g`` 
@@ -74,7 +81,18 @@ def is_hex(hex = None):
     return True
 
 
-def hex2rgb(hex = None):
+def __2rgb(c):
+    if not is_rgb(c):
+        if is_html(c):
+            return html2rgb(c)
+        elif is_hex(c):
+            return  hex2rgb(c)
+        else:
+            raise TypeError("Given variable is not in accepted format.")
+    return c
+
+
+def hex2rgb(hex):
     """Convert hex-string color into rgb-tuple.
     
     **Args:**
@@ -88,7 +106,7 @@ def hex2rgb(hex = None):
     return (int(hex[2:4], 16), int(hex[4:6], 16), int(hex[6:], 16))
 
 
-def rgb2hex(rgb = None):
+def rgb2hex(rgb):
     """Convert rgb-tuple into hex-color string.
     
     **Args:**
@@ -102,7 +120,7 @@ def rgb2hex(rgb = None):
     return "0x{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2]) 
 
 
-def html2rgb(html = None):
+def html2rgb(html):
     """Convert html color format string into rgb-tuple.
     
     **Args:**
@@ -116,7 +134,7 @@ def html2rgb(html = None):
     return (int(html[1:3], 16), int(html[3:5], 16), int(html[5:], 16))
 
 
-def rgb2html(rgb = None):
+def rgb2html(rgb):
     """Convert rgb-tuple into html color format string.
     
     **Args:**
@@ -128,50 +146,31 @@ def rgb2html(rgb = None):
     if not is_rgb(rgb): 
         raise TypeError("Given variable is not in accepted rgb-format.")
     return "#{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2]) 
-
-
-def blend_html(head, modifier, **kwargs):
-    """Blend two html-formatted colors.
-    
-    Convenience function to pass html-formatted colors to the blender.
-    
-    **Args:**
-        | modifier (``str``): modifier color in html-format, e.g. ``#ffeedd``.
-        | head (``str``): head color in html-format, e.g. ``#ffeedd``.
-        | kwargs: keyword arguments as explained in :func:`blend_rgb`.
-    
-    **Returns:**
-        Blended color as html-format string.
-    """
-    mrgb = html2rgb(modifier)
-    hrgb = html2rgb(head)
-    blend = blend_rgb(mrgb, hrgb, **kwargs)
-    return rgb2html(blend)
     
     
-def blend_rgb(head, modifier, **kwargs):
-    """Blend two rgb-formatted colors.
+def blend(head, modifier, **kwargs):
+    """Blend two colors.
     
-    **Args:**     
-        | modifier (``tuple``): modifier color in rgb-format, e.g. ``(255, 255, 255)``.
-        | head (``tuple``): head color in rgb-format, e.g. ``(255, 255, 255)``.
-        | kwargs: Optional blending instructions, currently supported keyword arguments are:
+    Blending of colors is done based on optional keyword arguments that are 
+    given to the function. If no arguments are given, blending is a mean of 
+    the rgb-values of input colors.
+    
+    **Args:** 
+        | head: head color in any supported format.    
+        | modifier: modifier color in any supported format.
+        | kwargs: Optional blending instructions. Currently supported keyword arguments are:
         
             | a_head (``float``): amount of head color to mix. Should be in [0, 1]. 
             | a_rgb (``tuple``): amount of each head color component to 
             | mix, each value in tuple should be in [0, 1].
             
-        | If a_rgb is present, a_head is ignored. If neither of arguments are 
-        | present, blending is a mean between head and modifier colors.
+        | If a_rgb is present, a_head is ignored. 
     
     **Returns:**
         Blended color as rgb-tuple.
     """
-    if not is_rgb(head): 
-        raise TypeError("Head is not in accepted rgb-format.")
-    if not is_rgb(modifier): 
-        raise TypeError("Modifier is not in accepted rgb-format.")
-    
+    h = __2rgb(head)
+    m = __2rgb(modifier)  
     a_rgb = (0.5, 0.5, 0.5)
     if kwargs:
         if 'a_rgb' in kwargs:
@@ -180,7 +179,28 @@ def blend_rgb(head, modifier, **kwargs):
             a_head = kwargs['a_head']
             a_rgb = (a_head, a_head, a_head)
             
-    r = int(a_rgb[0] * head[0] + (1 - a_rgb[0]) * modifier[0])
-    g = int(a_rgb[1] * head[1] + (1 - a_rgb[1]) * modifier[1])
-    b = int(a_rgb[2] * head[2] + (1 - a_rgb[2]) * modifier[2])  
+    r = int(a_rgb[0] * h[0] + (1 - a_rgb[0]) * m[0])
+    g = int(a_rgb[1] * h[1] + (1 - a_rgb[1]) * m[1])
+    b = int(a_rgb[2] * h[2] + (1 - a_rgb[2]) * m[2])  
     return (r, g, b)
+
+
+def dist(color1, color2):
+    """Calculate distance between two colors.
+    
+    Currently the distance is calculated between euclidean distance between
+    rgb-tuples. Input colors can be in any supported format.
+    
+    **Args:**
+        | color1: first color
+        | color2: second color
+        
+    **Returns:**
+        Distance between colors as ``float``.
+    """
+    c1 = __2rgb(color1)
+    c2 = __2rgb(color2)
+    return sqrt((c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 + (c1[2] - c2[2])**2)
+            
+    
+    
