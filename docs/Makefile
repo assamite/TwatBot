@@ -6,7 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = ../../Twatbot_docs
-PDFBUILDER    = /tmp
+PDFBUILDDIR    = /tmp
 PDF			  = ../manual.pdf
 
 # User-friendly check for sphinx-build
