@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Colorbot &mdash; Twatbot 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html" />
+    <link rel="prev" title="TwatBot" href="includeme.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="includeme.html" title="TwatBot"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Twatbot 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="colorbot">
+<h1>Colorbot<a class="headerlink" href="#colorbot" title="Permalink to this headline">¶</a></h1>
+<p>Main module of the project.</p>
+<div class="section" id="module-colorbot.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-colorbot.models" title="Permalink to this headline">¶</a></h2>
+<p>Django models for resources given on the course.</p>
+<dl class="class">
+<dt id="colorbot.models.BracketedColorBigrams">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">BracketedColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#BracketedColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.BracketedColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bracketed bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">start_bracket (<tt class="docutils literal"><span class="pre">CharField</span></tt>): starting bracket, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">end_bracket (<tt class="docutils literal"><span class="pre">CharField</span></tt>): ending bracket, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="colorbot.models.ColorMap">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">ColorMap</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#ColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.ColorMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color stereotype - rgb (in html format) value pairs with base color names.</p>
+<p>Sample entries:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="43%" />
+<col width="26%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Stereotype</th>
+<th class="head">Color</th>
+<th class="head">Html</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>acid</td>
+<td>green</td>
+<td>#B0BF1A</td>
+</tr>
+<tr class="row-odd"><td>absinthe</td>
+<td>green</td>
+<td>#7FDD4C</td>
+</tr>
+<tr class="row-even"><td>acorn</td>
+<td>brown</td>
+<td>#7F6241</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">stereotype (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Name of the color stereotype, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">color (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Base color, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">html (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Color in html-format, i.e. <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.    </div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="colorbot.models.ColorUnigrams">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">ColorUnigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#ColorUnigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.ColorUnigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color unigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">solid_compound (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Solid compound of the unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">50</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): unigram&#8217;s frequency</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="colorbot.models.EveryColorBotTweets">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">EveryColorBotTweets</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#EveryColorBotTweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.EveryColorBotTweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL&#8217;s and html color codes for Everycolorbot&#8217;s tweets.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">url (<tt class="docutils literal"><span class="pre">URLField</span></tt>): URL for the tweet.</div>
+<div class="line">html (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Color in html-format, i.e. <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes. </div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="colorbot.models.PluralColorBigrams">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">PluralColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#PluralColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.PluralColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plural color bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">singular (<tt class="docutils literal"><span class="pre">CharField</span></tt>): singular of the second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency </div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="colorbot.models.UnbracketedColorBigrams">
+<em class="property">class </em><tt class="descclassname">colorbot.models.</tt><tt class="descname">UnbracketedColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/models.html#UnbracketedColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.models.UnbracketedColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unbracketed bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency  </div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-colorbot.color_utils">
+<span id="color-utilities"></span><h2>Color utilities<a class="headerlink" href="#module-colorbot.color_utils" title="Permalink to this headline">¶</a></h2>
+<p>Different utility functions for working with colors.</p>
+<p>Supports three types of color definitions:</p>
+<ul class="simple">
+<li>hex:    <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>html:    <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>rgb:    <tt class="docutils literal"><span class="pre">tuple</span></tt> in form of <tt class="docutils literal"><span class="pre">(r,</span> <span class="pre">g,</span> <span class="pre">b)</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are integers in [0, 255].</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Functions defined in this module are ignorant of semantics, and you should do your
+reasoning, e.g. what to blend and how to blend, before calling functions in 
+this module.</p>
+</div>
+<dl class="function">
+<dt id="colorbot.color_utils.blend_html">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">blend_html</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#blend_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.blend_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blend two html-formatted colors.</p>
+<p>Convenience function to pass html-formatted colors to the blender.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">modifier (<tt class="docutils literal"><span class="pre">str</span></tt>): modifier color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt>.</div>
+<div class="line">head (<tt class="docutils literal"><span class="pre">str</span></tt>): head color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt>.</div>
+<div class="line">kwargs: keyword arguments as explained in <a class="reference internal" href="#colorbot.color_utils.blend_rgb" title="colorbot.color_utils.blend_rgb"><tt class="xref py py-func docutils literal"><span class="pre">blend_rgb()</span></tt></a>.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Blended color as html-format string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.blend_rgb">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">blend_rgb</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#blend_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.blend_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blend two rgb-formatted colors.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong>     </dt>
+<dd><div class="first line-block">
+<div class="line">modifier (<tt class="docutils literal"><span class="pre">tuple</span></tt>): modifier color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</div>
+<div class="line">head (<tt class="docutils literal"><span class="pre">tuple</span></tt>): head color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</div>
+<div class="line">kwargs: Optional blending instructions, currently supported keyword arguments are:</div>
+</div>
+<blockquote>
+<div><div class="line-block">
+<div class="line">a_head (<tt class="docutils literal"><span class="pre">float</span></tt>): amount of head color to mix. Should be in [0, 1]. </div>
+<div class="line">a_rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): amount of each head color component to </div>
+<div class="line">mix, each value in tuple should be in [0, 1].</div>
+</div>
+</div></blockquote>
+<div class="last line-block">
+<div class="line">If a_rgb is present, a_head is ignored. If neither of arguments are </div>
+<div class="line">present, blending is a mean between head and modifier colors.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Blended color as rgb-tuple.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.hex2rgb">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">hex2rgb</tt><big>(</big><em>hex=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#hex2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.hex2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex-string color into rgb-tuple.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Color in hex-format, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.html2rgb">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">html2rgb</tt><big>(</big><em>html=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#html2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.html2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert html color format string into rgb-tuple.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt></dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.is_hex">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">is_hex</tt><big>(</big><em>hex=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#is_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.is_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted hex-format.</p>
+<p>Accepted hex-format is a string in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in hex-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.is_html">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">is_html</tt><big>(</big><em>html=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#is_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.is_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted html-format.</p>
+<p>Accepted html-format is a string in form of <cite>#rrggbb`</cite>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in html-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.is_rgb">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">is_rgb</tt><big>(</big><em>rgb=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#is_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.is_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted rgb-format.</p>
+<p>Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in rgb-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.rgb2hex">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">rgb2hex</tt><big>(</big><em>rgb=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#rgb2hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.rgb2hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert rgb-tuple into hex-color string.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color as hex-string, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="colorbot.color_utils.rgb2html">
+<tt class="descclassname">colorbot.color_utils.</tt><tt class="descname">rgb2html</tt><big>(</big><em>rgb=None</em><big>)</big><a class="reference internal" href="_modules/colorbot/color_utils.html#rgb2html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colorbot.color_utils.rgb2html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert rgb-tuple into html color format string.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt></dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in html-format string, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Colorbot</a><ul>
+<li><a class="reference internal" href="#module-colorbot.models">Models</a></li>
+<li><a class="reference internal" href="#module-colorbot.color_utils">Color utilities</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="includeme.html"
+                        title="previous chapter">TwatBot</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/colorbot.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="includeme.html" title="TwatBot"
+             >previous</a> |</li>
+        <li><a href="index.html">Twatbot 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Simo Linkola.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

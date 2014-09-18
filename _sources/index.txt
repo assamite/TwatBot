@@ -12,7 +12,7 @@ Contents:
    :maxdepth: 2
    
    includeme
-
+   colorbot
 
 
 Indices and tables
@@ -22,9 +22,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-
-.. automodule:: io
-	:members:
-
-.. automodule:: colorbot.color_utils
-	:member:

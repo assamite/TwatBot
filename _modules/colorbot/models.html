@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>colorbot.models &mdash; Twatbot 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Twatbot 0.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for colorbot.models</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Django models for resources given on the course.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<div class="viewcode-block" id="BracketedColorBigrams"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.BracketedColorBigrams">[docs]</a><span class="k">class</span> <span class="nc">BracketedColorBigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bracketed bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | start_bracket (``CharField``): starting bracket, ``max_length = 40``.</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | end_bracket (``CharField``): ending bracket, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="n">start_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ColorMap"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.ColorMap">[docs]</a><span class="k">class</span> <span class="nc">ColorMap</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Color stereotype - rgb (in html format) value pairs with base color names.</span>
+<span class="sd">    </span>
+<span class="sd">    Sample entries:</span>
+<span class="sd">    </span>
+<span class="sd">    ==========    ======    ===</span>
+<span class="sd">    Stereotype    Color     Html</span>
+<span class="sd">    ==========    ======    ===</span>
+<span class="sd">    acid          green     #B0BF1A</span>
+<span class="sd">    absinthe      green     #7FDD4C</span>
+<span class="sd">    acorn         brown     #7F6241</span>
+<span class="sd">    ==========    ======    ===</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | stereotype (``CharField``): Name of the color stereotype, ``max_length = 40``.</span>
+<span class="sd">        | color (``CharField``): Base color, ``max_length = 40``.</span>
+<span class="sd">        | html (``CharField``): Color in html-format, i.e. ``#rrggbb``, where ``r``, ``g`` and ``b`` are hex codes.    </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">stereotype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ColorUnigrams"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.ColorUnigrams">[docs]</a><span class="k">class</span> <span class="nc">ColorUnigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Color unigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | solid_compound (``CharField``): Solid compound of the unigram, ``max_length = 50``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): unigram&#39;s frequency</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="n">solid_compound</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span> 
+
+</div>
+<div class="viewcode-block" id="EveryColorBotTweets"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.EveryColorBotTweets">[docs]</a><span class="k">class</span> <span class="nc">EveryColorBotTweets</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URL&#39;s and html color codes for Everycolorbot&#39;s tweets.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | url (``URLField``): URL for the tweet.</span>
+<span class="sd">        | html (``CharField``): Color in html-format, i.e. ``#rrggbb``, where ``r``, ``g`` and ``b`` are hex codes. </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PluralColorBigrams"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.PluralColorBigrams">[docs]</a><span class="k">class</span> <span class="nc">PluralColorBigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plural color bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | singular (``CharField``): singular of the second word, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">singular</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+
+</div>
+<div class="viewcode-block" id="UnbracketedColorBigrams"><a class="viewcode-back" href="../../colorbot.html#colorbot.models.UnbracketedColorBigrams">[docs]</a><span class="k">class</span> <span class="nc">UnbracketedColorBigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unbracketed bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency  </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Twatbot 0.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Simo Linkola.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
