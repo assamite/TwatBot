@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Installing &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -28,7 +28,9 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="Color Tweets" href="color_tweets.html"/>
+        <link rel="prev" title="Welcome to Twatbot’s documentation!" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -44,7 +46,7 @@
       <div class="wy-side-nav-search">
         <a href="index.html" class="fa fa-home"> Twatbot</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -55,8 +57,8 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+            <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="color_tweets_models.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="color_tweets_views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="color_utilities.html">Color Utilities</a></li>
@@ -84,8 +86,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>Installing</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/install.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -93,22 +97,50 @@
 </div>
           <div role="main">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="installing">
+<h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
+<p>TwatBot is developed as a <a class="reference external" href="https://djangoproject.com/">Django</a> app and uses
+Twitter app API, so you need to apply for application keys from Twitter in
+order to use this project.</p>
+<p>Short installing notes:</p>
+<ul>
+<li><p class="first">Install <a class="reference external" href="https://pypi.python.org/pypi/pip">pip</a></p>
+</li>
+<li><p class="first">Install third party libraries:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/
+$&gt; pip install -r requirements.txt # you might need root priviledges
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set local settings for accessing Twitter API:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/TwatBot/
+$&gt; touch lsettings.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Populate <tt class="docutils literal"><span class="pre">lsettings.py</span></tt>  with at least following attributes (see Twitter API documentation for details):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TWITTER_API_KEY</span> <span class="o">=</span> <span class="s">&#39;Your Twitter API key&#39;</span>
+<span class="n">TWITTER_API_SECRET</span>  <span class="o">=</span> <span class="s">&#39;Your Twitter API secret&#39;</span>
+<span class="n">TWITTER_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token&#39;</span>
+<span class="n">TWITTER_ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token secret&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="color_tweets.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Twatbot’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -144,7 +176,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -160,14 +191,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

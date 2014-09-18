@@ -57,11 +57,9 @@
         
         
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../includeme.html">TwatBot</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../includeme.html#weekly-reports">Weekly reports</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../color_tweets_models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../color_tweets_views.html">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../color_utilities.html">Color Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../color_tweets.html">Color Tweets</a></li>
 </ul>
@@ -160,6 +158,7 @@
     <span class="n">stereotype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">html</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
 </div>
 <div class="viewcode-block" id="ColorUnigrams"><a class="viewcode-back" href="../../color_tweets_models.html#color_tweets.models.ColorUnigrams">[docs]</a><span class="k">class</span> <span class="nc">ColorUnigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Color unigrams.</span>
@@ -215,20 +214,19 @@
 <span class="sd">        </span>
 <span class="sd">    Sample entries:</span>
 <span class="sd">    </span>
-<span class="sd">        =======    ======    ===========    =</span>
-<span class="sd">        w1         w2        singular       f</span>
-<span class="sd">        =======    ======    ===========    =</span>
-<span class="sd">        bile       salts     30370          salt</span>
-<span class="sd">        tree       leaves    30015          leaf</span>
-<span class="sd">        maple      leafs     29701          leaf</span>
-<span class="sd">        =======    ======    ===========    =  </span>
+<span class="sd">        =======    ======    =====    ========</span>
+<span class="sd">        w1         w2        f        singular</span>
+<span class="sd">        =======    ======    =====    ========</span>
+<span class="sd">        bile       salts     30370    salt</span>
+<span class="sd">        tree       leaves    30015    leaf</span>
+<span class="sd">        maple      leafs     29701    leaf</span>
+<span class="sd">        =======    ======    =====    ========  </span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">singular</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-
 
 </div>
 <div class="viewcode-block" id="UnbracketedColorBigrams"><a class="viewcode-back" href="../../color_tweets_models.html#color_tweets.models.UnbracketedColorBigrams">[docs]</a><span class="k">class</span> <span class="nc">UnbracketedColorBigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>

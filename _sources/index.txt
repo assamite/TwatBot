@@ -6,12 +6,20 @@
 Welcome to Twatbot's documentation!
 ===================================
 
+TwatBot is a twitter bot built for a course "Computational foundations of linguistic creativity",
+held in University of Helsinki, fall 2014.
+
+TwatBot generates color names for color codes, e.g. ``0x081960``, based on the 
+linguistic knowledge it has about different colors, and their relations. The project 
+is developed as a Django app, so that its reasoning for giving certain names to 
+certain color codes is easy to follow from a web site.
+
 Contents:
 
 .. toctree::
 	:maxdepth: 2
 	
-	includeme
+	install
 	color_tweets
 
 

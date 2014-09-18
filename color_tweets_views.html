@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Views &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -28,7 +28,10 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
+        <link rel="up" title="Color Tweets" href="color_tweets.html"/>
+        <link rel="next" title="Color Utilities" href="color_utilities.html"/>
+        <link rel="prev" title="Models" href="color_tweets_models.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -44,7 +47,7 @@
       <div class="wy-side-nav-search">
         <a href="index.html" class="fa fa-home"> Twatbot</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -55,10 +58,13 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="includeme.html">TwatBot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="includeme.html#weekly-reports">Weekly reports</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="color_tweets_models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_tweets_views.html">Views</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Views</a></li>
 <li class="toctree-l1"><a class="reference internal" href="color_utilities.html">Color Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="color_tweets.html">Color Tweets</a></li>
 </ul>
@@ -84,8 +90,12 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+          <li><a href="color_tweets.html">Color Tweets</a> &raquo;</li>
+      
+    <li>Views</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/color_tweets_views.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -93,22 +103,29 @@
 </div>
           <div role="main">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="views">
+<h1>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h1>
+<p>Custom views for the app for testing and publishing new tweets.</p>
+<dl class="function">
+<dt id="color_tweets.views.home">
+<tt class="descclassname">color_tweets.views.</tt><tt class="descname">home</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/color_tweets/views.html#home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.views.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic view to be implemented.</p>
+</dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+</div>
+
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="color_utilities.html" class="btn btn-neutral float-right" title="Color Utilities"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="color_tweets_models.html" class="btn btn-neutral" title="Models"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -144,7 +161,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -160,14 +176,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>
