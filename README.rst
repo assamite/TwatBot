@@ -1,7 +1,7 @@
 TwatBot
 ==========
 
-TwatBot is a twitter bot built for a course "Computational foundations of lingquistic creativity"
+TwatBot is a twitter bot built for a course "Computational foundations of linguistic creativity"
 held in University of Helsinki, fall 2014.
 
 TwatBot generates color names based on the knowledge it has on different colors, 
