@@ -9,10 +9,10 @@ Welcome to Twatbot's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
-   
-   includeme
-   colorbot
+	:maxdepth: 2
+	
+	includeme
+	color_tweets
 
 
 Indices and tables

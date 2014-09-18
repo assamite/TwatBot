@@ -1,0 +1,5 @@
+Models
+------
+
+.. automodule:: colorbot.models
+	:members:

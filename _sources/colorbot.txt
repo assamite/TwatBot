@@ -1,18 +1,19 @@
+.. toctree::
+		colorbot_models
+		color_utilities
+
 Colorbot
 ================
 
-Main module of the project. 
+Main package of the project, developed as a `Django <https://www.djangoproject.com/>`_ app.
 
-Models
-------
+Package has currently following modules:
 
-.. automodule:: colorbot.models
-	:members:
+* Basic Django app modules
+	* :py:mod:`colorbot.models` - Django models for resources given on the course.
+	* views
 
-Color utilities
----------------
-
-.. automodule:: colorbot.color_utils
-	:members:
+* Modules special for Colorbot
+	* :py:mod:`colorbot.color_utils` - Utility functions for working with colors.
 	
 	
