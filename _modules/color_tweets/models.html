@@ -62,6 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../color_tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../color_tweets/views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../color_tweets/color_utils.html">Color Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/resources_utils.html">Resources Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -106,9 +107,7 @@
 
 <span class="sd">Django models for resources given on the course.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-
 
 <div class="viewcode-block" id="BracketedColorBigrams"><a class="viewcode-back" href="../../color_tweets/models.html#color_tweets.models.BracketedColorBigrams">[docs]</a><span class="k">class</span> <span class="nc">BracketedColorBigrams</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Bracketed bigrams.</span>
@@ -136,7 +135,7 @@
     <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-
+    
 </div>
 <div class="viewcode-block" id="ColorMap"><a class="viewcode-back" href="../../color_tweets/models.html#color_tweets.models.ColorMap">[docs]</a><span class="k">class</span> <span class="nc">ColorMap</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Color stereotype - rgb (in html format) value pairs with base color names.</span>
