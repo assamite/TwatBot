@@ -1,9 +1,13 @@
 Installing
 ==========
 
-TwatBot is developed as a `Django <https://djangoproject.com/>`_ app and uses 
-Twitter app API, so you need to apply for application keys from Twitter in 
-order to use this project.
+TwatBot is developed as a `Django <https://djangoproject.com/>`_ app. Access to 
+`Twitter API <https://dev.twitter.com/overview/documentation>`_ is gained using 
+`python-twitter <https://pypi.python.org/pypi/python-twitter/2.0>`_.
+
+You should be familiar with basic Django project layout and have a working 
+`Twitter app <https://apps.twitter.com/>`_ which allows you to tweet before 
+using this project.
 
 Short installing notes:
 
@@ -11,9 +15,9 @@ Short installing notes:
 * Install third party libraries::
 
 	$> cd project_root/
-	$> pip install -r requirements.txt # you might need root priviledges
+	$> pip install -r requirements.txt // you might need root privileges
 	
-* Set local settings for accessing Twitter API::
+* Create local settings files::
 
 	$> cd project_root/TwatBot/
 	$> touch lsettings.py

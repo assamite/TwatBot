@@ -2,3 +2,4 @@ Django==1.6
 scikit-image==0.9.3
 Sphinx==1.2.3
 sphinx_rtd_theme>=0.1.6
+python-twitter==2.0
