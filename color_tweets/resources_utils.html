@@ -104,17 +104,17 @@
             
   <div class="section" id="module-color_tweets.resources_utils">
 <span id="resources-utilities"></span><h1>Resources Utilities<a class="headerlink" href="#module-color_tweets.resources_utils" title="Permalink to this headline">¶</a></h1>
-<p>Utility functions to populate Django models with given resources.</p>
+<span class="target" id="module-resources_utils"></span><p>Utility functions to populate Django models with given resources.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>As the functions don&#8217;t restrict multiple instances of the same entry to be 
+<p>As these functions don&#8217;t restrict multiple instances of the same entry to be 
 added to the database, they should be used only once.</p>
 <p>It is suggested to run these once and then immediately use:</p>
-<div class="highlight-python"><div class="highlight"><pre>$&gt; python manage.py dumpdata --format=json --indent=4 &gt; dbdump.json
+<div class="highlight-python"><div class="highlight"><pre>$&gt; python manage.py dumpdata --format=json --indent=4 &gt; color_tweets/fixtures/dbdump.json
 </pre></div>
 </div>
-<p class="last">to save database contents to be able to load them as fixtures later, if the
-database models change.</p>
+<p class="last">to save database contents so that the dump can be used as a fixture,
+if database needs to be repopulated.</p>
 </div>
 <dl class="function">
 <dt id="color_tweets.resources_utils.populate_bracketed_color_bigrams">

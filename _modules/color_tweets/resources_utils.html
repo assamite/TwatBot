@@ -101,22 +101,22 @@
             
   <h1>Source code for color_tweets.resources_utils</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. py:module: resources_utils</span>
+<span class="sd">.. py:module:: resources_utils</span>
 <span class="sd">    :platform: Unix</span>
 <span class="sd">    :synopsis: Utility functions to populate Django models with resources.</span>
 <span class="sd">    </span>
 <span class="sd">Utility functions to populate Django models with given resources. </span>
 
 <span class="sd">.. warning:: </span>
-<span class="sd">    As the functions don&#39;t restrict multiple instances of the same entry to be </span>
+<span class="sd">    As these functions don&#39;t restrict multiple instances of the same entry to be </span>
 <span class="sd">    added to the database, they should be used only once.</span>
 <span class="sd">    </span>
 <span class="sd">    It is suggested to run these once and then immediately use::</span>
 <span class="sd">    </span>
-<span class="sd">    $&gt; python manage.py dumpdata --format=json --indent=4 &gt; dbdump.json</span>
+<span class="sd">    $&gt; python manage.py dumpdata --format=json --indent=4 &gt; color_tweets/fixtures/dbdump.json</span>
 <span class="sd">    </span>
-<span class="sd">    to save database contents to be able to load them as fixtures later, if the</span>
-<span class="sd">    database models change.</span>
+<span class="sd">    to save database contents so that the dump can be used as a fixture,</span>
+<span class="sd">    if database needs to be repopulated.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
