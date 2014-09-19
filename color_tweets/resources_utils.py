@@ -6,15 +6,15 @@
 Utility functions to populate Django models with given resources. 
 
 .. warning:: 
-    As the functions don't restrict multiple instances of the same entry to be 
+    As these functions don't restrict multiple instances of the same entry to be 
     added to the database, they should be used only once.
     
     It is suggested to run these once and then immediately use::
     
-    $> python manage.py dumpdata --format=json --indent=4 > dbdump.json
+    $> python manage.py dumpdata --format=json --indent=4 > color_tweets/fixtures/dbdump.json
     
-    to save database contents to be able to load them as fixtures later, if the
-    database models change.
+    to save database contents so that the dump can be used as a fixture,
+    if database needs to be repopulated.
 """
 import os
 import sys
