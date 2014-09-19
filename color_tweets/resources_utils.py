@@ -1,5 +1,5 @@
 """
-.. py:module: resources_utils
+.. py:module:: resources_utils
     :platform: Unix
     :synopsis: Utility functions to populate Django models with resources.
     
