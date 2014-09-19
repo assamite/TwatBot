@@ -7,6 +7,7 @@ Color Tweets
 	models
 	views
 	color_utils
+	resources_utils
 
 Main package of the project, developed as a Django app, which has currently following modules.
 
@@ -20,3 +21,4 @@ Main package of the project, developed as a Django app, which has currently foll
 **Modules explicit for TwatBot:**
 
 * :py:mod:`color_utils`: Semantic agnostic color utility functions
+* :py:mod:`resources_utils`: Functions to populate Django models with contents in resources/

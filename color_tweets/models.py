@@ -5,9 +5,7 @@
 
 Django models for resources given on the course.
 """
-
 from django.db import models
-
 
 class BracketedColorBigrams(models.Model):
     """Bracketed bigrams.
@@ -35,7 +33,7 @@ class BracketedColorBigrams(models.Model):
     w2 = models.CharField(max_length = 40, blank = True)
     end_bracket = models.CharField(max_length = 40, blank = True)
     f = models.PositiveIntegerField(blank = True)
-
+    
 
 class ColorMap(models.Model):
     """Color stereotype - rgb (in html format) value pairs with base color names.
