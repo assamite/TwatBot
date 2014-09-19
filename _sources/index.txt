@@ -17,11 +17,11 @@ certain color codes is easy to follow from a web site.
 Contents:
 
 .. toctree::
-	:maxdepth: 2
+	:maxdepth: 3
+	:includehidden:
 	
 	install
-	color_tweets
-
+	color_tweets/index
 
 Indices and tables
 ==================

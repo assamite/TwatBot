@@ -58,10 +58,12 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets_models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets_views.html">Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_utilities.html">Color Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets.html">Color Tweets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../color_tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/color_utils.html">Color Utilities</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -122,7 +124,7 @@
 <span class="n">re_html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^#[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 <span class="n">re_hex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^0x[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted rgb-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</span>
@@ -142,7 +144,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted html-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted html-format is a string in form of `#rrggbb``, where ``r``, ``g`` </span>
@@ -161,7 +163,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
+<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted hex-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted hex-format is a string in form of ``0xrrggbb``, where ``r``, ``g`` </span>
@@ -191,7 +193,7 @@
     <span class="k">return</span> <span class="n">c</span>
 
 
-<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
+<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert hex-string color into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -205,7 +207,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into hex-color string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -219,7 +221,7 @@
     <span class="k">return</span> <span class="s">&quot;0x{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
 
 </div>
-<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert html color format string into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -233,7 +235,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">5</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into html color format string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -247,7 +249,7 @@
     <span class="k">return</span> <span class="s">&quot;#{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
     
     </div>
-<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Blend two colors.</span>
 <span class="sd">    </span>
 <span class="sd">    Blending of colors is done based on optional keyword arguments that are </span>
@@ -284,7 +286,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="dist"><a class="viewcode-back" href="../../color_utilities.html#color_tweets.color_utils.dist">[docs]</a><span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
+<div class="viewcode-block" id="dist"><a class="viewcode-back" href="../../color_tweets/color_utils.html#color_tweets.color_utils.dist">[docs]</a><span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate distance between two colors.</span>
 <span class="sd">    </span>
 <span class="sd">    Currently the distance is calculated between euclidean distance between</span>

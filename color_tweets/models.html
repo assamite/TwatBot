@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Models &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="next" title="Views" href="views.html"/>
+        <link rel="prev" title="Color Tweets" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+      
+    <li>Models</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/color_tweets/models.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="module-color_tweets.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-color_tweets.models" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-models"></span><p>Django models for resources given on the course.</p>
+<dl class="class">
+<dt id="color_tweets.models.BracketedColorBigrams">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">BracketedColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#BracketedColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.BracketedColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bracketed bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">start_bracket (<tt class="docutils literal"><span class="pre">CharField</span></tt>): starting bracket, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">end_bracket (<tt class="docutils literal"><span class="pre">CharField</span></tt>): ending bracket, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency</div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="17%" />
+<col width="15%" />
+<col width="27%" />
+<col width="10%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">start_bracket</th>
+<th class="head">w1</th>
+<th class="head">w2</th>
+<th class="head">end_bracket</th>
+<th class="head">f</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>and</td>
+<td>cheddar</td>
+<td>cheese</td>
+<td>,</td>
+<td>3477</td>
+</tr>
+<tr class="row-odd"><td>the</td>
+<td>eye</td>
+<td>candy</td>
+<td>.</td>
+<td>3476</td>
+</tr>
+<tr class="row-even"><td>with</td>
+<td>wood</td>
+<td>wool</td>
+<td>and</td>
+<td>3448</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="color_tweets.models.ColorMap">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">ColorMap</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#ColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.ColorMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color stereotype - rgb (in html format) value pairs with base color names.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">stereotype (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Name of the color stereotype, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">color (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Base color, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">html (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Color in html-format, i.e. <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.   </div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="43%" />
+<col width="26%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">stereotype</th>
+<th class="head">color</th>
+<th class="head">html</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>acid</td>
+<td>green</td>
+<td>#B0BF1A</td>
+</tr>
+<tr class="row-odd"><td>absinthe</td>
+<td>green</td>
+<td>#7FDD4C</td>
+</tr>
+<tr class="row-even"><td>acorn</td>
+<td>brown</td>
+<td>#7F6241</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="color_tweets.models.ColorUnigrams">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">ColorUnigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#ColorUnigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.ColorUnigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color unigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">solid_compound (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Solid compound of the unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">50</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): unigram&#8217;s frequency</div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="83%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">solid_compound</th>
+<th class="head">f</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>aluminumleather</td>
+<td>594</td>
+</tr>
+<tr class="row-odd"><td>amberbunny</td>
+<td>240</td>
+</tr>
+<tr class="row-even"><td>amberdawn</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="color_tweets.models.EveryColorBotTweets">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">EveryColorBotTweets</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#EveryColorBotTweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.EveryColorBotTweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL&#8217;s and hex color codes for Everycolorbot&#8217;s tweets.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">hex (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Color in hex-format, i.e. <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes. </div>
+<div class="line">url (<tt class="docutils literal"><span class="pre">URLField</span></tt>): URL for the tweet.</div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">hex</th>
+<th class="head">url</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0x634ef9</td>
+<td><a class="reference external" href="http://t.co/9OXdTPFOXK">http://t.co/9OXdTPFOXK</a></td>
+</tr>
+<tr class="row-odd"><td>0x31a77c</td>
+<td><a class="reference external" href="http://t.co/99kdUpov9E">http://t.co/99kdUpov9E</a></td>
+</tr>
+<tr class="row-even"><td>0x98d3be</td>
+<td><a class="reference external" href="http://t.co/Os53Hh3qs7">http://t.co/Os53Hh3qs7</a></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="color_tweets.models.PluralColorBigrams">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">PluralColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#PluralColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.PluralColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plural color bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">singular (<tt class="docutils literal"><span class="pre">CharField</span></tt>): singular of the second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency </div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="23%" />
+<col width="19%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">w1</th>
+<th class="head">w2</th>
+<th class="head">f</th>
+<th class="head">singular</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bile</td>
+<td>salts</td>
+<td>30370</td>
+<td>salt</td>
+</tr>
+<tr class="row-odd"><td>tree</td>
+<td>leaves</td>
+<td>30015</td>
+<td>leaf</td>
+</tr>
+<tr class="row-even"><td>maple</td>
+<td>leafs</td>
+<td>29701</td>
+<td>leaf</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="color_tweets.models.UnbracketedColorBigrams">
+<em class="property">class </em><tt class="descclassname">color_tweets.models.</tt><tt class="descname">UnbracketedColorBigrams</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/models.html#UnbracketedColorBigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.models.UnbracketedColorBigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unbracketed bigrams.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): first word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): second word, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">f (<tt class="docutils literal"><span class="pre">PositiveIntegerField</span></tt>): bigram&#8217;s frequency  </div>
+</div>
+</dd>
+</dl>
+<p>Sample entries:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="39%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">w1</th>
+<th class="head">w2</th>
+<th class="head">f</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>summer</td>
+<td>storm</td>
+<td>2302</td>
+</tr>
+<tr class="row-odd"><td>lobster</td>
+<td>bisque</td>
+<td>2284</td>
+</tr>
+<tr class="row-even"><td>tan</td>
+<td>leather</td>
+<td>2282</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="views.html" class="btn btn-neutral float-right" title="Views"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Color Tweets"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

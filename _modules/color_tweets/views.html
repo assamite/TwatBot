@@ -58,10 +58,12 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets_models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets_views.html">Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_utilities.html">Color Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../color_tweets.html">Color Tweets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../color_tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../color_tweets/color_utils.html">Color Utilities</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -98,9 +100,9 @@
             
   <h1>Source code for color_tweets.views</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    .. py:module:: `views`</span>
-<span class="sd">        :platform: Unix</span>
-<span class="sd">        :synopsis: Views for Django app.</span>
+<span class="sd">.. py:module:: `views`</span>
+<span class="sd">    :platform: Unix</span>
+<span class="sd">    :synopsis: Views for Django app.</span>
 <span class="sd">        </span>
 <span class="sd">Custom views for the app for testing and publishing new tweets.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -109,8 +111,14 @@
 
 <span class="c"># Create your views here.</span>
 
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../color_tweets_views.html#color_tweets.views.home">[docs]</a><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.home">[docs]</a><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Basic view to be implemented.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Blend two colors view mock.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 </pre></div>

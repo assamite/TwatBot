@@ -1,18 +1,43 @@
-.. toctree::
-		color_tweets_models
-		color_tweets_views
-		color_utilities
-
 Color Tweets
 ================
 
-Main package of the project, developed as a Django app, which has currently following modules:
+.. toctree::
+	:maxdepth: 2
 
-* Basic Django app modules
-	* :py:mod:`color_tweets.models` - Django models for resources given on the course.
-	* :py:mod:`color_tweets.views` - Custom Django views for the app.
+Main package of the project, developed as a Django app, which has currently following modules.
 
-* Modules special for Color Tweets
-	* :py:mod:`color_tweets.color_utils` - Utility functions for working with colors.
+Basic Django app modules
+------------------------
+
+.. toctree::
+		:maxdepth: 2
+		:hidden:
+
+		color_tweets_models
+		color_tweets_views
+
+Models
+******
+:py:mod:`color_tweets.models`: Django models for resources given on the course.
+
+Views
+*****
+
+:py:mod:`color_tweets.views`: Custom Django views for the app.
+
+
+Modules special for Color Tweets
+--------------------------------
+
+.. toctree::
+		:maxdepth: 2
+		:hidden:
+
+		color_utilities	
+
+Color Utilities
+***************
+
+:py:mod:`color_tweets.color_utils`: Utility functions for working with colors.
 	
 	

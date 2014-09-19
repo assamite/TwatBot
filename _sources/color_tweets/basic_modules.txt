@@ -1,0 +1,15 @@
+Django App Modules
+------------------------
+
+.. toctree::
+	:hidden:
+
+	models
+	views
+
+Basic modules, which are present in every Django app.
+
+* :py:mod:`models`: Django models for resources given on the course.
+* :py:mod:`views`: Custom Django views for the app.
+* :py:mod:`admin`: Django admin functions.
+* :py:mod:`tests`: Basic tests for the app.

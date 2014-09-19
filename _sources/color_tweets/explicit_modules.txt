@@ -1,0 +1,10 @@
+Explicit Modules
+--------------------------------
+
+Modules explicitly created for TwatBot.
+
+Color Utilities
+***************
+
+:py:mod:`color_tweets.color_utils`: Utility functions for working with colors.
+	

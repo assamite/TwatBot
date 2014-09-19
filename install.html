@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
-        <link rel="next" title="Color Tweets" href="color_tweets.html"/>
+        <link rel="next" title="Color Tweets" href="color_tweets/index.html"/>
         <link rel="prev" title="Welcome to Twatbot’s documentation!" href="index.html"/> 
 
   
@@ -59,10 +59,12 @@
         
             <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_tweets_models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_tweets_views.html">Views</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_utilities.html">Color Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_tweets.html">Color Tweets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="color_tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="color_tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_tweets/color_utils.html">Color Utilities</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -99,20 +101,23 @@
             
   <div class="section" id="installing">
 <h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
-<p>TwatBot is developed as a <a class="reference external" href="https://djangoproject.com/">Django</a> app and uses
-Twitter app API, so you need to apply for application keys from Twitter in
-order to use this project.</p>
+<p>TwatBot is developed as a <a class="reference external" href="https://djangoproject.com/">Django</a> app. Access to
+<a class="reference external" href="https://dev.twitter.com/overview/documentation">Twitter API</a> is gained using
+<a class="reference external" href="https://pypi.python.org/pypi/python-twitter/2.0">python-twitter</a>.</p>
+<p>You should be familiar with basic Django project layout and have a working
+<a class="reference external" href="https://apps.twitter.com/">Twitter app</a> which allows you to tweet before
+using this project.</p>
 <p>Short installing notes:</p>
 <ul>
 <li><p class="first">Install <a class="reference external" href="https://pypi.python.org/pypi/pip">pip</a></p>
 </li>
 <li><p class="first">Install third party libraries:</p>
 <div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/
-$&gt; pip install -r requirements.txt # you might need root priviledges
+$&gt; pip install -r requirements.txt // you might need root privileges
 </pre></div>
 </div>
 </li>
-<li><p class="first">Set local settings for accessing Twitter API:</p>
+<li><p class="first">Create local settings files:</p>
 <div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/TwatBot/
 $&gt; touch lsettings.py
 </pre></div>
@@ -135,7 +140,7 @@ $&gt; touch lsettings.py
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="color_tweets.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="color_tweets/index.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to Twatbot’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>

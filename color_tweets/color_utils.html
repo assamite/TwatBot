@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Color Utilities &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="prev" title="Views" href="views.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Color Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+      
+    <li>Color Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/color_tweets/color_utils.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="module-color_tweets.color_utils">
+<span id="color-utilities"></span><h1>Color Utilities<a class="headerlink" href="#module-color_tweets.color_utils" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-color_utils"></span><p>Utility functions for working with colors.</p>
+<p>Supports three types of color definitions:</p>
+<ul class="simple">
+<li>hex:    <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>html:    <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>rgb:    <tt class="docutils literal"><span class="pre">tuple</span></tt> in form of <tt class="docutils literal"><span class="pre">(r,</span> <span class="pre">g,</span> <span class="pre">b)</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are integers in [0, 255].</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Functions defined in this module are ignorant of semantics, and you should do your
+reasoning, e.g. what to blend and how to blend, before calling functions in 
+this module.</p>
+</div>
+<dl class="function">
+<dt id="color_tweets.color_utils.blend">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">blend</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.blend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blend two colors.</p>
+<p>Blending of colors is done based on optional keyword arguments that are 
+given to the function. If no arguments are given, blending is a mean of 
+the rgb-values of input colors.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong> </dt>
+<dd><div class="first line-block">
+<div class="line">head: head color in any supported format.    </div>
+<div class="line">modifier: modifier color in any supported format.</div>
+<div class="line">kwargs: Optional blending instructions. Currently supported keyword arguments are:</div>
+</div>
+<blockquote>
+<div><div class="line-block">
+<div class="line">a_head (<tt class="docutils literal"><span class="pre">float</span></tt>): amount of head color to mix. Should be in [0, 1]. </div>
+<div class="line">a_rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): amount of each head color component to </div>
+<div class="line">mix, each value in tuple should be in [0, 1].</div>
+</div>
+</div></blockquote>
+<div class="last line-block">
+<div class="line">If a_rgb is present, a_head is ignored. </div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Blended color as rgb-tuple.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.dist">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">dist</tt><big>(</big><em>color1</em>, <em>color2</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distance between two colors.</p>
+<p>Currently the distance is calculated between euclidean distance between
+rgb-tuples. Input colors can be in any supported format.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color1: first color</div>
+<div class="line">color2: second color</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Distance between colors as <tt class="docutils literal"><span class="pre">float</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.hex2rgb">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">hex2rgb</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#hex2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.hex2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex-string color into rgb-tuple.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Color in hex-format, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.html2rgb">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">html2rgb</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#html2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.html2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert html color format string into rgb-tuple.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt></dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.is_hex">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_hex</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted hex-format.</p>
+<p>Accepted hex-format is a string in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in hex-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.is_html">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_html</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted html-format.</p>
+<p>Accepted html-format is a string in form of <cite>#rrggbb`</cite>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in html-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.is_rgb">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_rgb</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that color variable is in accepted rgb-format.</p>
+<p>Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Variable to be verified.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in rgb-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.rgb2hex">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">rgb2hex</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#rgb2hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.rgb2hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert rgb-tuple into hex-color string.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color as hex-string, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="color_tweets.color_utils.rgb2html">
+<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">rgb2html</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#rgb2html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.rgb2html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert rgb-tuple into html color format string.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt></dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Color in html-format string, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="views.html" class="btn btn-neutral" title="Views"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
