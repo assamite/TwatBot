@@ -19,9 +19,9 @@ Utility functions to populate Django models with given resources.
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
-from django.conf import settings
+def __set_django():
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 
 def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bigrams.tsv"):
     """Populate BracketedColorBigrams model with entries found from file.
@@ -35,6 +35,7 @@ def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bi
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import BracketedColorBigram
     
     with open(filepath, 'r') as filehandle:
@@ -60,6 +61,7 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import ColorMap, Color
     import tweets.color_utils as cu
     
@@ -93,6 +95,7 @@ def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import ColorUnigram
     
     with open(filepath, 'r') as filehandle:
@@ -117,6 +120,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import EveryColorBotTweet, Color
     import tweets.color_utils as cu
     
@@ -149,6 +153,7 @@ def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import PluralColorBigram
     
     with open(filepath, 'r') as filehandle:
@@ -174,6 +179,7 @@ def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_colo
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
+    __set_django()
     from tweets.models import UnbracketedColorBigram
     
     with open(filepath, 'r') as filehandle:

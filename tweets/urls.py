@@ -1,15 +1,16 @@
+"""
+.. py:module:: `urls`
+    :platform: Unix
+    
+Custom urls for tweets-app.   
+"""
 from django.conf.urls import patterns, include, url
-
-from django.contrib import admin
-admin.autodiscover()
-
-import tweets.urls
+from views import home
 
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'TwatBot.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(tweets.urls))
+    url(r'^$', home, name='twatbot_home_url'),
 )

@@ -30,12 +30,12 @@ Short installing notes:
 	TWITTER_ACCESS_TOKEN = 'Your Twitter access token'
 	TWITTER_ACCESS_TOKEN_SECRET = 'Your Twitter access token secret'
 	
-* Populate ``tweets``-app models with premade information::
+* Create DB-tables and populate ``tweets``-app models with premade information::
 	
-	$> cd project_root/tweets/
-	$> ipython // start your favourite Python shell
-	>>> import resources_utils
-	>>> resources_utils.populate_default()
+	$> cd project_root/
+	$> python manage.py syncdb
+	$> cd tweets/
+	$> python resources_utils.py
 	
 
 

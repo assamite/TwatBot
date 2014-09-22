@@ -1,3 +1,3 @@
 from color_semantics import ColorSemantics
 
-semantics = ColorSemantics()
+COLOR_SEMANTICS = ColorSemantics()

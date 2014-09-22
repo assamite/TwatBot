@@ -8,23 +8,49 @@ Semantic informed color manipulations.
 Color manipulations that are semantically informed, i.e. they have access to
 database models for color information and linguistic readymades.
 """
-from tweets.color_utils import *
+import tweets.color_utils as cu
 from tweets.models import ColorMap, EveryColorBotTweet, UnbracketedColorBigram
-from tweets.models import ColorUnigram, BracketedColorBigram, PluralColorBigram
+from tweets.models import ColorUnigram, PluralColorBigram
+from tweets.models import Color
 
 
-def ColorSemantics():
-    """Master class for semantic informed color manipulations. 
+class ColorSemantics():
+    """Master class for semantic informed color manipulations.
     
-    You should not instance this class by yourself, instead use the automatically
-    loaded class instance in package's semantics-attribute.
+    All color knowledge and linguistic readymade-information is loaded to memory
+    on initialisation for faster data access.
+   
+    .. warning::
+        You should not instance this class by yourself, instead use the automatically
+        loaded class instance in package's semantics-attribute.
     """
     
     def __init__(self):
         print "Initialising ColorSemantics."
-        cm = ColorMap.objects()
+        self.colors = {}
+        cols = Color.objects.all()
+        for c in cols:
+            rgb = (c.rgb_r, c.rgb_g, c.rgb_b)
+            self.colors[rgb] = {'html': c.html, 'lab': (c.l, c.a, c.b)}
+            self.colors[c.html] = {'rgb': rgb, 'lab': (c.l, c.a, c.b)}
+        
+        self.color_map = {}
+        cm = ColorMap.objects.all()
         for c in cm:
-            print c
+            html = c.color.html
+            self.color_map[html] = {'stereotype': c.stereotype, 'base_color': c.base_color}
+            self.color_map[(c.stereotype, c.base_color)] = html
+            
+        self.unigrams = {}
+        ugs = ColorUnigram.objects.all()
+        for u in ugs:
+            self.unigrams[u.solid_compound] = u.f
+            
+        self.bigrams = {}
+        bigs = UnbracketedColorBigram.objects.all()
+        for b in bigs:
+            self.bigrams[(b.w1, b.w2)] = b.f
+            
     
 
     def get_color_code(self, color_name):
@@ -46,11 +72,13 @@ def ColorSemantics():
         
         **Args:**
             | color_code: Color code in any supported format. See supported 
-            formats from ``color_utils``-module.
+            | formats from ``color_utils``-module.
             
         **Returns:**
             Human readable color name if color code was found from resources, 
             None otherwise.
         """
-        
-        pass
+        html = cu.rgb2html(cu.__2rgb(color_code))
+        if html in self.color_map: 
+            return self.color_map[html]
+        return None
