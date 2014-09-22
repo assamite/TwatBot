@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tweets.models &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>tweets.models</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for tweets.models</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. py:module:: models</span>
+<span class="sd">    :platform: Unix</span>
+<span class="sd">    :synopsis: Django models for resources given on the course.</span>
+
+<span class="sd">Django models to access and manipulate resources given on the course.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<div class="viewcode-block" id="GetOrNoneManager"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.GetOrNoneManager">[docs]</a><span class="k">class</span> <span class="nc">GetOrNoneManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds get_or_none method to objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        
+</div>
+<div class="viewcode-block" id="Color"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.Color">[docs]</a><span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Color representations.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | html (``CharField``): html style color definition</span>
+<span class="sd">        | hex (``CharField``): hex style color definition</span>
+<span class="sd">        | rgb_r (``IntegerField``): red value of the rgb-color space</span>
+<span class="sd">        | rgb_g (``IntegerField``): green value of the rgb-color space</span>
+<span class="sd">        | rgb_b (``IntegerField``): blue value of the rgb-color space</span>
+<span class="sd">        | l (``FloatField``): lightness value of the Lab-color space</span>
+<span class="sd">        | a (``FloatField``): a color-opponent value of the Lab-color space</span>
+<span class="sd">        | b (``FloatField``): b color-opponent value of the Lab-color space</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="nb">hex</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">+</span> <span class="s">&quot; RGB: (&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_r</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_g</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_b</span><span class="p">)))</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span> <span class="o">+</span>\
+            <span class="s">&quot; Lab: (&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)))</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span>
+            
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;rgb_r&#39;</span><span class="p">,</span> <span class="s">&#39;rgb_g&#39;</span><span class="p">,</span> <span class="s">&#39;rgb_b&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BracketedColorBigram"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.BracketedColorBigram">[docs]</a><span class="k">class</span> <span class="nc">BracketedColorBigram</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bracketed bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | start_bracket (``CharField``): starting bracket, ``max_length = 40``.</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | end_bracket (``CharField``): ending bracket, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency</span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries:</span>
+<span class="sd">        </span>
+<span class="sd">        =============    =======    ======    ===========    =</span>
+<span class="sd">        start_bracket    w1         w2        end_bracket    f</span>
+<span class="sd">        =============    =======    ======    ===========    =</span>
+<span class="sd">        and              cheddar    cheese        ,          3477</span>
+<span class="sd">        the              eye        candy         .          3476</span>
+<span class="sd">        with             wood       wool         and         3448</span>
+<span class="sd">        =============    =======    ======    ===========    =    </span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="n">start_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">start_bracket</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_bracket</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)))</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;start_bracket&#39;</span><span class="p">,</span> <span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">,</span> <span class="s">&#39;end_bracket&#39;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span>
+    
+</div>
+<div class="viewcode-block" id="ColorMap"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ColorMap">[docs]</a><span class="k">class</span> <span class="nc">ColorMap</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Color stereotype - rgb (in html format) value pairs with base color names.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | stereotype (``CharField``): Name of the color stereotype, ``max_length = 40``.</span>
+<span class="sd">        | base_color (``CharField``): Base color name, ``max_length = 40``.</span>
+<span class="sd">        | color (``ForeignKey``): Reference to ``Color``-model object.  </span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries:</span>
+<span class="sd">    </span>
+<span class="sd">        ==========    ==========     ===</span>
+<span class="sd">        stereotype    base_color     color.html</span>
+<span class="sd">        ==========    ==========     ===</span>
+<span class="sd">        acid          green          #B0BF1A</span>
+<span class="sd">        absinthe      green          #7FDD4C</span>
+<span class="sd">        acorn         brown          #7F6241</span>
+<span class="sd">        ==========    ==========     ===    </span>
+<span class="sd">         </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">stereotype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">base_color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">stereotype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span><span class="p">))</span>
+    
+
+</div>
+<div class="viewcode-block" id="ColorUnigram"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ColorUnigram">[docs]</a><span class="k">class</span> <span class="nc">ColorUnigram</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Color unigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | solid_compound (``CharField``): Solid compound of the unigram, ``max_length = 50``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): unigram&#39;s frequency</span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries: </span>
+<span class="sd">    </span>
+<span class="sd">        ===============    =</span>
+<span class="sd">        solid_compound     f</span>
+<span class="sd">        ===============    =</span>
+<span class="sd">        aluminumleather    594</span>
+<span class="sd">        amberbunny         240</span>
+<span class="sd">        amberdawn          300</span>
+<span class="sd">        ===============    =    </span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="n">solid_compound</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span> 
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">solid_compound</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)))</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="EveryColorBotTweet"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.EveryColorBotTweet">[docs]</a><span class="k">class</span> <span class="nc">EveryColorBotTweet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URL&#39;s and hex color codes for Everycolorbot&#39;s tweets.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | color (``ForeignKey``): Reference to ``Color``-model object.</span>
+<span class="sd">        | url (``URLField``): URL for the tweet.</span>
+<span class="sd">         </span>
+<span class="sd">    Sample entries:    </span>
+<span class="sd">     </span>
+<span class="sd">        =========    ====</span>
+<span class="sd">        color.hex    url</span>
+<span class="sd">        =========    ====</span>
+<span class="sd">        0x634ef9     http://t.co/9OXdTPFOXK</span>
+<span class="sd">        0x31a77c     http://t.co/99kdUpov9E</span>
+<span class="sd">        0x98d3be     http://t.co/Os53Hh3qs7</span>
+<span class="sd">        =========    ====</span>
+
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+    
+</div>
+<div class="viewcode-block" id="PluralColorBigram"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.PluralColorBigram">[docs]</a><span class="k">class</span> <span class="nc">PluralColorBigram</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plural color bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | singular (``CharField``): singular of the second word, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency </span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries:</span>
+<span class="sd">    </span>
+<span class="sd">        =======    ======    =====    ========</span>
+<span class="sd">        w1         w2        f        singular</span>
+<span class="sd">        =======    ======    =====    ========</span>
+<span class="sd">        bile       salts     30370    salt</span>
+<span class="sd">        tree       leaves    30015    leaf</span>
+<span class="sd">        maple      leafs     29701    leaf</span>
+<span class="sd">        =======    ======    =====    ========  </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">singular</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular</span><span class="p">))</span>
+    
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">,</span> <span class="s">&#39;singular&#39;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="UnbracketedColorBigram"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.UnbracketedColorBigram">[docs]</a><span class="k">class</span> <span class="nc">UnbracketedColorBigram</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unbracketed bigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
+<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency  </span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries:</span>
+<span class="sd">    </span>
+<span class="sd">        =======    =======    =</span>
+<span class="sd">        w1         w2         f</span>
+<span class="sd">        =======    =======    =</span>
+<span class="sd">        summer     storm      2302</span>
+<span class="sd">        lobster    bisque     2284</span>
+<span class="sd">        tan        leather    2282</span>
+<span class="sd">        =======    =======    =</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)))</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

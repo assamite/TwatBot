@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Color Semantics &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -28,7 +28,9 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="prev" title="Resources Utilities" href="resources_utils.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -55,14 +57,14 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tweets/index.html">Color Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tweets/views.html">Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tweets/resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Color Semantics</a></li>
 </ul>
 </li>
 </ul>
@@ -88,8 +90,12 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Overview: module code</li>
+          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+      
+    <li>Color Semantics</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/tweets/color_semantics.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -97,24 +103,31 @@
 </div>
           <div role="main">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="color_tweets/color_utils.html">color_tweets.color_utils</a></li>
-<li><a href="color_tweets/models.html">color_tweets.models</a></li>
-<li><a href="color_tweets/resources_utils.html">color_tweets.resources_utils</a></li>
-<li><a href="color_tweets/views.html">color_tweets.views</a></li>
-<li><a href="color_utils.html">color_utils</a></li>
-<li><a href="colorbot/color_utils.html">colorbot.color_utils</a></li>
-<li><a href="colorbot/models.html">colorbot.models</a></li>
-<li><a href="io.html">io</a></li>
-<li><a href="tweets/color_semantics.html">tweets.color_semantics</a></li>
-<li><a href="tweets/color_utils.html">tweets.color_utils</a></li>
-<li><a href="tweets/models.html">tweets.models</a></li>
-<li><a href="tweets/resources_utils.html">tweets.resources_utils</a></li>
-<li><a href="tweets/views.html">tweets.views</a></li>
-</ul>
+  <div class="section" id="module-tweets.color_semantics">
+<span id="color-semantics"></span><h1>Color Semantics<a class="headerlink" href="#module-tweets.color_semantics" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-semantics"></span><p>Semantic informed color manipulations.</p>
+<p>Color manipulations that are semantically informed, i.e. they have access to
+database models for color information and linguistic readymades.</p>
+<dl class="function">
+<dt id="tweets.color_semantics.ColorSemantics">
+<tt class="descclassname">tweets.color_semantics.</tt><tt class="descname">ColorSemantics</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Master class for semantic informed color manipulations.</p>
+<p>You should not instance this class by yourself, instead use the automatically
+loaded class instance in package&#8217;s semantics-attribute.</p>
+</dd></dl>
+
+</div>
+
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="resources_utils.html" class="btn btn-neutral" title="Resources Utilities"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

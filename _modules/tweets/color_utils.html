@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>colorbot.color_utils &mdash; Twatbot 0.0.1 documentation</title>
+  <title>tweets.color_utils &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -91,7 +91,7 @@
       
           <li><a href="../index.html">Module code</a> &raquo;</li>
       
-    <li>colorbot.color_utils</li>
+    <li>tweets.color_utils</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -100,7 +100,7 @@
 </div>
           <div role="main">
             
-  <h1>Source code for colorbot.color_utils</h1><div class="highlight"><pre>
+  <h1>Source code for tweets.color_utils</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">.. py:module:: color_utils</span>
@@ -109,24 +109,34 @@
 <span class="sd">    </span>
 <span class="sd">Utility functions for working with colors.</span>
 
-<span class="sd">Supports three types of color definitions:</span>
+<span class="sd">Functions defined in this module are ignorant of semantics, and you should do your</span>
+<span class="sd">reasoning, e.g. what to blend and how to blend, before calling functions in </span>
+<span class="sd">this module. </span>
 
-<span class="sd">* hex:    ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.</span>
-<span class="sd">* html:    ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.</span>
-<span class="sd">* rgb:    ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].</span>
+<span class="sd">The module relies on ``colormath``-package&#39;s functionality.</span>
+<span class="sd">Furthermore, three light weight color definitions are supported for convenience:</span>
 
-<span class="sd">.. note:: </span>
-<span class="sd">    Functions defined in this module are ignorant of semantics, and you should do your</span>
-<span class="sd">    reasoning, e.g. what to blend and how to blend, before calling functions in </span>
-<span class="sd">    this module.</span>
+<span class="sd">* hex: ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.</span>
+<span class="sd">* html: ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.</span>
+<span class="sd">* rgb: ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    Some of the module&#39;s functions convert light weight color definitions into ``LabColor``-objects </span>
+<span class="sd">    (`colormath.color_objects &lt;http://python-colormath.readthedocs.org/en/latest/color_objects.html&gt;`_) </span>
+<span class="sd">    internally; especially blending and distance calculations are done in </span>
+<span class="sd">    `Lab color space &lt;http://en.wikipedia.org/wiki/Lab_color_space&gt;`_. Conversion between</span>
+<span class="sd">    color spaces might (and will) cause some inaccuracies in colors due to needed floating </span>
+<span class="sd">    point operations.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">colormath.color_objects</span> <span class="kn">import</span> <span class="n">sRGBColor</span><span class="p">,</span> <span class="n">LabColor</span> 
+<span class="kn">from</span> <span class="nn">colormath.color_conversions</span> <span class="kn">import</span> <span class="n">convert_color</span>
 
 <span class="n">re_html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^#[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 <span class="n">re_hex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^0x[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted rgb-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</span>
@@ -141,12 +151,14 @@
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted html-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted html-format is a string in form of `#rrggbb``, where ``r``, ``g`` </span>
@@ -165,7 +177,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted hex-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted hex-format is a string in form of ``0xrrggbb``, where ``r``, ``g`` </span>
@@ -184,18 +196,43 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
+<span class="k">def</span> <span class="nf">__lab2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert LabColor into rgb-tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">is</span> <span class="n">LabColor</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Variable not an instance of LabColor.&quot;</span><span class="p">)</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">convert_color</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">sRGBColor</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="mi">255</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">__2lab</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert given color into colormath-packages LabColor object.</span>
+<span class="sd">    </span>
+<span class="sd">    *Args:**</span>
+<span class="sd">        color: color in any supported format.</span>
+<span class="sd">        </span>
+<span class="sd">    **Returns:**</span>
+<span class="sd">        LabColor object for given color.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">convert_color</span><span class="p">(</span><span class="n">sRGBColor</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">is_upscaled</span> <span class="o">=</span> <span class="bp">True</span><span class="p">),</span> <span class="n">LabColor</span><span class="p">)</span>
+    
+
 <span class="k">def</span> <span class="nf">__2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">is_html</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">html2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">is_hex</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
             <span class="k">return</span>  <span class="n">hex2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">is</span> <span class="n">LabColor</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">__lab2rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>    
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Given variable is not in accepted format.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">c</span>
 
 
-<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert hex-string color into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -209,7 +246,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into hex-color string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -223,7 +260,7 @@
     <span class="k">return</span> <span class="s">&quot;0x{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
 
 </div>
-<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert html color format string into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -237,7 +274,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">5</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into html color format string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -249,14 +286,18 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span> 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Given variable is not in accepted rgb-format.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="s">&quot;#{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
-    
+   
     </div>
-<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Blend two colors.</span>
+<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Blend two colors in Lab color space.</span>
 <span class="sd">    </span>
 <span class="sd">    Blending of colors is done based on optional keyword arguments that are </span>
 <span class="sd">    given to the function. If no arguments are given, blending is a mean of </span>
-<span class="sd">    the rgb-values of input colors.</span>
+<span class="sd">    the Lab-values of input colors.</span>
+<span class="sd">    </span>
+<span class="sd">    .. note:: </span>
+<span class="sd">        Floating point operations might cause some inaccuracies in colors when</span>
+<span class="sd">        changing to and from Lab color space.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:** </span>
 <span class="sd">        | head: head color in any supported format.    </span>
@@ -264,35 +305,35 @@
 <span class="sd">        | kwargs: Optional blending instructions. Currently supported keyword arguments are:</span>
 <span class="sd">        </span>
 <span class="sd">            | a_head (``float``): amount of head color to mix. Should be in [0, 1]. </span>
-<span class="sd">            | a_rgb (``tuple``): amount of each head color component to </span>
+<span class="sd">            | a_lab (``tuple``): amount of each head color component to </span>
 <span class="sd">            | mix, each value in tuple should be in [0, 1].</span>
 <span class="sd">            </span>
-<span class="sd">        | If a_rgb is present, a_head is ignored. </span>
+<span class="sd">        | If a_lab is present, a_head is ignored. </span>
 <span class="sd">    </span>
 <span class="sd">    **Returns:**</span>
 <span class="sd">        Blended color as rgb-tuple.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span>  
-    <span class="n">a_rgb</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">__2lab</span><span class="p">(</span><span class="n">head</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">__2lab</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>  
+    <span class="n">a_lab</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s">&#39;a_rgb&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">a_rgb</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;a_rgb&#39;</span><span class="p">]</span> 
+        <span class="k">if</span> <span class="s">&#39;a_lab&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">a_lab</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;a_lab&#39;</span><span class="p">]</span> 
         <span class="k">elif</span> <span class="s">&#39;a_head&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">a_head</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;a_head&#39;</span><span class="p">]</span>
-            <span class="n">a_rgb</span> <span class="o">=</span> <span class="p">(</span><span class="n">a_head</span><span class="p">,</span> <span class="n">a_head</span><span class="p">,</span> <span class="n">a_head</span><span class="p">)</span>
+            <span class="n">a_lab</span> <span class="o">=</span> <span class="p">(</span><span class="n">a_head</span><span class="p">,</span> <span class="n">a_head</span><span class="p">,</span> <span class="n">a_head</span><span class="p">)</span>
             
-    <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  
-    <span class="k">return</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_lab</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_lab</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_lab</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_lab</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a_lab</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_lab</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>     
+    <span class="k">return</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">LabColor</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="dist"><a class="viewcode-back" href="../../color_utilities.html#colorbot.color_utils.dist">[docs]</a><span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate distance between two colors.</span>
+<div class="viewcode-block" id="ed"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.ed">[docs]</a><span class="k">def</span> <span class="nf">ed</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Euclidean distance between two colors.</span>
 <span class="sd">    </span>
-<span class="sd">    Currently the distance is calculated between euclidean distance between</span>
-<span class="sd">    rgb-tuples. Input colors can be in any supported format.</span>
+<span class="sd">    The distance calculation is done in CIE Lab color space. </span>
+<span class="sd">    Input colors can be in any supported format.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
 <span class="sd">        | color1: first color</span>
@@ -301,9 +342,11 @@
 <span class="sd">    **Returns:**</span>
 <span class="sd">        Distance between colors as ``float``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">c1</span> <span class="o">=</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">color1</span><span class="p">)</span>
-    <span class="n">c2</span> <span class="o">=</span> <span class="n">__2rgb</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">c1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">c1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">c1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">c2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">l1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">__2lab</span><span class="p">(</span><span class="n">color1</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+    <span class="n">l2</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">__2lab</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">l1</span> <span class="o">-</span> <span class="n">l2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">a1</span> <span class="o">-</span> <span class="n">a1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">b1</span> <span class="o">-</span> <span class="n">b2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    
             
     
     </div>

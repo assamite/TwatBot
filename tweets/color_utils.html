@@ -65,6 +65,7 @@
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
 </ul>
 </li>
 </ul>
@@ -95,7 +96,7 @@
     <li>Color Utilities</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/color_tweets/color_utils.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/tweets/color_utils.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -103,8 +104,8 @@
 </div>
           <div role="main">
             
-  <div class="section" id="module-color_tweets.color_utils">
-<span id="color-utilities"></span><h1>Color Utilities<a class="headerlink" href="#module-color_tweets.color_utils" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-tweets.color_utils">
+<span id="color-utilities"></span><h1>Color Utilities<a class="headerlink" href="#module-tweets.color_utils" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-color_utils"></span><p>Utility functions for working with colors.</p>
 <p>Functions defined in this module are ignorant of semantics, and you should do your
 reasoning, e.g. what to blend and how to blend, before calling functions in 
@@ -126,8 +127,8 @@ color spaces might (and will) cause some inaccuracies in colors due to needed fl
 point operations.</p>
 </div>
 <dl class="function">
-<dt id="color_tweets.color_utils.blend">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">blend</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.blend" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.blend">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">blend</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.blend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Blend two colors in Lab color space.</p>
 <p>Blending of colors is done based on optional keyword arguments that are 
 given to the function. If no arguments are given, blending is a mean of 
@@ -161,8 +162,8 @@ changing to and from Lab color space.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.ed">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">ed</tt><big>(</big><em>color1</em>, <em>color2</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#ed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.ed" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.ed">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">ed</tt><big>(</big><em>color1</em>, <em>color2</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#ed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.ed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Euclidean distance between two colors.</p>
 <p>The distance calculation is done in CIE Lab color space. 
 Input colors can be in any supported format.</p>
@@ -179,8 +180,8 @@ Input colors can be in any supported format.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.hex2rgb">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">hex2rgb</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#hex2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.hex2rgb" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.hex2rgb">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">hex2rgb</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#hex2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.hex2rgb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert hex-string color into rgb-tuple.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
@@ -191,8 +192,8 @@ Input colors can be in any supported format.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.html2rgb">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">html2rgb</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#html2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.html2rgb" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.html2rgb">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">html2rgb</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#html2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.html2rgb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert html color format string into rgb-tuple.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
@@ -203,8 +204,8 @@ Input colors can be in any supported format.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.is_hex">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_hex</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_hex" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.is_hex">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">is_hex</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#is_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.is_hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that color variable is in accepted hex-format.</p>
 <p>Accepted hex-format is a string in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
 and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</p>
@@ -217,8 +218,8 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.<
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.is_html">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_html</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_html" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.is_html">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">is_html</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#is_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.is_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that color variable is in accepted html-format.</p>
 <p>Accepted html-format is a string in form of <cite>#rrggbb`</cite>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
 and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..</p>
@@ -231,8 +232,8 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.is_rgb">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">is_rgb</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#is_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.is_rgb" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.is_rgb">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">is_rgb</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#is_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.is_rgb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that color variable is in accepted rgb-format.</p>
 <p>Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</p>
 <dl class="docutils">
@@ -244,8 +245,8 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.rgb2hex">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">rgb2hex</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#rgb2hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.rgb2hex" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.rgb2hex">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">rgb2hex</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#rgb2hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.rgb2hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert rgb-tuple into hex-color string.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
@@ -256,8 +257,8 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 </dd></dl>
 
 <dl class="function">
-<dt id="color_tweets.color_utils.rgb2html">
-<tt class="descclassname">color_tweets.color_utils.</tt><tt class="descname">rgb2html</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/color_tweets/color_utils.html#rgb2html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#color_tweets.color_utils.rgb2html" title="Permalink to this definition">¶</a></dt>
+<dt id="tweets.color_utils.rgb2html">
+<tt class="descclassname">tweets.color_utils.</tt><tt class="descname">rgb2html</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#rgb2html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.rgb2html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert rgb-tuple into html color format string.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>

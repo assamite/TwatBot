@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>color_tweets.resources_utils &mdash; Twatbot 0.0.1 documentation</title>
+  <title>tweets.resources_utils &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -91,7 +91,7 @@
       
           <li><a href="../index.html">Module code</a> &raquo;</li>
       
-    <li>color_tweets.resources_utils</li>
+    <li>tweets.resources_utils</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -100,7 +100,7 @@
 </div>
           <div role="main">
             
-  <h1>Source code for color_tweets.resources_utils</h1><div class="highlight"><pre>
+  <h1>Source code for tweets.resources_utils</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. py:module:: resources_utils</span>
 <span class="sd">    :platform: Unix</span>
@@ -112,7 +112,7 @@
 <span class="sd">    As these functions don&#39;t restrict multiple instances of the same entry to be </span>
 <span class="sd">    added to the database, they should be used only once.</span>
 <span class="sd">    </span>
-<span class="sd">    It is suggested to run these once and then immediately use::</span>
+<span class="sd">    It is suggested to run these only once, and then immediately use::</span>
 <span class="sd">    </span>
 <span class="sd">    $&gt; python manage.py dumpdata --format=json --indent=4 &gt; color_tweets/fixtures/dbdump.json</span>
 <span class="sd">    </span>
@@ -126,7 +126,7 @@
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 
-<div class="viewcode-block" id="populate_bracketed_color_bigrams"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_bracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_bracketed_color_bigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_bracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/bracketed_color_bigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate BracketedColorBigrams model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -138,7 +138,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">BracketedColorBigrams</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">BracketedColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -146,12 +146,12 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">BracketedColorBigrams</span><span class="p">(</span><span class="n">start_bracket</span> <span class="o">=</span> <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">BracketedColorBigram</span><span class="p">(</span><span class="n">start_bracket</span> <span class="o">=</span> <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
                                          <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="populate_colormap"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_colormap">[docs]</a><span class="k">def</span> <span class="nf">populate_colormap</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_colormap"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_colormap">[docs]</a><span class="k">def</span> <span class="nf">populate_colormap</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/color_map.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate ColorMap model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -163,7 +163,8 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">Color</span>
+    <span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -171,11 +172,19 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="p">(</span><span class="n">stereotype</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+        <span class="n">chex</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">__2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+        <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">)</span>                                                   
+        <span class="k">if</span> <span class="n">color_inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">color_inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="p">(</span><span class="n">stereotype</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">base_color</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">color_inst</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         
         </div>
-<div class="viewcode-block" id="populate_color_unigrams"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_color_unigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_color_unigrams</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_color_unigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_color_unigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_color_unigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/color_unigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate ColorUnigrams model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -187,7 +196,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigrams</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -195,11 +204,11 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">ColorUnigrams</span><span class="p">(</span><span class="n">solid_compound</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">ColorUnigram</span><span class="p">(</span><span class="n">solid_compound</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         
         </div>
-<div class="viewcode-block" id="populate_everycolorbot_tweets"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_everycolorbot_tweets">[docs]</a><span class="k">def</span> <span class="nf">populate_everycolorbot_tweets</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_everycolorbot_tweets"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_everycolorbot_tweets">[docs]</a><span class="k">def</span> <span class="nf">populate_everycolorbot_tweets</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/everycolorbot_tweets.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate EveryColorBotTweets model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -211,19 +220,27 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweets</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">Color</span>
+    <span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">h</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
-        <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">u</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">EveryColorBotTweets</span><span class="p">(</span><span class="nb">hex</span> <span class="o">=</span> <span class="n">h</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">u</span><span class="p">)</span>
+        <span class="n">chex</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">chex</span><span class="p">,</span> <span class="n">u</span>
+        <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">hex2rgb</span><span class="p">(</span><span class="n">chex</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">__2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+        <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">)</span>                                                   
+        <span class="k">if</span> <span class="n">color_inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">color_inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">color_inst</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         
         </div>
-<div class="viewcode-block" id="populate_plural_color_bigrams"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_plural_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_plural_color_bigrams</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_plural_color_bigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_plural_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_plural_color_bigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/plural_color_bigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate PluralColorBigrams model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -235,7 +252,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">PluralColorBigrams</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">PluralColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -243,12 +260,12 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">PluralColorBigrams</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">PluralColorBigram</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
                                          <span class="n">singular</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="populate_unbracketed_color_bigrams"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_unbracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_unbracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="populate_unbracketed_color_bigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_unbracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_unbracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/unbracketed_color_bigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate UnnracketedColorBigrams model with entries found from file.</span>
 <span class="sd">    </span>
 <span class="sd">    File should be in tab separated format, where each line has model fields</span>
@@ -260,7 +277,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">color_tweets.models</span> <span class="kn">import</span> <span class="n">UnbracketedColorBigrams</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">UnbracketedColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -268,11 +285,11 @@
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">UnbracketedColorBigrams</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">UnbracketedColorBigram</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="populate_default"><a class="viewcode-back" href="../../color_tweets/resources_utils.html#color_tweets.resources_utils.populate_default">[docs]</a><span class="k">def</span> <span class="nf">populate_default</span><span class="p">():</span>
+<div class="viewcode-block" id="populate_default"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_default">[docs]</a><span class="k">def</span> <span class="nf">populate_default</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Call all distinct populate functions with default parameters.</span>
 <span class="sd">    </span>
 <span class="sd">    Default parameter for each model points into `../resources/&lt;relevant_file_name&gt;.tsv`.</span>
@@ -283,7 +300,11 @@
     <span class="n">populate_colormap</span><span class="p">(</span><span class="s">&quot;../resources/color_map.tsv&quot;</span><span class="p">)</span>
     <span class="n">populate_unbracketed_color_bigrams</span><span class="p">(</span><span class="s">&quot;../resources/unbracketed_color_bigrams.tsv&quot;</span><span class="p">)</span>
     <span class="n">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="s">&quot;../resources/bracketed_color_bigrams.tsv&quot;</span><span class="p">)</span>
+    
     </div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">populate_default</span><span class="p">()</span>   
+    
 </pre></div>
 
           </div>

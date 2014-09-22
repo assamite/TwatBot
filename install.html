@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
-        <link rel="next" title="Color Tweets" href="color_tweets/index.html"/>
+        <link rel="next" title="Color Tweets" href="tweets/index.html"/>
         <link rel="prev" title="Welcome to Twatbot’s documentation!" href="index.html"/> 
 
   
@@ -59,11 +59,12 @@
         
             <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color_tweets/index.html">Color Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="color_tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_tweets/views.html">Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/color_utils.html">Color Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
 </ul>
 </li>
 </ul>
@@ -118,17 +119,26 @@ $&gt; pip install -r requirements.txt // you might need root privileges
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create local settings files:</p>
+<li><p class="first">Create local settings file:</p>
 <div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/TwatBot/
 $&gt; touch lsettings.py
 </pre></div>
 </div>
 </li>
-<li><p class="first">Populate <tt class="docutils literal"><span class="pre">lsettings.py</span></tt>  with at least following attributes (see Twitter API documentation for details):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">TWITTER_API_KEY</span> <span class="o">=</span> <span class="s">&#39;Your Twitter API key&#39;</span>
+<li><p class="first">Configure <tt class="docutils literal"><span class="pre">lsettings.py</span></tt>  with at least following attributes (see Twitter API documentation for details):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">&#39;Secret key for Django&#39;</span>
+<span class="n">TWITTER_API_KEY</span> <span class="o">=</span> <span class="s">&#39;Your Twitter API key&#39;</span>
 <span class="n">TWITTER_API_SECRET</span>  <span class="o">=</span> <span class="s">&#39;Your Twitter API secret&#39;</span>
 <span class="n">TWITTER_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token&#39;</span>
 <span class="n">TWITTER_ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token secret&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Populate <tt class="docutils literal"><span class="pre">tweets</span></tt>-app models with premade information:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/tweets/
+$&gt; ipython // start your favourite Python shell
+&gt;&gt;&gt; import resources_utils
+&gt;&gt;&gt; resources_utils.populate_default()
 </pre></div>
 </div>
 </li>
@@ -141,7 +151,7 @@ $&gt; touch lsettings.py
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="color_tweets/index.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tweets/index.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to Twatbot’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
