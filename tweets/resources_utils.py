@@ -9,7 +9,7 @@ Utility functions to populate Django models with given resources.
     As these functions don't restrict multiple instances of the same entry to be 
     added to the database, they should be used only once.
     
-    It is suggested to run these once and then immediately use::
+    It is suggested to run these only once, and then immediately use::
     
     $> python manage.py dumpdata --format=json --indent=4 > color_tweets/fixtures/dbdump.json
     
@@ -23,7 +23,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 from django.conf import settings
 
-def populate_bracketed_color_bigrams(filepath):
+def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bigrams.tsv"):
     """Populate BracketedColorBigrams model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -35,7 +35,7 @@ def populate_bracketed_color_bigrams(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import BracketedColorBigrams
+    from tweets.models import BracketedColorBigram
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -43,12 +43,12 @@ def populate_bracketed_color_bigrams(filepath):
     for e in entries[1:]:
         sb, w1, w2, eb, f = e.split("\t")
         print "Reading: ", sb, w1, w2, eb, f
-        instance = BracketedColorBigrams(start_bracket = sb, w1 = w1, w2 = w2,\
+        instance = BracketedColorBigram(start_bracket = sb, w1 = w1, w2 = w2,\
                                          end_bracket = eb, f = int(f))
         instance.save()
 
 
-def populate_colormap(filepath):
+def populate_colormap(filepath = "../resources/color_map.tsv"):
     """Populate ColorMap model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -60,7 +60,8 @@ def populate_colormap(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import ColorMap
+    from tweets.models import ColorMap, Color
+    import tweets.color_utils as cu
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -68,11 +69,19 @@ def populate_colormap(filepath):
     for e in entries[1:]:
         s, c, html = e.split("\t")
         print "Reading: ", s, c, html
-        instance = ColorMap(stereotype = s, color = c, html = html)
+        html = html.strip()
+        R, G, B = cu.html2rgb(html)
+        chex = cu.rgb2hex((R, G, B))
+        l, a, b = (cu.__2lab((R, G, B))).get_value_tuple()
+        color_inst = Color.objects.get_or_none(html = html)                                                   
+        if color_inst is None:
+            color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
+            color_inst.save()
+        instance = ColorMap(stereotype = s, base_color = c, color = color_inst)
         instance.save()
         
         
-def populate_color_unigrams(filepath):
+def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
     """Populate ColorUnigrams model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -84,7 +93,7 @@ def populate_color_unigrams(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import ColorUnigrams
+    from tweets.models import ColorUnigram
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -92,11 +101,11 @@ def populate_color_unigrams(filepath):
     for e in entries[1:]:
         s, f = e.split("\t")
         print "Reading: ", s, f
-        instance = ColorUnigrams(solid_compound = s, f = int(f))
+        instance = ColorUnigram(solid_compound = s, f = int(f))
         instance.save()
         
         
-def populate_everycolorbot_tweets(filepath):
+def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.tsv"):
     """Populate EveryColorBotTweets model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -108,19 +117,27 @@ def populate_everycolorbot_tweets(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import EveryColorBotTweets
+    from tweets.models import EveryColorBotTweet, Color
+    import tweets.color_utils as cu
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        h, u = e.split("\t")
-        print "Reading: ", h, u
-        instance = EveryColorBotTweets(hex = h, url = u)
+        chex, u = e.split("\t")
+        print "Reading: ", chex, u
+        R, G, B = cu.hex2rgb(chex)
+        html = cu.rgb2html((R, G, B))
+        l, a, b = (cu.__2lab((R, G, B))).get_value_tuple()
+        color_inst = Color.objects.get_or_none(html = html)                                                   
+        if color_inst is None:
+            color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
+            color_inst.save()
+        instance = EveryColorBotTweet(url = u, color = color_inst)
         instance.save()
         
         
-def populate_plural_color_bigrams(filepath):
+def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.tsv"):
     """Populate PluralColorBigrams model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -132,7 +149,7 @@ def populate_plural_color_bigrams(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import PluralColorBigrams
+    from tweets.models import PluralColorBigram
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -140,12 +157,12 @@ def populate_plural_color_bigrams(filepath):
     for e in entries[1:]:
         w1, w2, f, s = e.split("\t")
         print "Reading: ", w1, w2, f, s
-        instance = PluralColorBigrams(w1 = w1, w2 = w2,\
+        instance = PluralColorBigram(w1 = w1, w2 = w2,\
                                          singular = s, f = int(f))
         instance.save()
 
 
-def populate_unbracketed_color_bigrams(filepath):
+def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_color_bigrams.tsv"):
     """Populate UnnracketedColorBigrams model with entries found from file.
     
     File should be in tab separated format, where each line has model fields
@@ -157,7 +174,7 @@ def populate_unbracketed_color_bigrams(filepath):
     **Args**
         | filepath (``str``): Path to the file with entries.
     """
-    from color_tweets.models import UnbracketedColorBigrams
+    from tweets.models import UnbracketedColorBigram
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -165,7 +182,7 @@ def populate_unbracketed_color_bigrams(filepath):
     for e in entries[1:]:
         w1, w2, f = e.split("\t")
         print "Reading: ", w1, w2, f
-        instance = UnbracketedColorBigrams(w1 = w1, w2 = w2, f = int(f))
+        instance = UnbracketedColorBigram(w1 = w1, w2 = w2, f = int(f))
         instance.save()
 
 
@@ -180,4 +197,8 @@ def populate_default():
     populate_colormap("../resources/color_map.tsv")
     populate_unbracketed_color_bigrams("../resources/unbracketed_color_bigrams.tsv")
     populate_bracketed_color_bigrams("../resources/bracketed_color_bigrams.tsv")
+    
+    
+if __name__ == "__main__":
+    populate_default()   
     

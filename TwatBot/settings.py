@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ls.SECRET_KEY
 
-
+# Twitter API keys
 TWITTER_API_KEY = ls.TWITTER_API_KEY
 TWITTER_API_SECRET = ls.TWITTER_API_SECRET
 TWITTER_ACCESS_TOKEN = ls.TWITTER_ACCESS_TOKEN
@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'color_tweets'
+    'tweets'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,7 +75,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Helsinki'
 
 USE_I18N = True
 

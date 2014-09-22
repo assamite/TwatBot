@@ -8,6 +8,7 @@ Color Tweets
 	views
 	color_utils
 	resources_utils
+	color_semantics
 
 Main package of the project, developed as a Django app, which has currently following modules.
 
@@ -18,7 +19,8 @@ Main package of the project, developed as a Django app, which has currently foll
 * :py:mod:`admin`: Django admin functions.
 * :py:mod:`tests`: Basic tests for the app.
 
-**Modules explicit for TwatBot:**
+**Modules Explicitly Made For TwatBot:**
 
 * :py:mod:`color_utils`: Semantic agnostic color utility functions
 * :py:mod:`resources_utils`: Functions to populate Django models with contents in resources/
+* :py:mod:`color_semantics`: Semantically informed color manipulations

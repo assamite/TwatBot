@@ -17,16 +17,26 @@ Short installing notes:
 	$> cd project_root/
 	$> pip install -r requirements.txt // you might need root privileges
 	
-* Create local settings files::
+* Create local settings file::
 
 	$> cd project_root/TwatBot/
 	$> touch lsettings.py
 	
-* Populate ``lsettings.py``  with at least following attributes (see Twitter API documentation for details)::
+* Configure ``lsettings.py``  with at least following attributes (see Twitter API documentation for details)::
 
+	SECRET_KEY = 'Secret key for Django'
 	TWITTER_API_KEY = 'Your Twitter API key'
 	TWITTER_API_SECRET  = 'Your Twitter API secret'
 	TWITTER_ACCESS_TOKEN = 'Your Twitter access token'
 	TWITTER_ACCESS_TOKEN_SECRET = 'Your Twitter access token secret'
+	
+* Populate ``tweets``-app models with premade information::
+	
+	$> cd project_root/tweets/
+	$> ipython // start your favourite Python shell
+	>>> import resources_utils
+	>>> resources_utils.populate_default()
+	
+
 
 

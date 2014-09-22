@@ -1,5 +1,5 @@
 Resources Utilities
 -------------------
 
-.. automodule:: color_tweets.resources_utils
+.. automodule:: tweets.resources_utils
 	:members:

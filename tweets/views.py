@@ -7,6 +7,7 @@ Custom views for the app for testing and publishing new tweets.
 """
 
 from django.shortcuts import render
+from tweets import semantics
 
 # Create your views here.
 

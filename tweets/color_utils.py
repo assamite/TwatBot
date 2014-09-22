@@ -6,19 +6,29 @@
     
 Utility functions for working with colors.
 
-Supports three types of color definitions:
+Functions defined in this module are ignorant of semantics, and you should do your
+reasoning, e.g. what to blend and how to blend, before calling functions in 
+this module. 
 
-* hex:    ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.
-* html:    ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.
-* rgb:    ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].
+The module relies on ``colormath``-package's functionality.
+Furthermore, three light weight color definitions are supported for convenience:
 
-.. note:: 
-    Functions defined in this module are ignorant of semantics, and you should do your
-    reasoning, e.g. what to blend and how to blend, before calling functions in 
-    this module.
+* hex: ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.
+* html: ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.
+* rgb: ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].
+
+.. note::
+    Some of the module's functions convert light weight color definitions into ``LabColor``-objects 
+    (`colormath.color_objects <http://python-colormath.readthedocs.org/en/latest/color_objects.html>`_) 
+    internally; especially blending and distance calculations are done in 
+    `Lab color space <http://en.wikipedia.org/wiki/Lab_color_space>`_. Conversion between
+    color spaces might (and will) cause some inaccuracies in colors due to needed floating 
+    point operations.
 """
 import re
 from math import sqrt
+from colormath.color_objects import sRGBColor, LabColor 
+from colormath.color_conversions import convert_color
 
 re_html = re.compile(r'^#[0-9a-fA-F]{6}$')
 re_hex = re.compile(r'^0x[0-9a-fA-F]{6}$')
@@ -38,7 +48,9 @@ def is_rgb(rgb):
         return False
     if len(rgb) < 3:
         return False
-    if not all((int(i) >= 0 and int(i) <= 255) for i in rgb):
+    if not all(type(i) == int for i in rgb):
+        return False
+    if not all((i >= 0 and i <= 255) for i in rgb):
         return False
     return True
 
@@ -81,12 +93,37 @@ def is_hex(hex):
     return True
 
 
+def __lab2rgb(c):
+    """Convert LabColor into rgb-tuple.
+    """
+    if not type(c) is LabColor:
+        raise TypeError("Variable not an instance of LabColor.")
+    rgb = convert_color(c, sRGBColor)
+    r, g, b = rgb.get_value_tuple()
+    return (int(r * 255), int(g * 255), int(b * 255))
+
+
+def __2lab(c):
+    """Convert given color into colormath-packages LabColor object.
+    
+    *Args:**
+        color: color in any supported format.
+        
+    **Returns:**
+        LabColor object for given color.
+    """
+    r, g, b = __2rgb(c)
+    return convert_color(sRGBColor(r, g, b, is_upscaled = True), LabColor)
+    
+
 def __2rgb(c):
     if not is_rgb(c):
         if is_html(c):
             return html2rgb(c)
         elif is_hex(c):
             return  hex2rgb(c)
+        elif type(c) is LabColor:
+            return __lab2rgb(c)    
         else:
             raise TypeError("Given variable is not in accepted format.")
     return c
@@ -146,14 +183,18 @@ def rgb2html(rgb):
     if not is_rgb(rgb): 
         raise TypeError("Given variable is not in accepted rgb-format.")
     return "#{:02x}{:02x}{:02x}".format(rgb[0], rgb[1], rgb[2]) 
-    
+   
     
 def blend(head, modifier, **kwargs):
-    """Blend two colors.
+    """Blend two colors in Lab color space.
     
     Blending of colors is done based on optional keyword arguments that are 
     given to the function. If no arguments are given, blending is a mean of 
-    the rgb-values of input colors.
+    the Lab-values of input colors.
+    
+    .. note:: 
+        Floating point operations might cause some inaccuracies in colors when
+        changing to and from Lab color space.
     
     **Args:** 
         | head: head color in any supported format.    
@@ -161,35 +202,35 @@ def blend(head, modifier, **kwargs):
         | kwargs: Optional blending instructions. Currently supported keyword arguments are:
         
             | a_head (``float``): amount of head color to mix. Should be in [0, 1]. 
-            | a_rgb (``tuple``): amount of each head color component to 
+            | a_lab (``tuple``): amount of each head color component to 
             | mix, each value in tuple should be in [0, 1].
             
-        | If a_rgb is present, a_head is ignored. 
+        | If a_lab is present, a_head is ignored. 
     
     **Returns:**
         Blended color as rgb-tuple.
     """
-    h = __2rgb(head)
-    m = __2rgb(modifier)  
-    a_rgb = (0.5, 0.5, 0.5)
+    h = __2lab(head).get_value_tuple()
+    m = __2lab(modifier).get_value_tuple()  
+    a_lab = (0.5, 0.5, 0.5)
     if kwargs:
-        if 'a_rgb' in kwargs:
-            a_rgb = kwargs['a_rgb'] 
+        if 'a_lab' in kwargs:
+            a_lab = kwargs['a_lab'] 
         elif 'a_head' in kwargs:
             a_head = kwargs['a_head']
-            a_rgb = (a_head, a_head, a_head)
+            a_lab = (a_head, a_head, a_head)
             
-    r = int(a_rgb[0] * h[0] + (1 - a_rgb[0]) * m[0])
-    g = int(a_rgb[1] * h[1] + (1 - a_rgb[1]) * m[1])
-    b = int(a_rgb[2] * h[2] + (1 - a_rgb[2]) * m[2])  
-    return (r, g, b)
+    l = int(a_lab[0] * h[0] + (1 - a_lab[0]) * m[0])
+    a = int(a_lab[1] * h[1] + (1 - a_lab[1]) * m[1])
+    b = int(a_lab[2] * h[2] + (1 - a_lab[2]) * m[2])     
+    return __2rgb(LabColor(l, a, b))
 
 
-def dist(color1, color2):
-    """Calculate distance between two colors.
+def ed(color1, color2):
+    """Euclidean distance between two colors.
     
-    Currently the distance is calculated between euclidean distance between
-    rgb-tuples. Input colors can be in any supported format.
+    The distance calculation is done in CIE Lab color space. 
+    Input colors can be in any supported format.
     
     **Args:**
         | color1: first color
@@ -198,9 +239,11 @@ def dist(color1, color2):
     **Returns:**
         Distance between colors as ``float``.
     """
-    c1 = __2rgb(color1)
-    c2 = __2rgb(color2)
-    return sqrt((c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 + (c1[2] - c2[2])**2)
+    l1, a1, b1 = __2lab(color1).get_value_tuple()
+    l2, a2, b2 = __2lab(color2).get_value_tuple()
+    return sqrt((l1 - l2)**2 + (a1 - a1)**2 + (b1 - b2)**2)
+    
+    
             
     
     

@@ -21,7 +21,7 @@ Contents:
 	:includehidden:
 	
 	install
-	color_tweets/index
+	tweets/index
 
 Indices and tables
 ==================
