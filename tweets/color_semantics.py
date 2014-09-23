@@ -1,5 +1,5 @@
 """
-.. py:module:: semantics 
+.. py:module:: color_semantics 
     :platform: Unix
     :synopsis: Semantic informed color manipulations.
 
@@ -26,7 +26,6 @@ class ColorSemantics():
     """
     
     def __init__(self):
-        print "Initialising ColorSemantics."
         self.colors = {}
         cols = Color.objects.all()
         for c in cols:
@@ -78,7 +77,7 @@ class ColorSemantics():
             Human readable color name if color code was found from resources, 
             None otherwise.
         """
-        html = cu.rgb2html(cu.__2rgb(color_code))
+        html = cu.rgb2html(cu._2rgb(color_code))
         if html in self.color_map: 
             return self.color_map[html]
         return None

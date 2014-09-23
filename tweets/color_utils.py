@@ -93,17 +93,18 @@ def is_hex(hex):
     return True
 
 
-def __lab2rgb(c):
+def _lab2rgb(c):
     """Convert LabColor into rgb-tuple.
     """
     if not type(c) is LabColor:
         raise TypeError("Variable not an instance of LabColor.")
-    rgb = convert_color(c, sRGBColor)
-    r, g, b = rgb.get_value_tuple()
-    return (int(r * 255), int(g * 255), int(b * 255))
+    rgb = convert_color(c, sRGBColor).get_value_tuple()
+    # Clamp out of gamut colors into [0, 1] since colormath package does not do it
+    r, g, b = [(0.0 if a < 0.0 else 1.0 if a > 1.0 else a) for a in rgb]
+    return (int(round(r * 255)), int(round(g * 255)), int(round(b * 255)))
 
 
-def __2lab(c):
+def _2lab(c):
     """Convert given color into colormath-packages LabColor object.
     
     *Args:**
@@ -112,18 +113,18 @@ def __2lab(c):
     **Returns:**
         LabColor object for given color.
     """
-    r, g, b = __2rgb(c)
+    r, g, b = _2rgb(c)
     return convert_color(sRGBColor(r, g, b, is_upscaled = True), LabColor)
     
 
-def __2rgb(c):
+def _2rgb(c):
     if not is_rgb(c):
         if is_html(c):
             return html2rgb(c)
         elif is_hex(c):
             return  hex2rgb(c)
         elif type(c) is LabColor:
-            return __lab2rgb(c)    
+            return _lab2rgb(c)    
         else:
             raise TypeError("Given variable is not in accepted format.")
     return c
@@ -210,8 +211,8 @@ def blend(head, modifier, **kwargs):
     **Returns:**
         Blended color as rgb-tuple.
     """
-    h = __2lab(head).get_value_tuple()
-    m = __2lab(modifier).get_value_tuple()  
+    h = _2lab(head).get_value_tuple()
+    m = _2lab(modifier).get_value_tuple()  
     a_lab = (0.5, 0.5, 0.5)
     if kwargs:
         if 'a_lab' in kwargs:
@@ -220,10 +221,10 @@ def blend(head, modifier, **kwargs):
             a_head = kwargs['a_head']
             a_lab = (a_head, a_head, a_head)
             
-    l = int(a_lab[0] * h[0] + (1 - a_lab[0]) * m[0])
-    a = int(a_lab[1] * h[1] + (1 - a_lab[1]) * m[1])
-    b = int(a_lab[2] * h[2] + (1 - a_lab[2]) * m[2])     
-    return __2rgb(LabColor(l, a, b))
+    l = (a_lab[0] * h[0] + (1 - a_lab[0]) * m[0])
+    a = (a_lab[1] * h[1] + (1 - a_lab[1]) * m[1])
+    b = (a_lab[2] * h[2] + (1 - a_lab[2]) * m[2])
+    return _2rgb(LabColor(l, a, b))
 
 
 def ed(color1, color2):
@@ -239,8 +240,8 @@ def ed(color1, color2):
     **Returns:**
         Distance between colors as ``float``.
     """
-    l1, a1, b1 = __2lab(color1).get_value_tuple()
-    l2, a2, b2 = __2lab(color2).get_value_tuple()
+    l1, a1, b1 = _2lab(color1).get_value_tuple()
+    l2, a2, b2 = _2lab(color2).get_value_tuple()
     return sqrt((l1 - l2)**2 + (a1 - a1)**2 + (b1 - b2)**2)
     
     

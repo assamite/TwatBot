@@ -74,7 +74,7 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
         html = html.strip()
         R, G, B = cu.html2rgb(html)
         chex = cu.rgb2hex((R, G, B))
-        l, a, b = (cu.__2lab((R, G, B))).get_value_tuple()
+        l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
         color_inst = Color.objects.get_or_none(html = html)                                                   
         if color_inst is None:
             color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
@@ -132,7 +132,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
         print "Reading: ", chex, u
         R, G, B = cu.hex2rgb(chex)
         html = cu.rgb2html((R, G, B))
-        l, a, b = (cu.__2lab((R, G, B))).get_value_tuple()
+        l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
         color_inst = Color.objects.get_or_none(html = html)                                                   
         if color_inst is None:
             color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
