@@ -30,15 +30,22 @@ class ColorSemantics():
         cols = Color.objects.all()
         for c in cols:
             rgb = (c.rgb_r, c.rgb_g, c.rgb_b)
-            self.colors[rgb] = {'html': c.html, 'lab': (c.l, c.a, c.b)}
-            self.colors[c.html] = {'rgb': rgb, 'lab': (c.l, c.a, c.b)}
+            self.colors[rgb] = (c.html, (c.l, c.a, c.b))
+            self.colors[c.html] = (rgb, (c.l, c.a, c.b))
         
         self.color_map = {}
         cm = ColorMap.objects.all()
         for c in cm:
             html = c.color.html
-            self.color_map[html] = {'stereotype': c.stereotype, 'base_color': c.base_color}
-            self.color_map[(c.stereotype, c.base_color)] = html
+            self.color_map[html] = (c.stereotype, c.base_color)
+            if c.stereotype in self.color_map:
+                self.color_map[c.stereotype].append(html)
+            else:
+                self.color_map[c.stereotype] = [html]
+            if c.base_color in self.color_map:
+                self.color_map[c.base_color].append(html)
+            else:
+                self.color_map[c.base_color] = [html]
             
         self.unigrams = {}
         ugs = ColorUnigram.objects.all()
@@ -53,29 +60,33 @@ class ColorSemantics():
     
 
     def get_color_code(self, color_name):
-        """Find color code for color name from resources.
+        """Find all color codes for color name from resources.
         
         **Args:**
-            | color_name (``str``): Human readable color name
+            | color_name (``str``): Human readable color name. Either base color name or stereotype.
             
         **Returns:**
-            Color code in rgb-format if color name was found from resources,
+            List of color codes in rgb-format if color name was found from resources,
             None otherwise.
         """
-        
-        pass
+        cl = []
+        if color_name in self.color_map:
+            for html in self.color_map[color_name]:
+                cl.append(self.colors[html][0])
+            return cl 
+        return None
     
     
     def get_color_string(self, color_code):
-        """Find color name for color code from resources.
+        """Find color stereotype and base name for color code from resources.
         
         **Args:**
             | color_code: Color code in any supported format. See supported 
             | formats from ``color_utils``-module.
             
         **Returns:**
-            Human readable color name if color code was found from resources, 
-            None otherwise.
+            Tuple, (stereotype, base name) as human readable strings if color 
+            code was found from resources, None otherwise.
         """
         html = cu.rgb2html(cu._2rgb(color_code))
         if html in self.color_map: 
