@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="up" title="Tweets" href="index.html"/>
         <link rel="next" title="Color Semantics" href="color_semantics.html"/>
         <link rel="prev" title="Color Utilities" href="color_utils.html"/> 
 
@@ -60,7 +60,7 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
@@ -91,7 +91,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets</a> &raquo;</li>
       
     <li>Resources Utilities</li>
       <li class="wy-breadcrumbs-aside">
@@ -110,13 +110,18 @@
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>As these functions don&#8217;t restrict multiple instances of the same entry to be 
-added to the database, they should be used only once.</p>
-<p>It is suggested to run these only once, and then immediately use:</p>
-<div class="highlight-python"><div class="highlight"><pre>$&gt; python manage.py dumpdata --format=json --indent=4 &gt; color_tweets/fixtures/dbdump.json
+added to the database, they should be used with caution. The basic resources
+from <tt class="docutils literal"><span class="pre">project_root/resources/</span></tt> have already been converted into 
+json-fixture, which is available in <tt class="docutils literal"><span class="pre">project_root/tweets/fixtures/fixtures.json</span></tt>.</p>
+<p>It is advised to use the fixture in order to repopulate the database after 
+migrations and to use functions defined here only to add new content afterwards.</p>
+<p>After adding the content, new database fixture can then be created as:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/
+$&gt; python manage.py dumpdata --format=json --indent=4 tweets &gt; tweets/fixtures/fixtures.json
 </pre></div>
 </div>
-<p class="last">to save database contents so that the dump can be used as a fixture,
-if database needs to be repopulated.</p>
+<p class="last">For more info about working with Django and initial model data, see 
+<a class="reference external" href="https://docs.djangoproject.com/en/1.6/howto/initial-data/">Django&#8217;s documentation</a>.</p>
 </div>
 <dl class="function">
 <dt id="tweets.resources_utils.populate_bracketed_color_bigrams">
@@ -237,6 +242,13 @@ in the following order: <em>w1, w2, f</em>.</p>
 </div>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tweets.resources_utils.split_unigrams">
+<tt class="descclassname">tweets.resources_utils.</tt><tt class="descname">split_unigrams</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/resources_utils.html#split_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.resources_utils.split_unigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split ColorUnigram-instances from database into two words and save them into
+ColorUnigramSplit-model.</p>
 </dd></dl>
 
 </div>

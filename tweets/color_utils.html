@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="up" title="Tweets" href="index.html"/>
         <link rel="next" title="Resources Utilities" href="resources_utils.html"/>
         <link rel="prev" title="Views" href="views.html"/> 
 
@@ -60,7 +60,7 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Color Utilities</a></li>
@@ -91,7 +91,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets</a> &raquo;</li>
       
     <li>Color Utilities</li>
       <li class="wy-breadcrumbs-aside">
@@ -207,11 +207,11 @@ Input colors can be in any supported format.</p>
 <dt id="tweets.color_utils.is_hex">
 <tt class="descclassname">tweets.color_utils.</tt><tt class="descname">is_hex</tt><big>(</big><em>hex</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#is_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.is_hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that color variable is in accepted hex-format.</p>
-<p>Accepted hex-format is a string in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+<p>Accepted hex-format is a string (or unicode string) in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
 and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dd>hex: Variable to be verified.</dd>
 <dt><strong>Returns:</strong></dt>
 <dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in hex-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
 </dl>
@@ -221,11 +221,11 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.<
 <dt id="tweets.color_utils.is_html">
 <tt class="descclassname">tweets.color_utils.</tt><tt class="descname">is_html</tt><big>(</big><em>html</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_utils.html#is_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_utils.is_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify that color variable is in accepted html-format.</p>
-<p>Accepted html-format is a string in form of <cite>#rrggbb`</cite>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
+<p>Accepted html-format is a string (or unicode string) in form of <cite>#rrggbb`</cite>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> 
 and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): Variable to be verified.</dd>
+<dd>html: Variable to be verified.</dd>
 <dt><strong>Returns:</strong></dt>
 <dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in html-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
 </dl>

@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="up" title="Tweets" href="index.html"/>
         <link rel="next" title="Views" href="views.html"/>
-        <link rel="prev" title="Color Tweets" href="index.html"/> 
+        <link rel="prev" title="Tweets" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
@@ -91,7 +91,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets</a> &raquo;</li>
       
     <li>Models</li>
       <li class="wy-breadcrumbs-aside">
@@ -182,6 +182,23 @@
 </div>
 </dd>
 </dl>
+<dl class="classmethod">
+<dt id="tweets.models.Color.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>color</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#Color.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.Color.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create model instance from color definition.</p>
+<p>Other color definitions are converted from given color definition.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">html (<tt class="docutils literal"><span class="pre">str</span></tt>): color in any supported format. See supported </div>
+<div class="line">formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>New model instance.</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -269,6 +286,26 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="tweets.models.ColorUnigramSplit">
+<em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">ColorUnigramSplit</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#ColorUnigramSplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.ColorUnigramSplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splitted color unigrams.</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>ColorUnigram.solid_compound``s that are splitted into two words. Hopefully
+from somewhere it makes sense.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): First word of the splitted unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Second word of the splitted unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">original (<tt class="docutils literal"><span class="pre">ForeignKey</span></tt>): Reference to original ColorUnigram-model instance</div>
+</div>
+</dd>
+</dl>
+<p>Sample entries (should look something like this):</p>
+<blockquote>
+<div></div></blockquote>
+</dd></dl>
+
+<dl class="class">
 <dt id="tweets.models.EveryColorBotTweet">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">EveryColorBotTweet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#EveryColorBotTweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.EveryColorBotTweet" title="Permalink to this definition">¶</a></dt>
 <dd><p>URL&#8217;s and hex color codes for Everycolorbot&#8217;s tweets.</p>
@@ -310,7 +347,14 @@
 <dl class="class">
 <dt id="tweets.models.GetOrNoneManager">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">GetOrNoneManager</tt><a class="reference internal" href="../_modules/tweets/models.html#GetOrNoneManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.GetOrNoneManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds get_or_none method to objects</p>
+<dd><p>Manager which overrides Django&#8217;s standard manager in all of the module&#8217;s models.</p>
+<p>Adds utility functionality into the models.</p>
+<dl class="method">
+<dt id="tweets.models.GetOrNoneManager.get_or_none">
+<tt class="descname">get_or_none</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#GetOrNoneManager.get_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.GetOrNoneManager.get_or_none" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get model object or None is no object matching search criteria is found.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -420,7 +464,7 @@
         <a href="views.html" class="btn btn-neutral float-right" title="Views"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Color Tweets"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Tweets"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -58,7 +58,7 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
@@ -110,21 +110,28 @@
 
 <span class="sd">.. warning:: </span>
 <span class="sd">    As these functions don&#39;t restrict multiple instances of the same entry to be </span>
-<span class="sd">    added to the database, they should be used only once.</span>
+<span class="sd">    added to the database, they should be used with caution. The basic resources</span>
+<span class="sd">    from ``project_root/resources/`` have already been converted into </span>
+<span class="sd">    json-fixture, which is available in ``project_root/tweets/fixtures/fixtures.json``.</span>
 <span class="sd">    </span>
-<span class="sd">    It is suggested to run these only once, and then immediately use::</span>
+<span class="sd">    It is advised to use the fixture in order to repopulate the database after </span>
+<span class="sd">    migrations and to use functions defined here only to add new content afterwards.</span>
 <span class="sd">    </span>
-<span class="sd">    $&gt; python manage.py dumpdata --format=json --indent=4 &gt; color_tweets/fixtures/dbdump.json</span>
+<span class="sd">    After adding the content, new database fixture can then be created as::</span>
 <span class="sd">    </span>
-<span class="sd">    to save database contents so that the dump can be used as a fixture,</span>
-<span class="sd">    if database needs to be repopulated.</span>
+<span class="sd">    $&gt; cd project_root/</span>
+<span class="sd">    $&gt; python manage.py dumpdata --format=json --indent=4 tweets &gt; tweets/fixtures/fixtures.json</span>
+<span class="sd">    </span>
+<span class="sd">    For more info about working with Django and initial model data, see </span>
+<span class="sd">    `Django&#39;s documentation &lt;https://docs.djangoproject.com/en/1.6/howto/initial-data/&gt;`_. </span>
+<span class="sd">    </span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
-<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="k">def</span> <span class="nf">__set_django</span><span class="p">():</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
 
 <div class="viewcode-block" id="populate_bracketed_color_bigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_bracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/bracketed_color_bigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate BracketedColorBigrams model with entries found from file.</span>
@@ -138,13 +145,14 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">BracketedColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="n">BracketedColorBigram</span><span class="p">(</span><span class="n">start_bracket</span> <span class="o">=</span> <span class="n">sb</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
                                          <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">eb</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
@@ -163,6 +171,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">Color</span>
     <span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
     
@@ -170,12 +179,12 @@
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">html</span>
         <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
         <span class="n">chex</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
-        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">__2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">_2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
         <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">)</span>                                                   
         <span class="k">if</span> <span class="n">color_inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>
@@ -196,13 +205,14 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="n">ColorUnigram</span><span class="p">(</span><span class="n">solid_compound</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -220,6 +230,7 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">Color</span>
     <span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
     
@@ -227,11 +238,11 @@
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">chex</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">chex</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">chex</span><span class="p">,</span> <span class="n">u</span>
         <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">hex2rgb</span><span class="p">(</span><span class="n">chex</span><span class="p">)</span>
         <span class="n">html</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
-        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">__2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">_2lab</span><span class="p">((</span><span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
         <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">)</span>                                                   
         <span class="k">if</span> <span class="n">color_inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>
@@ -252,13 +263,14 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">PluralColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="n">PluralColorBigram</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span>\
                                          <span class="n">singular</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
@@ -277,16 +289,49 @@
 <span class="sd">    **Args**</span>
 <span class="sd">        | filepath (``str``): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">UnbracketedColorBigram</span>
     
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;Reading: &quot;</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="n">UnbracketedColorBigram</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="split_unigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.split_unigrams">[docs]</a><span class="k">def</span> <span class="nf">split_unigrams</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Split ColorUnigram-instances from database into two words and save them into</span>
+<span class="sd">    ColorUnigramSplit-model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__set_django</span><span class="p">()</span>
+    <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span><span class="p">,</span> <span class="n">ColorUnigramSplit</span><span class="p">,</span> <span class="n">ColorMap</span>
+    <span class="n">colormaps</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">colornames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">colormaps</span><span class="p">:</span>
+        <span class="n">colornames</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">stereotype</span><span class="p">)</span>
+        <span class="n">colornames</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">base_color</span><span class="p">)</span>
+        
+    <span class="n">colornames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">colornames</span><span class="p">)</span>
+    <span class="n">unigrams</span> <span class="o">=</span> <span class="n">ColorUnigram</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">splits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">unigrams</span><span class="p">:</span>
+        <span class="n">solid</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">solid_compound</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">colornames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">solid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">solid</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">):]</span> <span class="ow">in</span> <span class="n">colornames</span><span class="p">:</span>
+                    <span class="n">w1</span> <span class="o">=</span> <span class="n">solid</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
+                    <span class="n">w2</span> <span class="o">=</span> <span class="n">solid</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">):]</span> 
+                    <span class="k">print</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span>
+                    <span class="n">splits</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">ColorUnigramSplit</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">cus</span> <span class="o">=</span> <span class="n">ColorUnigramSplit</span><span class="p">(</span><span class="n">w1</span> <span class="o">=</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w2</span><span class="p">,</span> <span class="n">original</span> <span class="o">=</span> <span class="n">u</span><span class="p">)</span>
+                        <span class="n">cus</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="k">break</span>    
+    
+    <span class="k">print</span> <span class="s">&quot;Found&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">),</span> <span class="s">&quot;splits from original&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">unigrams</span><span class="p">),</span> <span class="s">&quot;unigrams.&quot;</span>
 
 </div>
 <div class="viewcode-block" id="populate_default"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_default">[docs]</a><span class="k">def</span> <span class="nf">populate_default</span><span class="p">():</span>
@@ -300,10 +345,11 @@
     <span class="n">populate_colormap</span><span class="p">(</span><span class="s">&quot;../resources/color_map.tsv&quot;</span><span class="p">)</span>
     <span class="n">populate_unbracketed_color_bigrams</span><span class="p">(</span><span class="s">&quot;../resources/unbracketed_color_bigrams.tsv&quot;</span><span class="p">)</span>
     <span class="n">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="s">&quot;../resources/bracketed_color_bigrams.tsv&quot;</span><span class="p">)</span>
+    <span class="n">split_unigrams</span><span class="p">()</span>
     
     </div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">populate_default</span><span class="p">()</span>   
+    <span class="n">populate_default</span><span class="p">()</span> 
     
 </pre></div>
 

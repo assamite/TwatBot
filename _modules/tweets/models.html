@@ -58,7 +58,7 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
@@ -110,16 +110,22 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
+<span class="kn">import</span> <span class="nn">color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
+
 <div class="viewcode-block" id="GetOrNoneManager"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.GetOrNoneManager">[docs]</a><span class="k">class</span> <span class="nc">GetOrNoneManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Adds get_or_none method to objects</span>
+    <span class="sd">&quot;&quot;&quot;Manager which overrides Django&#39;s standard manager in all of the module&#39;s models.</span>
+<span class="sd">    </span>
+<span class="sd">    Adds utility functionality into the models.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">get_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GetOrNoneManager.get_or_none"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.GetOrNoneManager.get_or_none">[docs]</a>    <span class="k">def</span> <span class="nf">get_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get model object or None is no object matching search criteria is found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
         
-</div>
+</div></div>
 <div class="viewcode-block" id="Color"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.Color">[docs]</a><span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Color representations.</span>
 <span class="sd">    </span>
@@ -143,6 +149,27 @@
     <span class="n">b</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Color.create"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.Color.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create model instance from color definition. </span>
+
+<span class="sd">        Other color definitions are converted from given color definition.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | html (``str``): color in any supported format. See supported </span>
+<span class="sd">            | formats from ``color_utils``-module.</span>
+<span class="sd">            </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            New model instance.         </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">crgb</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">_2rgb</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">chtml</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">crgb</span><span class="p">)</span>
+        <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">crgb</span>
+        <span class="n">chex</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">crgb</span><span class="p">)</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">_2lab</span><span class="p">(</span><span class="n">crgb</span><span class="p">))</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">chtml</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>   
+        
+    </div>
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">+</span> <span class="s">&quot; RGB: (&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_r</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_g</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgb_b</span><span class="p">)))</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span> <span class="o">+</span>\
             <span class="s">&quot; Lab: (&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)))</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span>
@@ -242,6 +269,41 @@
     
     <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span>
+        
+        </div>
+<div class="viewcode-block" id="ColorUnigramSplit"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ColorUnigramSplit">[docs]</a><span class="k">class</span> <span class="nc">ColorUnigramSplit</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Splitted color unigrams.</span>
+<span class="sd">    </span>
+<span class="sd">    ``ColorUnigram.solid_compound``s that are splitted into two words. Hopefully</span>
+<span class="sd">    from somewhere it makes sense. </span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | w1 (``CharField``): First word of the splitted unigram, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): Second word of the splitted unigram, ``max_length = 40``.</span>
+<span class="sd">        | original (``ForeignKey``): Reference to original ColorUnigram-model instance</span>
+<span class="sd">        </span>
+<span class="sd">    Sample entries (should look something like this): </span>
+<span class="sd">    </span>
+<span class="sd">        ========    =======</span>
+<span class="sd">        w1          w2  </span>
+<span class="sd">        ========    =======</span>
+<span class="sd">        aluminum    leather</span>
+<span class="sd">        amber       bunny</span>
+<span class="sd">        amber       dawn          </span>
+<span class="sd">        ========    ====== </span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ColorUnigram</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w2</span><span class="p">))</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">]</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="EveryColorBotTweet"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.EveryColorBotTweet">[docs]</a><span class="k">class</span> <span class="nc">EveryColorBotTweet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>

@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Color Tweets" href="index.html"/>
+        <link rel="up" title="Tweets" href="index.html"/>
         <link rel="prev" title="Resources Utilities" href="resources_utils.html"/> 
 
   
@@ -59,7 +59,7 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Color Tweets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
@@ -90,7 +90,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Color Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets</a> &raquo;</li>
       
     <li>Color Semantics</li>
       <li class="wy-breadcrumbs-aside">
@@ -105,15 +105,136 @@
             
   <div class="section" id="module-tweets.color_semantics">
 <span id="color-semantics"></span><h1>Color Semantics<a class="headerlink" href="#module-tweets.color_semantics" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-semantics"></span><p>Semantic informed color manipulations.</p>
+<span class="target" id="module-color_semantics"></span><p>Semantic informed color manipulations.</p>
 <p>Color manipulations that are semantically informed, i.e. they have access to
 database models for color information and linguistic readymades.</p>
-<dl class="function">
+<dl class="class">
 <dt id="tweets.color_semantics.ColorSemantics">
-<tt class="descclassname">tweets.color_semantics.</tt><tt class="descname">ColorSemantics</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">tweets.color_semantics.</tt><tt class="descname">ColorSemantics</tt><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Master class for semantic informed color manipulations.</p>
-<p>You should not instance this class by yourself, instead use the automatically
-loaded class instance in package&#8217;s semantics-attribute.</p>
+<p>Relevant color knowledge and linguistic readymade-information is loaded to 
+memory on initialization for faster data access.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not instantiate this class by yourself, instead use the automatically
+loaded class instance available at <tt class="docutils literal"><span class="pre">tweets.semantics</span></tt>.</p>
+</div>
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.blend">
+<tt class="descname">blend</tt><big>(</big><em>head</em>, <em>modifier</em>, <em>frmt='html'</em>, <em>**blend_options</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.blend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blend two colors identified by color names.</p>
+<p>Color names should be found resources, especially from color mappings.
+Names are first looked from color stereotypes and after that from base
+names.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently, if many matching color codes are found, the blended one
+is picked at random.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">head (str):  Name of the head color, either base name or color stereotype.</div>
+<div class="line">modifier (str):  Name of the modifier color, either base name or color stereotype.</div>
+<div class="line">frmt (str): Format for returned colors, currently <tt class="docutils literal"><span class="pre">html</span></tt> and <tt class="docutils literal"><span class="pre">rgb</span></tt> are supported.</div>
+<div class="line">**blend_options: Miscellaneous blend options as stated in <tt class="docutils literal"><span class="pre">color_utils.blend</span></tt>.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Tuple of specified color formats, <tt class="docutils literal"><span class="pre">(chead,</span> <span class="pre">cmodifier,</span> <span class="pre">cblend)</span></tt>, 
+where <tt class="docutils literal"><span class="pre">chead</span></tt> and the <tt class="docutils literal"><span class="pre">cmodifier</span></tt> are the used input colors and 
+<tt class="docutils literal"><span class="pre">cblend</span></tt> is the acquired color blending.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.blend_all_unigram_splits">
+<tt class="descname">blend_all_unigram_splits</tt><big>(</big><em>frmt='html'</em>, <em>**blend_options</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.blend_all_unigram_splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.blend_all_unigram_splits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to blend all loaded <tt class="docutils literal"><span class="pre">ColorUnigramSplit</span></tt> s.</p>
+<p>In blending, <tt class="docutils literal"><span class="pre">w1</span></tt> is treated as head color and <tt class="docutils literal"><span class="pre">w2</span></tt> as modifier color.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">frmt (str): Format for returned colors, currently <tt class="docutils literal"><span class="pre">html</span></tt> and <tt class="docutils literal"><span class="pre">rgb</span></tt> are supported.</div>
+<div class="line">**blend_options: Miscellaneous blend options as stated in <tt class="docutils literal"><span class="pre">color_utils.blend</span></tt>.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>List of tuples (unigram split, blending), where unigram split is a
+(w1, w2)-tuple and <tt class="docutils literal"><span class="pre">blending</span></tt> is an tuple returned by <tt class="docutils literal"><span class="pre">ColorSemantics.blend</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.get_color_code">
+<tt class="descname">get_color_code</tt><big>(</big><em>color_name</em>, <em>frmt='html'</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.get_color_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.get_color_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all color codes for color name from resources.</p>
+<p>Usually only one color code is returned if color name is a stereotype,
+and list if it is a base color name.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_name (str): Human readable color name. Either base color name or stereotype.</div>
+<div class="line">frmt (str): Format for returned colors, currently <tt class="docutils literal"><span class="pre">html</span></tt> and <tt class="docutils literal"><span class="pre">rgb</span></tt> are supported.          </div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>List of unicode strings. Color codes in specified format if color name was found from resources,
+None otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.get_color_string">
+<tt class="descname">get_color_string</tt><big>(</big><em>color_code</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.get_color_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.get_color_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get color stereotype and base name for color code from resources.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_code: Color code in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Tuple of unicode strings, (stereotype, base name) in human readable format if color 
+code was found from resources, None otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.get_knn">
+<tt class="descname">get_knn</tt><big>(</big><em>color_code</em>, <em>k=1</em>, <em>frmt='html'</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.get_knn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.get_knn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve k-nearest color codes for given color code from resources.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is not optimalized in anyway and thus may take quite
+some time while it parses through all the available colors.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_code:  Color code in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
+<div class="line">k (int): Amount of nearest neighbors to return.</div>
+<div class="line">frmt (str): Format for returned colors, currently <tt class="docutils literal"><span class="pre">html</span></tt> and <tt class="docutils literal"><span class="pre">rgb</span></tt> are supported.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>List of tuples, (color code, distance) k-nearest colors from resources,
+where color code is an unicode string in specified format and distance
+is non-negative float.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.reload_resources">
+<tt class="descname">reload_resources</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.reload_resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.reload_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload resources from database into the object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Call this method only if you change database contents while the app is 
+running.</p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>

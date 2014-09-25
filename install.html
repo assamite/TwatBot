@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
-        <link rel="next" title="Color Tweets" href="tweets/index.html"/>
+        <link rel="next" title="Tweets" href="tweets/index.html"/>
         <link rel="prev" title="Welcome to Twatbot’s documentation!" href="index.html"/> 
 
   
@@ -59,7 +59,7 @@
         
             <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/color_utils.html">Color Utilities</a></li>
@@ -103,13 +103,18 @@
             
   <div class="section" id="installing">
 <h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">TwatBot is currently developed for Python 2.7.x. No compatibility for other
+Python versions is guaranteed.</p>
+</div>
 <p>TwatBot is developed as a <a class="reference external" href="https://djangoproject.com/">Django</a> app. Access to
 <a class="reference external" href="https://dev.twitter.com/overview/documentation">Twitter API</a> is gained using
 <a class="reference external" href="https://pypi.python.org/pypi/python-twitter/2.0">python-twitter</a>.</p>
 <p>You should be familiar with basic Django project layout and have a working
 <a class="reference external" href="https://apps.twitter.com/">Twitter app</a> which allows you to tweet before
 using this project.</p>
-<p>Short installing notes:</p>
+<p><strong>Short installing notes:</strong></p>
 <ul>
 <li><p class="first">Install <a class="reference external" href="https://pypi.python.org/pypi/pip">pip</a></p>
 </li>
@@ -134,13 +139,26 @@ $&gt; touch lsettings.py
 </pre></div>
 </div>
 </li>
-<li><p class="first">Populate <tt class="docutils literal"><span class="pre">tweets</span></tt>-app models with premade information:</p>
-<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/tweets/
-$&gt; ipython // start your favourite Python shell
-&gt;&gt;&gt; import resources_utils
-&gt;&gt;&gt; resources_utils.populate_default()
+<li><p class="first">Create DB-tables and populate <tt class="docutils literal"><span class="pre">tweets</span></tt>-app models with initial data:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/
+$&gt; python manage.py syncdb
+$&gt; python manage.py loaddata tweets/fixtures.json
+
+.. note::
+        In case the syncdb fails, comment out everything in ``tweets.__init__``
+        before running it and remove comments afterwards. Will fix this later.
 </pre></div>
 </div>
+</li>
+</ul>
+<p><strong>Local Usage:</strong></p>
+<ul>
+<li><p class="first">Run the Django&#8217;s builtin test server:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; python manage.py runserver
+</pre></div>
+</div>
+</li>
+<li><p class="first">Now the web site should be served for you in <tt class="docutils literal"><span class="pre">127.0.0.1:8000/</span></tt></p>
 </li>
 </ul>
 </div>
@@ -151,7 +169,7 @@ $&gt; ipython // start your favourite Python shell
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tweets/index.html" class="btn btn-neutral float-right" title="Color Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tweets/index.html" class="btn btn-neutral float-right" title="Tweets"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to Twatbot’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -58,7 +58,7 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Color Tweets</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
@@ -102,7 +102,7 @@
             
   <h1>Source code for tweets.color_semantics</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. py:module:: semantics </span>
+<span class="sd">.. py:module:: color_semantics </span>
 <span class="sd">    :platform: Unix</span>
 <span class="sd">    :synopsis: Semantic informed color manipulations.</span>
 
@@ -111,52 +111,207 @@
 <span class="sd">Color manipulations that are semantically informed, i.e. they have access to</span>
 <span class="sd">database models for color information and linguistic readymades.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">tweets.color_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
+
 <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">UnbracketedColorBigram</span>
-<span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span><span class="p">,</span> <span class="n">BracketedColorBigram</span><span class="p">,</span> <span class="n">PluralColorBigram</span>
+<span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigramSplit</span><span class="p">,</span> <span class="n">ColorUnigram</span><span class="p">,</span> <span class="n">PluralColorBigram</span>
+<span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">Color</span>
 
-
-<div class="viewcode-block" id="ColorSemantics"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics">[docs]</a><span class="k">def</span> <span class="nf">ColorSemantics</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Master class for semantic informed color manipulations. </span>
+<div class="viewcode-block" id="ColorSemantics"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics">[docs]</a><span class="k">class</span> <span class="nc">ColorSemantics</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Master class for semantic informed color manipulations.</span>
 <span class="sd">    </span>
-<span class="sd">    You should not instance this class by yourself, instead use the automatically</span>
-<span class="sd">    loaded class instance in package&#39;s semantics-attribute.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    
+<span class="sd">    Relevant color knowledge and linguistic readymade-information is loaded to </span>
+<span class="sd">    memory on initialization for faster data access.</span>
+<span class="sd">   </span>
+<span class="sd">    .. warning::</span>
+<span class="sd">        You should not instantiate this class by yourself, instead use the automatically</span>
+<span class="sd">        loaded class instance available at ``tweets.semantics``.</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;Initialising ColorSemantics.&quot;</span>
-        <span class="n">cm</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">objects</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reload_resources</span><span class="p">()</span>
+        
+                   
+<div class="viewcode-block" id="ColorSemantics.reload_resources"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.reload_resources">[docs]</a>    <span class="k">def</span> <span class="nf">reload_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reload resources from database into the object.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Call this method only if you change database contents while the app is </span>
+<span class="sd">            running.</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors_rgb</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors_html</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="n">rgb</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">rgb_r</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">rgb_g</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">rgb_b</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colors_rgb</span><span class="p">[</span><span class="n">rgb</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">b</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colors_html</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">html</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">b</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_map_html</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cm</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cm</span><span class="p">:</span>
-            <span class="k">print</span> <span class="n">c</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color_map_html</span><span class="p">[</span><span class="n">html</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">stereotype</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">base_color</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">stereotype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">stereotype</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">stereotype</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">html</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">base_color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">base_color</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">base_color</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">html</span><span class="p">]</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">unigrams</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ug</span> <span class="o">=</span> <span class="n">ColorUnigram</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">ug</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unigrams</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">solid_compound</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">f</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">unigram_splits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ugs</span> <span class="o">=</span> <span class="n">ColorUnigramSplit</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">ugs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unigram_splits</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">w2</span><span class="p">))</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">bigrams</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">bigs</span> <span class="o">=</span> <span class="n">UnbracketedColorBigram</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bigs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bigrams</span><span class="p">[(</span><span class="n">b</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">w2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">f</span> 
     
-
-    <span class="k">def</span> <span class="nf">get_color_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find color code for color name from resources.</span>
+</div>
+<div class="viewcode-block" id="ColorSemantics.get_color_code"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_color_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find all color codes for color name from resources.</span>
+<span class="sd">        </span>
+<span class="sd">        Usually only one color code is returned if color name is a stereotype,</span>
+<span class="sd">        and list if it is a base color name.</span>
 <span class="sd">        </span>
 <span class="sd">        **Args:**</span>
-<span class="sd">            | color_name (``str``): Human readable color name</span>
+<span class="sd">            | color_name (str): Human readable color name. Either base color name or stereotype.</span>
+<span class="sd">            | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.          </span>
 <span class="sd">            </span>
 <span class="sd">        **Returns:**</span>
-<span class="sd">            Color code in rgb-format if color name was found from resources,</span>
+<span class="sd">            List of unicode strings. Color codes in specified format if color name was found from resources,</span>
 <span class="sd">            None otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">color_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">html</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_ster</span><span class="p">[</span><span class="n">color_name</span><span class="p">]:</span>
+                <span class="n">cl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors_html</span><span class="p">[</span><span class="n">html</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">frmt</span> <span class="o">==</span> <span class="s">&#39;rgb&#39;</span> <span class="k">else</span> <span class="n">html</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cl</span> 
+        <span class="k">elif</span> <span class="n">color_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">html</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_base</span><span class="p">[</span><span class="n">color_name</span><span class="p">]:</span>
+                <span class="n">cl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors_html</span><span class="p">[</span><span class="n">html</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">frmt</span> <span class="o">==</span> <span class="s">&#39;rgb&#39;</span> <span class="k">else</span> <span class="n">html</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cl</span>
         
-        <span class="k">pass</span>
+        <span class="k">return</span> <span class="bp">None</span>
     
-    
-    <span class="k">def</span> <span class="nf">get_color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Find color name for color code from resources.</span>
+    </div>
+<div class="viewcode-block" id="ColorSemantics.get_color_string"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_color_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get color stereotype and base name for color code from resources.</span>
 <span class="sd">        </span>
 <span class="sd">        **Args:**</span>
-<span class="sd">            | color_code: Color code in any supported format. See supported </span>
-<span class="sd">            formats from ``color_utils``-module.</span>
+<span class="sd">            | color_code: Color code in any supported format. See supported formats from ``color_utils``-module.</span>
 <span class="sd">            </span>
 <span class="sd">        **Returns:**</span>
-<span class="sd">            Human readable color name if color code was found from resources, </span>
-<span class="sd">            None otherwise.</span>
+<span class="sd">            Tuple of unicode strings, (stereotype, base name) in human readable format if color </span>
+<span class="sd">            code was found from resources, None otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">_2rgb</span><span class="p">(</span><span class="n">color_code</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">html</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_html</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_map_html</span><span class="p">[</span><span class="n">html</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    
+     </div>
+<div class="viewcode-block" id="ColorSemantics.get_knn"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_knn">[docs]</a>    <span class="k">def</span> <span class="nf">get_knn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve k-nearest color codes for given color code from resources.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note:: </span>
+<span class="sd">            This function is not optimalized in anyway and thus may take quite</span>
+<span class="sd">            some time while it parses through all the available colors.</span>
+<span class="sd">            </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module.</span>
+<span class="sd">            | k (int): Amount of nearest neighbors to return.</span>
+<span class="sd">            | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.</span>
+<span class="sd">            </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            List of tuples, (color code, distance) k-nearest colors from resources,</span>
+<span class="sd">            where color code is an unicode string in specified format and distance</span>
+<span class="sd">            is non-negative float.    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#TODO: remove asserts and replace with type error.</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">color_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors_html</span> <span class="k">if</span> <span class="n">frmt</span> <span class="o">==</span> <span class="s">&#39;html&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors_rgb</span>
+        <span class="n">dists</span> <span class="o">=</span>  <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">),</span> <span class="n">color_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">dists</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
+    
+    </div>
+<div class="viewcode-block" id="ColorSemantics.blend_all_unigram_splits"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.blend_all_unigram_splits">[docs]</a>    <span class="k">def</span> <span class="nf">blend_all_unigram_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">blend_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to blend all loaded ``ColorUnigramSplit`` s. </span>
+<span class="sd">        </span>
+<span class="sd">        In blending, ``w1`` is treated as head color and ``w2`` as modifier color.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.</span>
+<span class="sd">            | \**blend_options: Miscellaneous blend options as stated in ``color_utils.blend``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            List of tuples (unigram split, blending), where unigram split is a</span>
+<span class="sd">            (w1, w2)-tuple and ``blending`` is an tuple returned by ``ColorSemantics.blend``. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unigram_splits</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span> 
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blend</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">frmt</span> <span class="o">=</span> <span class="n">frmt</span><span class="p">,</span> <span class="o">**</span><span class="n">blend_options</span><span class="p">)))</span> 
+            <span class="k">except</span> <span class="ne">LookupError</span><span class="p">:</span> 
+                <span class="c"># Do something with error</span>
+                <span class="k">print</span> <span class="s">&quot;Could not blend &quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&quot;and&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ret</span>
+    
+    </div>
+<div class="viewcode-block" id="ColorSemantics.blend"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.blend">[docs]</a>    <span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">blend_options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Blend two colors identified by color names.</span>
+<span class="sd">        </span>
+<span class="sd">        Color names should be found resources, especially from color mappings.</span>
+<span class="sd">        Names are first looked from color stereotypes and after that from base</span>
+<span class="sd">        names. </span>
+<span class="sd">        </span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Currently, if many matching color codes are found, the blended one</span>
+<span class="sd">            is picked at random.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | head (str):  Name of the head color, either base name or color stereotype.</span>
+<span class="sd">            | modifier (str):  Name of the modifier color, either base name or color stereotype.</span>
+<span class="sd">            | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.</span>
+<span class="sd">            | \**blend_options: Miscellaneous blend options as stated in ``color_utils.blend``.</span>
+<span class="sd">            </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            Tuple of specified color formats, ``(chead, cmodifier, cblend)``, </span>
+<span class="sd">            where ``chead`` and the ``cmodifier`` are the used input colors and </span>
+<span class="sd">            ``cblend`` is the acquired color blending.</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chead</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_color_code</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">frmt</span><span class="p">)</span>
+        <span class="n">cmodifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_color_code</span><span class="p">(</span><span class="n">modifier</span><span class="p">,</span> <span class="n">frmt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">chead</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="s">&quot;Could not find color matching the name </span><span class="si">%s</span><span class="s"> from resources.&quot;</span> <span class="o">%</span> <span class="n">chead</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cmodifier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="s">&quot;Could not find color matching the name </span><span class="si">%s</span><span class="s"> from resources.&quot;</span> <span class="o">%</span> <span class="n">chead</span><span class="p">)</span>
+        <span class="n">chead</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">chead</span><span class="p">)</span>
+        <span class="n">cmodifier</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">cmodifier</span><span class="p">)</span>
+        <span class="n">color_blend</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">blend</span><span class="p">(</span><span class="n">chead</span><span class="p">,</span> <span class="n">cmodifier</span><span class="p">,</span> <span class="o">**</span><span class="n">blend_options</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">frmt</span> <span class="o">==</span> <span class="s">&#39;html&#39;</span><span class="p">:</span>
+            <span class="n">color_blend</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">color_blend</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">chead</span><span class="p">,</span> <span class="n">cmodifier</span><span class="p">,</span> <span class="n">color_blend</span><span class="p">)</span>
         
-        <span class="k">pass</span></div>
+        
+    
+        </div></div>
 </pre></div>
 
           </div>
