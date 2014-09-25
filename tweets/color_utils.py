@@ -58,16 +58,16 @@ def is_rgb(rgb):
 def is_html(html):
     """Verify that color variable is in accepted html-format.
     
-    Accepted html-format is a string in form of `#rrggbb``, where ``r``, ``g`` 
+    Accepted html-format is a string (or unicode string) in form of `#rrggbb``, where ``r``, ``g`` 
     and ``b`` are hex codes..
     
     **Args:**
-        html (``str``): Variable to be verified.
+        html: Variable to be verified.
         
     **Returns:**
         ``True`` if variable is in html-format, ``False`` otherwise.  
     """
-    if type(html) is not str:
+    if type(html) is not str and type(html) is not unicode:
         return False
     if not re_html.match(html):
         return False
@@ -77,16 +77,16 @@ def is_html(html):
 def is_hex(hex):
     """Verify that color variable is in accepted hex-format.
     
-    Accepted hex-format is a string in form of ``0xrrggbb``, where ``r``, ``g`` 
+    Accepted hex-format is a string (or unicode string) in form of ``0xrrggbb``, where ``r``, ``g`` 
     and ``b`` are hex codes.
     
     **Args:**
-        hex (``str``): Variable to be verified.
+        hex: Variable to be verified.
         
     **Returns:**
         ``True`` if variable is in hex-format, ``False`` otherwise.  
     """
-    if type(hex) is not str:
+    if type(hex) is not str and type(hex) is not unicode:
         return False
     if not re_hex.match(hex):
         return False
@@ -242,7 +242,7 @@ def ed(color1, color2):
     """
     l1, a1, b1 = _2lab(color1).get_value_tuple()
     l2, a2, b2 = _2lab(color2).get_value_tuple()
-    return sqrt((l1 - l2)**2 + (a1 - a1)**2 + (b1 - b2)**2)
+    return sqrt((l1 - l2)**2 + (a1 - a2)**2 + (b1 - b2)**2)
     
     
             

@@ -25,4 +25,24 @@ to setting up and learning Sphinx (and how to hook it to be
 nearly automatically served in github pages) as I haven't used it before, and now 
 seemed like a good time to start using it!
 
+Week 3
+****************
+I still got quite a lot of technical things to figure out and managed to get only 
+the most fundamental things to work. The app should be installable and usable 
+by using the install notes in documentation. Currently only one URL with
+meaningful content is served after Django's server is started (see install for
+details): 
+
+127.0.0.1:8000/blend 
+
+This page should serve all the different color blendings of the unigram splits.
+See the documentation for ``tweets.color_semantics.ColorSemantics.blend`` for details about the 
+blending operation.
+
+I tested the blending with different settings, but it seems that no single
+configuration is good for all the unigrams splits for the blending operation. 
+Mostly this has to do with the way the "head" and "modifier" words should be 
+selected from the unigram split. Sometimes head should be the first word and 
+sometimes the second word.
+
 

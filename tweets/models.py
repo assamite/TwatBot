@@ -7,10 +7,16 @@ Django models to access and manipulate resources given on the course.
 """
 from django.db import models
 
+import color_utils as cu
+
 class GetOrNoneManager(models.Manager):
-    """Adds get_or_none method to objects
+    """Manager which overrides Django's standard manager in all of the module's models.
+    
+    Adds utility functionality into the models.
     """
     def get_or_none(self, **kwargs):
+        """Get model object or None is no object matching search criteria is found.
+        """
         try:
             return self.get(**kwargs)
         except self.model.DoesNotExist:
@@ -39,6 +45,27 @@ class Color(models.Model):
     a = models.FloatField()
     b = models.FloatField()
     objects = GetOrNoneManager()
+    
+    @classmethod
+    def create(cls, color):
+        """Create model instance from color definition. 
+
+        Other color definitions are converted from given color definition.
+        
+        **Args:**
+            | html (``str``): color in any supported format. See supported 
+            | formats from ``color_utils``-module.
+            
+        **Returns:**
+            New model instance.         
+        """
+        crgb = cu._2rgb(color)
+        chtml = cu.rgb2html(crgb)
+        R, G, B = crgb
+        chex = cu.rgb2hex(crgb)
+        l, a, b = (cu._2lab(crgb)).get_value_tuple()
+        return cls(html = chtml, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)   
+        
     
     def __str__(self):
         return self.html + " RGB: (" + ",".join((str(self.rgb_r), str(self.rgb_g), str(self.rgb_b))) + ")" +\
@@ -139,6 +166,41 @@ class ColorUnigram(models.Model):
     
     class Meta:
         ordering = ['-f']
+        
+        
+class ColorUnigramSplit(models.Model):
+    """Splitted color unigrams.
+    
+    ``ColorUnigram.solid_compound``s that are splitted into two words. Hopefully
+    from somewhere it makes sense. 
+    
+    **Fields:**
+        | w1 (``CharField``): First word of the splitted unigram, ``max_length = 40``.
+        | w2 (``CharField``): Second word of the splitted unigram, ``max_length = 40``.
+        | original (``ForeignKey``): Reference to original ColorUnigram-model instance
+        
+    Sample entries (should look something like this): 
+    
+        ========    =======
+        w1          w2  
+        ========    =======
+        aluminum    leather
+        amber       bunny
+        amber       dawn          
+        ========    ====== 
+    """   
+    
+    w1 = models.CharField(max_length = 40, blank = True)
+    w2 = models.CharField(max_length = 40, blank = True)
+    original = models.ForeignKey(ColorUnigram)
+    objects = GetOrNoneManager()
+    
+    def __str__(self):
+        return " ".join((self.w1, self.w2))
+    
+    class Meta:
+        ordering = ['w1', 'w2']
+        unique_together = ('w1', 'w2')
 
 
 class EveryColorBotTweet(models.Model):

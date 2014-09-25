@@ -1,0 +1,21 @@
+{% extends 'home.html' %}
+
+{% block body %}
+<table>
+<tr>
+	<td><div class='blend_title'>Head Color</div></td>
+	<td><div class='blend_title'>Modifier Color</div></td>
+	<td><div class='blend_title'>Blended Color</div></td>
+	<td><div class='blend_title'>Info</div></td>
+</tr>
+{% for b in blends %}
+<tr>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ b.head_color }}"></td>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ b.modifier_color }}"></td>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ b.blended_color }}"></td>
+	<td height=40>{{ b.head }}, {{ b.modifier }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

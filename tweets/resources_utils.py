@@ -7,14 +7,21 @@ Utility functions to populate Django models with given resources.
 
 .. warning:: 
     As these functions don't restrict multiple instances of the same entry to be 
-    added to the database, they should be used only once.
+    added to the database, they should be used with caution. The basic resources
+    from ``project_root/resources/`` have already been converted into 
+    json-fixture, which is available in ``project_root/tweets/fixtures/fixtures.json``.
     
-    It is suggested to run these only once, and then immediately use::
+    It is advised to use the fixture in order to repopulate the database after 
+    migrations and to use functions defined here only to add new content afterwards.
     
-    $> python manage.py dumpdata --format=json --indent=4 > color_tweets/fixtures/dbdump.json
+    After adding the content, new database fixture can then be created as::
     
-    to save database contents so that the dump can be used as a fixture,
-    if database needs to be repopulated.
+    $> cd project_root/
+    $> python manage.py dumpdata --format=json --indent=4 tweets > tweets/fixtures/fixtures.json
+    
+    For more info about working with Django and initial model data, see 
+    `Django's documentation <https://docs.djangoproject.com/en/1.6/howto/initial-data/>`_. 
+    
 """
 import os
 import sys
@@ -42,7 +49,7 @@ def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bi
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        sb, w1, w2, eb, f = e.split("\t")
+        sb, w1, w2, eb, f = e.strip().split("\t")
         print "Reading: ", sb, w1, w2, eb, f
         instance = BracketedColorBigram(start_bracket = sb, w1 = w1, w2 = w2,\
                                          end_bracket = eb, f = int(f))
@@ -69,7 +76,7 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        s, c, html = e.split("\t")
+        s, c, html = e.strip().split("\t")
         print "Reading: ", s, c, html
         html = html.strip()
         R, G, B = cu.html2rgb(html)
@@ -102,7 +109,7 @@ def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        s, f = e.split("\t")
+        s, f = e.strip().split("\t")
         print "Reading: ", s, f
         instance = ColorUnigram(solid_compound = s, f = int(f))
         instance.save()
@@ -128,7 +135,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        chex, u = e.split("\t")
+        chex, u = e.strip().split("\t")
         print "Reading: ", chex, u
         R, G, B = cu.hex2rgb(chex)
         html = cu.rgb2html((R, G, B))
@@ -160,7 +167,7 @@ def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        w1, w2, f, s = e.split("\t")
+        w1, w2, f, s = e.strip().split("\t")
         print "Reading: ", w1, w2, f, s
         instance = PluralColorBigram(w1 = w1, w2 = w2,\
                                          singular = s, f = int(f))
@@ -186,10 +193,42 @@ def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_colo
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        w1, w2, f = e.split("\t")
+        w1, w2, f = e.strip().split("\t")
         print "Reading: ", w1, w2, f
         instance = UnbracketedColorBigram(w1 = w1, w2 = w2, f = int(f))
         instance.save()
+
+
+def split_unigrams():
+    """Split ColorUnigram-instances from database into two words and save them into
+    ColorUnigramSplit-model.
+    """
+    __set_django()
+    from tweets.models import ColorUnigram, ColorUnigramSplit, ColorMap
+    colormaps = ColorMap.objects.all()
+    colornames = set()
+    for c in colormaps:
+        colornames.add(c.stereotype)
+        colornames.add(c.base_color)
+        
+    colornames = sorted(colornames)
+    unigrams = ColorUnigram.objects.all()
+    splits = []
+    for u in unigrams:
+        solid = u.solid_compound
+        for c in colornames:
+            if solid.startswith(c):
+                if solid[len(c):] in colornames:
+                    w1 = solid[:len(c)]
+                    w2 = solid[len(c):] 
+                    print w1, w2
+                    splits.append((w1, w2))
+                    if ColorUnigramSplit.objects.get_or_none(w1 = w1, w2 = w2) is None:
+                        cus = ColorUnigramSplit(w1 = w1, w2 = w2, original = u)
+                        cus.save()
+                    break    
+    
+    print "Found", len(splits), "splits from original", len(unigrams), "unigrams."
 
 
 def populate_default():
@@ -203,8 +242,9 @@ def populate_default():
     populate_colormap("../resources/color_map.tsv")
     populate_unbracketed_color_bigrams("../resources/unbracketed_color_bigrams.tsv")
     populate_bracketed_color_bigrams("../resources/bracketed_color_bigrams.tsv")
+    split_unigrams()
     
     
 if __name__ == "__main__":
-    populate_default()   
+    populate_default() 
     
