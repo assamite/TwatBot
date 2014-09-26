@@ -200,8 +200,12 @@ def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_colo
 
 
 def split_unigrams():
-    """Split ColorUnigram-instances from database into two words and save them into
-    ColorUnigramSplit-model.
+    """Split ``ColorUnigram``-instances from database into two words and save them into
+    ``ColorUnigramSplit``-model.
+    
+    Splitting is done by looking for color names from ``ColorMap``-model's ``stereotype``
+    and ``base_color`` fields. Unigrams which can not be splitted into two parts 
+    based on these color names are omitted.
     """
     __set_django()
     from tweets.models import ColorUnigram, ColorUnigramSplit, ColorMap

@@ -148,17 +148,17 @@ class ColorSemantics():
     
     
     def blend_all_unigram_splits(self, frmt = 'html', **blend_options):
-        """Convenience function to blend all loaded ``ColorUnigramSplit``s. 
+        """Convenience function to blend all loaded ``ColorUnigramSplit`` s. 
         
         In blending, ``w1`` is treated as head color and ``w2`` as modifier color.
         
         **Args:**
             | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.
-            | **blend_options: Miscellaneous blend options as stated in :py:func:``color_utils.blend``.
+            | \**blend_options: Miscellaneous blend options as stated in ``color_utils.blend``.
         
         **Returns:**
             List of tuples (unigram split, blending), where unigram split is a
-            (w1, w2)-tuple and ``blending`` is an tuple returned by :py:func:``ColorSemantics.blend``.
+            (w1, w2)-tuple and ``blending`` is an tuple returned by ``ColorSemantics.blend``. 
         """
         ret = []
         for u in self.unigram_splits:
@@ -185,12 +185,13 @@ class ColorSemantics():
             | head (str):  Name of the head color, either base name or color stereotype.
             | modifier (str):  Name of the modifier color, either base name or color stereotype.
             | frmt (str): Format for returned colors, currently ``html`` and ``rgb`` are supported.
-            | **blend_options: Miscellaneous blend options as stated in :py:func:``color_utils.blend``.
+            | \**blend_options: Miscellaneous blend options as stated in ``color_utils.blend``.
             
         **Returns:**
             Tuple of specified color formats, ``(chead, cmodifier, cblend)``, 
-            where ``chead`` and the ``cmodifier``are the used input colors and 
+            where ``chead`` and the ``cmodifier`` are the used input colors and 
             ``cblend`` is the acquired color blending.
+            
         """
         chead = self.get_color_code(head, frmt)
         cmodifier = self.get_color_code(modifier, frmt)

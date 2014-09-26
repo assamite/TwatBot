@@ -53,8 +53,7 @@ class Color(models.Model):
         Other color definitions are converted from given color definition.
         
         **Args:**
-            | html (``str``): color in any supported format. See supported 
-            | formats from ``color_utils``-module.
+            | color: color in any supported format. See supported formats from ``color_utils``-module.
             
         **Returns:**
             New model instance.         
@@ -112,7 +111,7 @@ class BracketedColorBigram(models.Model):
     
 
 class ColorMap(models.Model):
-    """Color stereotype - rgb (in html format) value pairs with base color names.
+    """Color stereotype - color value pairs with base color names.
     
     **Fields:**
         | stereotype (``CharField``): Name of the color stereotype, ``max_length = 40``.
@@ -171,13 +170,13 @@ class ColorUnigram(models.Model):
 class ColorUnigramSplit(models.Model):
     """Splitted color unigrams.
     
-    ``ColorUnigram.solid_compound``s that are splitted into two words. Hopefully
-    from somewhere it makes sense. 
+    ``ColorUnigram`` -models ``solid_compound`` -fields that are splitted into 
+    two words. Hopefully from somewhere it makes sense. 
     
     **Fields:**
-        | w1 (``CharField``): First word of the splitted unigram, ``max_length = 40``.
-        | w2 (``CharField``): Second word of the splitted unigram, ``max_length = 40``.
-        | original (``ForeignKey``): Reference to original ColorUnigram-model instance
+        | w1 (``CharField``): First word of the unigram split, ``max_length = 40``.
+        | w2 (``CharField``): Second word of the unigram split, ``max_length = 40``.
+        | original (``ForeignKey``): Reference to original ``ColorUnigram`` -model instance.
         
     Sample entries (should look something like this): 
     
@@ -187,7 +186,7 @@ class ColorUnigramSplit(models.Model):
         aluminum    leather
         amber       bunny
         amber       dawn          
-        ========    ====== 
+        ========    ======= 
     """   
     
     w1 = models.CharField(max_length = 40, blank = True)
@@ -204,7 +203,7 @@ class ColorUnigramSplit(models.Model):
 
 
 class EveryColorBotTweet(models.Model):
-    """ URL's and hex color codes for Everycolorbot's tweets.
+    """ URL's and colors for Everycolorbot's tweets.
     
     **Fields:**
         | color (``ForeignKey``): Reference to ``Color``-model object.
