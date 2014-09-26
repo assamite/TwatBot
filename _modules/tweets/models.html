@@ -156,8 +156,7 @@
 <span class="sd">        Other color definitions are converted from given color definition.</span>
 <span class="sd">        </span>
 <span class="sd">        **Args:**</span>
-<span class="sd">            | html (``str``): color in any supported format. See supported </span>
-<span class="sd">            | formats from ``color_utils``-module.</span>
+<span class="sd">            | color: color in any supported format. See supported formats from ``color_utils``-module.</span>
 <span class="sd">            </span>
 <span class="sd">        **Returns:**</span>
 <span class="sd">            New model instance.         </span>
@@ -215,7 +214,7 @@
     
 </div>
 <div class="viewcode-block" id="ColorMap"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ColorMap">[docs]</a><span class="k">class</span> <span class="nc">ColorMap</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Color stereotype - rgb (in html format) value pairs with base color names.</span>
+    <span class="sd">&quot;&quot;&quot;Color stereotype - color value pairs with base color names.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
 <span class="sd">        | stereotype (``CharField``): Name of the color stereotype, ``max_length = 40``.</span>
@@ -274,13 +273,13 @@
 <div class="viewcode-block" id="ColorUnigramSplit"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ColorUnigramSplit">[docs]</a><span class="k">class</span> <span class="nc">ColorUnigramSplit</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Splitted color unigrams.</span>
 <span class="sd">    </span>
-<span class="sd">    ``ColorUnigram.solid_compound``s that are splitted into two words. Hopefully</span>
-<span class="sd">    from somewhere it makes sense. </span>
+<span class="sd">    ``ColorUnigram`` -models ``solid_compound`` -fields that are splitted into </span>
+<span class="sd">    two words. Hopefully from somewhere it makes sense. </span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | w1 (``CharField``): First word of the splitted unigram, ``max_length = 40``.</span>
-<span class="sd">        | w2 (``CharField``): Second word of the splitted unigram, ``max_length = 40``.</span>
-<span class="sd">        | original (``ForeignKey``): Reference to original ColorUnigram-model instance</span>
+<span class="sd">        | w1 (``CharField``): First word of the unigram split, ``max_length = 40``.</span>
+<span class="sd">        | w2 (``CharField``): Second word of the unigram split, ``max_length = 40``.</span>
+<span class="sd">        | original (``ForeignKey``): Reference to original ``ColorUnigram`` -model instance.</span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries (should look something like this): </span>
 <span class="sd">    </span>
@@ -290,7 +289,7 @@
 <span class="sd">        aluminum    leather</span>
 <span class="sd">        amber       bunny</span>
 <span class="sd">        amber       dawn          </span>
-<span class="sd">        ========    ====== </span>
+<span class="sd">        ========    ======= </span>
 <span class="sd">    &quot;&quot;&quot;</span>   
     
     <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
@@ -307,7 +306,7 @@
 
 </div>
 <div class="viewcode-block" id="EveryColorBotTweet"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.EveryColorBotTweet">[docs]</a><span class="k">class</span> <span class="nc">EveryColorBotTweet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; URL&#39;s and hex color codes for Everycolorbot&#39;s tweets.</span>
+    <span class="sd">&quot;&quot;&quot; URL&#39;s and colors for Everycolorbot&#39;s tweets.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
 <span class="sd">        | color (``ForeignKey``): Reference to ``Color``-model object.</span>

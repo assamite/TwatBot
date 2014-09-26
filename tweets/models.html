@@ -190,8 +190,7 @@
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
 <dd><div class="first last line-block">
-<div class="line">html (<tt class="docutils literal"><span class="pre">str</span></tt>): color in any supported format. See supported </div>
-<div class="line">formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
+<div class="line">color: color in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
 </div>
 </dd>
 <dt><strong>Returns:</strong></dt>
@@ -204,7 +203,7 @@
 <dl class="class">
 <dt id="tweets.models.ColorMap">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">ColorMap</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#ColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.ColorMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Color stereotype - rgb (in html format) value pairs with base color names.</p>
+<dd><p>Color stereotype - color value pairs with base color names.</p>
 <dl class="docutils">
 <dt><strong>Fields:</strong></dt>
 <dd><div class="first last line-block">
@@ -289,26 +288,48 @@
 <dt id="tweets.models.ColorUnigramSplit">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">ColorUnigramSplit</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#ColorUnigramSplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.ColorUnigramSplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splitted color unigrams.</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>ColorUnigram.solid_compound``s that are splitted into two words. Hopefully
-from somewhere it makes sense.</p>
+<p><tt class="docutils literal"><span class="pre">ColorUnigram</span></tt> -models <tt class="docutils literal"><span class="pre">solid_compound</span></tt> -fields that are splitted into 
+two words. Hopefully from somewhere it makes sense.</p>
 <dl class="docutils">
 <dt><strong>Fields:</strong></dt>
 <dd><div class="first last line-block">
-<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): First word of the splitted unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
-<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Second word of the splitted unigram, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
-<div class="line">original (<tt class="docutils literal"><span class="pre">ForeignKey</span></tt>): Reference to original ColorUnigram-model instance</div>
+<div class="line">w1 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): First word of the unigram split, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">w2 (<tt class="docutils literal"><span class="pre">CharField</span></tt>): Second word of the unigram split, <tt class="docutils literal"><span class="pre">max_length</span> <span class="pre">=</span> <span class="pre">40</span></tt>.</div>
+<div class="line">original (<tt class="docutils literal"><span class="pre">ForeignKey</span></tt>): Reference to original <tt class="docutils literal"><span class="pre">ColorUnigram</span></tt> -model instance.</div>
 </div>
 </dd>
 </dl>
 <p>Sample entries (should look something like this):</p>
 <blockquote>
-<div></div></blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">w1</th>
+<th class="head">w2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>aluminum</td>
+<td>leather</td>
+</tr>
+<tr class="row-odd"><td>amber</td>
+<td>bunny</td>
+</tr>
+<tr class="row-even"><td>amber</td>
+<td>dawn</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </dd></dl>
 
 <dl class="class">
 <dt id="tweets.models.EveryColorBotTweet">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">EveryColorBotTweet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#EveryColorBotTweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.EveryColorBotTweet" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL&#8217;s and hex color codes for Everycolorbot&#8217;s tweets.</p>
+<dd><p>URL&#8217;s and colors for Everycolorbot&#8217;s tweets.</p>
 <dl class="docutils">
 <dt><strong>Fields:</strong></dt>
 <dd><div class="first last line-block">

@@ -38,11 +38,11 @@ using this project.
 	
 	$> cd project_root/
 	$> python manage.py syncdb
-	$> python manage.py loaddata tweets/fixtures.json
+	$> python manage.py loaddata tweets/fixtures/fixtures.json
 	
-	.. note:: 
-		In case the syncdb fails, comment out everything in ``tweets.__init__``
-		before running it and remove comments afterwards. Will fix this later.
+.. note:: 
+	In case the syncdb fails, comment out everything in ``tweets/.__init__.py``
+	before running syncdb and remove comments afterwards. Will fix this later.
 	
 **Local Usage:**
 	

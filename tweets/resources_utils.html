@@ -247,8 +247,11 @@ in the following order: <em>w1, w2, f</em>.</p>
 <dl class="function">
 <dt id="tweets.resources_utils.split_unigrams">
 <tt class="descclassname">tweets.resources_utils.</tt><tt class="descname">split_unigrams</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/resources_utils.html#split_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.resources_utils.split_unigrams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Split ColorUnigram-instances from database into two words and save them into
-ColorUnigramSplit-model.</p>
+<dd><p>Split <tt class="docutils literal"><span class="pre">ColorUnigram</span></tt>-instances from database into two words and save them into
+<tt class="docutils literal"><span class="pre">ColorUnigramSplit</span></tt>-model.</p>
+<p>Splitting is done by looking for color names from <tt class="docutils literal"><span class="pre">ColorMap</span></tt>-model&#8217;s <tt class="docutils literal"><span class="pre">stereotype</span></tt>
+and <tt class="docutils literal"><span class="pre">base_color</span></tt> fields. Unigrams which can not be splitted into two parts 
+based on these color names are omitted.</p>
 </dd></dl>
 
 </div>

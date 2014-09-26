@@ -303,8 +303,12 @@
 
 </div>
 <div class="viewcode-block" id="split_unigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.split_unigrams">[docs]</a><span class="k">def</span> <span class="nf">split_unigrams</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Split ColorUnigram-instances from database into two words and save them into</span>
-<span class="sd">    ColorUnigramSplit-model.</span>
+    <span class="sd">&quot;&quot;&quot;Split ``ColorUnigram``-instances from database into two words and save them into</span>
+<span class="sd">    ``ColorUnigramSplit``-model.</span>
+<span class="sd">    </span>
+<span class="sd">    Splitting is done by looking for color names from ``ColorMap``-model&#39;s ``stereotype``</span>
+<span class="sd">    and ``base_color`` fields. Unigrams which can not be splitted into two parts </span>
+<span class="sd">    based on these color names are omitted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span><span class="p">,</span> <span class="n">ColorUnigramSplit</span><span class="p">,</span> <span class="n">ColorMap</span>
