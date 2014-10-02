@@ -58,12 +58,16 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -105,10 +109,12 @@
  <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -144,6 +150,16 @@
   <dt><a href="tweets/models.html#tweets.models.BracketedColorBigram">BracketedColorBigram (class in tweets.models)</a>
   </dt>
 
+      
+  <dt><a href="tweets/contexts.html#tweets.contexts.Context.build_tweet">build_tweet() (tweets.contexts.Context method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="tweets/contexts.html#tweets.contexts.TextContext.build_tweet">(tweets.contexts.TextContext method)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -166,8 +182,6 @@
   <dt><a href="tweets/models.html#tweets.models.ColorMap">ColorMap (class in tweets.models)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="tweets/color_semantics.html#tweets.color_semantics.ColorSemantics">ColorSemantics (class in tweets.color_semantics)</a>
   </dt>
@@ -176,8 +190,22 @@
   <dt><a href="tweets/models.html#tweets.models.ColorUnigram">ColorUnigram (class in tweets.models)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="tweets/models.html#tweets.models.ColorUnigramSplit">ColorUnigramSplit (class in tweets.models)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/contexts.html#tweets.contexts.Context">Context (class in tweets.contexts)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/contexts.html#module-contexts">contexts (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/core.html#module-core">core (module)</a>
   </dt>
 
       
@@ -194,10 +222,30 @@
   <dt><a href="tweets/color_utils.html#tweets.color_utils.ed">ed() (in module tweets.color_utils)</a>
   </dt>
 
+      
+  <dt><a href="tweets/muses.html#tweets.muses.EveryColorBotMuse">EveryColorBotMuse (class in tweets.muses)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="tweets/models.html#tweets.models.EveryColorBotTweet">EveryColorBotTweet (class in tweets.models)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/framing.html#tweets.framing.frame">frame() (in module tweets.framing)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/framing.html#module-framing">framing (module)</a>
   </dt>
 
   </dl></td>
@@ -220,6 +268,10 @@
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams">get_knn_blended_unigrams() (tweets.color_semantics.ColorSemantics method)</a>
+  </dt>
+
       
   <dt><a href="tweets/models.html#tweets.models.GetOrNoneManager.get_or_none">get_or_none() (tweets.models.GetOrNoneManager method)</a>
   </dt>
@@ -255,15 +307,25 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_hex">is_hex() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/muses.html#tweets.muses.EveryColorBotMuse.inspire">inspire() (tweets.muses.EveryColorBotMuse method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="tweets/muses.html#tweets.muses.Muse.inspire">(tweets.muses.Muse method)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_html">is_html() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_hex">is_hex() (in module tweets.color_utils)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_html">is_html() (in module tweets.color_utils)</a>
+  </dt>
+
       
   <dt><a href="tweets/color_utils.html#tweets.color_utils.is_rgb">is_rgb() (in module tweets.color_utils)</a>
   </dt>
@@ -276,6 +338,32 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="tweets/models.html#module-models">models (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/muses.html#tweets.muses.Muse">Muse (class in tweets.muses)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/muses.html#module-muses">muses (module)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.name_color">name_color() (tweets.color_semantics.ColorSemantics method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/views.html#tweets.views.names">names() (in module tweets.views)</a>
   </dt>
 
   </dl></td>
@@ -349,6 +437,12 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="tweets/muses.html#tweets.muses.Muse.select_color">select_color() (tweets.muses.Muse method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
   <dt><a href="tweets/resources_utils.html#tweets.resources_utils.split_unigrams">split_unigrams() (in module tweets.resources_utils)</a>
   </dt>
 
@@ -359,6 +453,22 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="tweets/contexts.html#tweets.contexts.TextContext">TextContext (class in tweets.contexts)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/core.html#tweets.core.TweetCore.tweet">tweet() (tweets.core.TweetCore method)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/core.html#tweets.core.TweetCore">TweetCore (class in tweets.core)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/views.html#tweets.views.tweets">tweets() (in module tweets.views)</a>
+  </dt>
+
+      
   <dt><a href="tweets/color_semantics.html#module-tweets.color_semantics">tweets.color_semantics (module)</a>
   </dt>
 
@@ -367,11 +477,27 @@
   </dt>
 
       
-  <dt><a href="tweets/models.html#module-tweets.models">tweets.models (module)</a>
+  <dt><a href="tweets/contexts.html#module-tweets.contexts">tweets.contexts (module)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/core.html#module-tweets.core">tweets.core (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/framing.html#module-tweets.framing">tweets.framing (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/models.html#module-tweets.models">tweets.models (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/muses.html#module-tweets.muses">tweets.muses (module)</a>
+  </dt>
+
       
   <dt><a href="tweets/resources_utils.html#module-tweets.resources_utils">tweets.resources_utils (module)</a>
   </dt>

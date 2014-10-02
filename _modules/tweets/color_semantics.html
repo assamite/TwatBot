@@ -58,12 +58,16 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -128,7 +132,7 @@
 <span class="sd">   </span>
 <span class="sd">    .. warning::</span>
 <span class="sd">        You should not instantiate this class by yourself, instead use the automatically</span>
-<span class="sd">        loaded class instance available at ``tweets.semantics``.</span>
+<span class="sd">        loaded class instance available at ``tweets.core.COLOR_SEMANTICS``.</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_resources</span><span class="p">()</span>
@@ -175,6 +179,12 @@
         <span class="n">ugs</span> <span class="o">=</span> <span class="n">ColorUnigramSplit</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">ugs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unigram_splits</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">w1</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">w2</span><span class="p">))</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">blended_unigram_splits</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blend_all_unigram_splits</span><span class="p">(</span><span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="n">a_head</span> <span class="o">=</span> <span class="mf">0.55</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">blend_color</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blended_unigram_splits</span><span class="p">[</span><span class="n">blend_color</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
          
         <span class="bp">self</span><span class="o">.</span><span class="n">bigrams</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">bigs</span> <span class="o">=</span> <span class="n">UnbracketedColorBigram</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -250,6 +260,29 @@
         <span class="k">return</span> <span class="n">dists</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
     
     </div>
+<div class="viewcode-block" id="ColorSemantics.get_knn_blended_unigrams"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams">[docs]</a>    <span class="k">def</span> <span class="nf">get_knn_blended_unigrams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve k-nearest color codes for given color code from blended unigram colors.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note:: </span>
+<span class="sd">            This function is not optimalized in anyway and thus may take quite</span>
+<span class="sd">            some time while it parses through all the available colors.</span>
+<span class="sd">            </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module.</span>
+<span class="sd">            | k (int): Amount of nearest neighbors to return.</span>
+<span class="sd">            </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            List of tuples, (color code, distance, color name) k-nearest colors from resources,</span>
+<span class="sd">            where color code is an unicode string in html-format, distance</span>
+<span class="sd">            is non-negative float and color name is the... name of the color.   </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">color_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blended_unigram_splits</span>
+        <span class="n">dists</span> <span class="o">=</span>  <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">,</span> <span class="n">color_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]),</span> <span class="n">color_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">dists</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
+    
+    </div>
 <div class="viewcode-block" id="ColorSemantics.blend_all_unigram_splits"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.blend_all_unigram_splits">[docs]</a>    <span class="k">def</span> <span class="nf">blend_all_unigram_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frmt</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">blend_options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convenience function to blend all loaded ``ColorUnigramSplit`` s. </span>
 <span class="sd">        </span>
@@ -308,6 +341,22 @@
         <span class="k">if</span> <span class="n">frmt</span> <span class="o">==</span> <span class="s">&#39;html&#39;</span><span class="p">:</span>
             <span class="n">color_blend</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">color_blend</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">chead</span><span class="p">,</span> <span class="n">cmodifier</span><span class="p">,</span> <span class="n">color_blend</span><span class="p">)</span>
+    
+    </div>
+<div class="viewcode-block" id="ColorSemantics.name_color"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.name_color">[docs]</a>    <span class="k">def</span> <span class="nf">name_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Give name for the given color code.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">             | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module. </span>
+<span class="sd">             | \**kwargs: Optional keyword arguments. Currently pass</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            str or unicode, human readable name for the color.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_knn_blended_unigrams</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        
+        
         
         
     

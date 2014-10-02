@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>color_tweets.views &mdash; Twatbot 0.0.1 documentation</title>
+  <title>tweets.framing &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -95,7 +95,7 @@
       
           <li><a href="../index.html">Module code</a> &raquo;</li>
       
-    <li>color_tweets.views</li>
+    <li>tweets.framing</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -104,29 +104,48 @@
 </div>
           <div role="main">
             
-  <h1>Source code for color_tweets.views</h1><div class="highlight"><pre>
+  <h1>Source code for tweets.framing</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. py:module:: `views`</span>
+
+<span class="sd">.. py:module:: framing</span>
 <span class="sd">    :platform: Unix</span>
-<span class="sd">    :synopsis: Views for Django app.</span>
-<span class="sd">        </span>
-<span class="sd">Custom views for the app for testing and publishing new tweets.</span>
+<span class="sd">    :synopsis: Tweet framing.</span>
+<span class="sd">    </span>
+<span class="sd">Module for framing the color code tweets.    </span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">contexts</span> <span class="kn">import</span> <span class="n">TextContext</span>
 
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-
-<span class="c"># Create your views here.</span>
-
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.home">[docs]</a><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Basic view to be implemented.</span>
+<div class="viewcode-block" id="frame"><a class="viewcode-back" href="../../tweets/framing.html#tweets.framing.frame">[docs]</a><span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">context</span> <span class="o">=</span><span class="s">&#39;text&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Frame the tweet with given context and context related keyword arguments.</span>
+<span class="sd">    </span>
+<span class="sd">    .. warning:: </span>
+<span class="sd">        Currently half dummy implementation which uses TextContext always.</span>
+<span class="sd">    </span>
+<span class="sd">    First creates color name for color code and then frames the tweet for the</span>
+<span class="sd">    color in given context.</span>
+<span class="sd">    </span>
+<span class="sd">    **Args:**</span>
+<span class="sd">        | context (str): Context to frame tweet into. Should be one of the supported formats. </span>
+<span class="sd">        | \**kwargs: Keyword arguments for the given context. Should at least contain ``color_code`` -key.</span>
+<span class="sd">    </span>
+<span class="sd">    **Returns:**</span>
+<span class="sd">        Tuple, ``(tweet, value)``, where ``tweet`` is the tweet for the color code</span>
+<span class="sd">        in given context and ``value`` is a float estimating the color code-</span>
+<span class="sd">        color name-framing mapping&#39;s interestingness and appreciation.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
-
-</div>
-<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Blend two colors view mock.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="c"># Decide for the color name based on the color semantics</span>
+    <span class="kn">from</span> <span class="nn">tweets.core</span> <span class="kn">import</span> <span class="n">COLOR_SEMANTICS</span> <span class="k">as</span> <span class="n">semantics</span>
+    <span class="n">color_code</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;color_code&#39;</span><span class="p">]</span>
+    <span class="n">color_name</span> <span class="o">=</span> <span class="n">semantics</span><span class="o">.</span><span class="n">name_color</span><span class="p">(</span><span class="n">color_code</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s">&#39;text&#39;</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TextContext</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TextContext</span><span class="p">()</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">build_tweet</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

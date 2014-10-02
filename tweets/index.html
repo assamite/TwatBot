@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tweets &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Tweets Module &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="next" title="Models" href="models.html"/>
+        <link rel="next" title="Core Functionality" href="core.html"/>
         <link rel="prev" title="Installing" href="../install.html"/> 
 
   
@@ -59,12 +59,16 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Tweets Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +94,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Tweets</li>
+    <li>Tweets Module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/tweets/index.txt" rel="nofollow"> View page source</a>
@@ -101,8 +105,8 @@
 </div>
           <div role="main">
             
-  <div class="section" id="tweets">
-<h1>Tweets<a class="headerlink" href="#tweets" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tweets-module">
+<h1>Tweets Module<a class="headerlink" href="#tweets-module" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <p>Main package of the project, developed as a Django app. It has currently following modules.</p>
@@ -121,9 +125,13 @@
 <li><p class="first"><strong>Modules Explicitly Made For TwatBot:</strong></p>
 <blockquote>
 <div><ul class="simple">
+<li><a class="reference internal" href="core.html#module-core" title="core (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt></a>: Core of the color tweets. Glues other modules&#8217; functionality together.</li>
+<li><a class="reference internal" href="muses.html#module-muses" title="muses (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">muses</span></tt></a>: Muses for the tweets, i.e. sources for color codes.</li>
+<li><a class="reference internal" href="framing.html#module-framing" title="framing: Tweet framing. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">framing</span></tt></a>: Framing of the color tweets</li>
+<li><a class="reference internal" href="contexts.html#module-contexts" title="contexts (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">contexts</span></tt></a>: Different contexts for framing</li>
+<li><a class="reference internal" href="color_semantics.html#module-color_semantics" title="color_semantics: Semantic informed color manipulations. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_semantics</span></tt></a>: Semantically informed color manipulations</li>
 <li><a class="reference internal" href="color_utils.html#module-color_utils" title="color_utils: Different utility functions for working with colors. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_utils</span></tt></a>: Semantic ignorant color utility functions</li>
 <li><a class="reference internal" href="resources_utils.html#module-resources_utils" title="resources_utils: Utility functions to populate Django models with resources. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">resources_utils</span></tt></a>: Functions to populate Django models with contents in <tt class="docutils literal"><span class="pre">resources/</span></tt></li>
-<li><a class="reference internal" href="color_semantics.html#module-color_semantics" title="color_semantics: Semantic informed color manipulations. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_semantics</span></tt></a>: Semantically informed color manipulations.</li>
 </ul>
 </div></blockquote>
 </li>
@@ -136,7 +144,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="models.html" class="btn btn-neutral float-right" title="Models"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="core.html" class="btn btn-neutral float-right" title="Core Functionality"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../install.html" class="btn btn-neutral" title="Installing"><span class="fa fa-arrow-circle-left"></span> Previous</a>

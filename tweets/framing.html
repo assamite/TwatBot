@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Views &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Framing &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -30,7 +30,8 @@
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
         <link rel="up" title="Tweets Module" href="index.html"/>
-        <link rel="prev" title="Models" href="models.html"/> 
+        <link rel="next" title="Contexts" href="contexts.html"/>
+        <link rel="prev" title="Tweets Module" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -60,13 +61,13 @@
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Module</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -94,10 +95,10 @@
       
           <li><a href="index.html">Tweets Module</a> &raquo;</li>
       
-    <li>Views</li>
+    <li>Framing</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/tweets/views.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/tweets/framing.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -105,31 +106,31 @@
 </div>
           <div role="main">
             
-  <div class="section" id="module-tweets.views">
-<span id="views"></span><h1>Views<a class="headerlink" href="#module-tweets.views" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-views"></span><p>Custom views for the app for testing and publishing new tweets.</p>
+  <div class="section" id="module-tweets.framing">
+<span id="framing"></span><h1>Framing<a class="headerlink" href="#module-tweets.framing" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-framing"></span><p>Module for framing the color code tweets.</p>
 <dl class="function">
-<dt id="tweets.views.blend">
-<tt class="descclassname">tweets.views.</tt><tt class="descname">blend</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../_modules/tweets/views.html#blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.views.blend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test blending of splitted unigrams.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="tweets.views.home">
-<tt class="descclassname">tweets.views.</tt><tt class="descname">home</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../_modules/tweets/views.html#home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.views.home" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic view to be implemented.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="tweets.views.names">
-<tt class="descclassname">tweets.views.</tt><tt class="descname">names</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../_modules/tweets/views.html#names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.views.names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test color names for the everycolorbot tweets.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="tweets.views.tweets">
-<tt class="descclassname">tweets.views.</tt><tt class="descname">tweets</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../_modules/tweets/views.html#tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.views.tweets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test tweeting functionality.</p>
+<dt id="tweets.framing.frame">
+<tt class="descclassname">tweets.framing.</tt><tt class="descname">frame</tt><big>(</big><em>context='text'</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/framing.html#frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.framing.frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame the tweet with given context and context related keyword arguments.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Currently half dummy implementation which uses TextContext always.</p>
+</div>
+<p>First creates color name for color code and then frames the tweet for the
+color in given context.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">context (str): Context to frame tweet into. Should be one of the supported formats. </div>
+<div class="line">**kwargs: Keyword arguments for the given context. Should at least contain <tt class="docutils literal"><span class="pre">color_code</span></tt> -key.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Tuple, <tt class="docutils literal"><span class="pre">(tweet,</span> <span class="pre">value)</span></tt>, where <tt class="docutils literal"><span class="pre">tweet</span></tt> is the tweet for the color code
+in given context and <tt class="docutils literal"><span class="pre">value</span></tt> is a float estimating the color code-
+color name-framing mapping&#8217;s interestingness and appreciation.</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -140,8 +141,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="contexts.html" class="btn btn-neutral float-right" title="Contexts"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="models.html" class="btn btn-neutral" title="Models"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="index.html" class="btn btn-neutral" title="Tweets Module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

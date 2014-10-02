@@ -29,8 +29,9 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Tweets" href="index.html"/>
-        <link rel="prev" title="Resources Utilities" href="resources_utils.html"/> 
+        <link rel="up" title="Tweets Module" href="index.html"/>
+        <link rel="next" title="Color Utilities" href="color_utils.html"/>
+        <link rel="prev" title="Contexts" href="contexts.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -59,12 +60,14 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Module</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +93,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets Module</a> &raquo;</li>
       
     <li>Color Semantics</li>
       <li class="wy-breadcrumbs-aside">
@@ -117,7 +120,7 @@ memory on initialization for faster data access.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">You should not instantiate this class by yourself, instead use the automatically
-loaded class instance available at <tt class="docutils literal"><span class="pre">tweets.semantics</span></tt>.</p>
+loaded class instance available at <tt class="docutils literal"><span class="pre">tweets.core.COLOR_SEMANTICS</span></tt>.</p>
 </div>
 <dl class="method">
 <dt id="tweets.color_semantics.ColorSemantics.blend">
@@ -225,6 +228,45 @@ is non-negative float.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams">
+<tt class="descname">get_knn_blended_unigrams</tt><big>(</big><em>color_code</em>, <em>k=1</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.get_knn_blended_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve k-nearest color codes for given color code from blended unigram colors.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is not optimalized in anyway and thus may take quite
+some time while it parses through all the available colors.</p>
+</div>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_code:  Color code in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module.</div>
+<div class="line">k (int): Amount of nearest neighbors to return.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>List of tuples, (color code, distance, color name) k-nearest colors from resources,
+where color code is an unicode string in html-format, distance
+is non-negative float and color name is the... name of the color.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.color_semantics.ColorSemantics.name_color">
+<tt class="descname">name_color</tt><big>(</big><em>color_code</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.name_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.name_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give name for the given color code.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_code:  Color code in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module. </div>
+<div class="line">**kwargs: Optional keyword arguments. Currently pass</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>str or unicode, human readable name for the color.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="tweets.color_semantics.ColorSemantics.reload_resources">
 <tt class="descname">reload_resources</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.reload_resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.reload_resources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload resources from database into the object.</p>
@@ -245,8 +287,10 @@ running.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="color_utils.html" class="btn btn-neutral float-right" title="Color Utilities"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="resources_utils.html" class="btn btn-neutral" title="Resources Utilities"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="contexts.html" class="btn btn-neutral" title="Contexts"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

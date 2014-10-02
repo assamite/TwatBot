@@ -58,12 +58,16 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -143,7 +147,7 @@
 <span class="sd">        The first line of the file is though to contain field names and is omitted.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args**</span>
-<span class="sd">        | filepath (``str``): Path to the file with entries.</span>
+<span class="sd">        | filepath (str): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">BracketedColorBigram</span>
@@ -169,7 +173,7 @@
 <span class="sd">        The first line of the file is though to contain field names and is omitted.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args**</span>
-<span class="sd">        | filepath (``str``): Path to the file with entries.</span>
+<span class="sd">        | filepath (str): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">Color</span>
@@ -203,7 +207,7 @@
 <span class="sd">        The first line of the file is though to contain field names and is omitted.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args**</span>
-<span class="sd">        | filepath (``str``): Path to the file with entries.</span>
+<span class="sd">        | filepath (str): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigram</span>
@@ -228,7 +232,7 @@
 <span class="sd">        The first line of the file is though to contain field names and is omitted.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args**</span>
-<span class="sd">        | filepath (``str``): Path to the file with entries.</span>
+<span class="sd">        | filepath (str): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">Color</span>
@@ -247,7 +251,7 @@
         <span class="k">if</span> <span class="n">color_inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">color_inst</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">,</span> <span class="nb">hex</span> <span class="o">=</span> <span class="n">chex</span><span class="p">,</span> <span class="n">rgb_r</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">rgb_g</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">rgb_b</span> <span class="o">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)</span>
             <span class="n">color_inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">color_inst</span><span class="p">)</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">color_inst</span><span class="p">,</span> <span class="n">tweeted</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         
         </div>
@@ -261,7 +265,7 @@
 <span class="sd">        The first line of the file is though to contain field names and is omitted.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args**</span>
-<span class="sd">        | filepath (``str``): Path to the file with entries.</span>
+<span class="sd">        | filepath (str): Path to the file with entries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__set_django</span><span class="p">()</span>
     <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">PluralColorBigram</span>

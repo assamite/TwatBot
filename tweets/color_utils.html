@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Tweets" href="index.html"/>
+        <link rel="up" title="Tweets Module" href="index.html"/>
         <link rel="next" title="Resources Utilities" href="resources_utils.html"/>
-        <link rel="prev" title="Views" href="views.html"/> 
+        <link rel="prev" title="Color Semantics" href="color_semantics.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -60,12 +60,14 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Module</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -91,7 +93,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Tweets</a> &raquo;</li>
+          <li><a href="index.html">Tweets Module</a> &raquo;</li>
       
     <li>Color Utilities</li>
       <li class="wy-breadcrumbs-aside">
@@ -113,8 +115,8 @@ this module.</p>
 <p>The module relies on <tt class="docutils literal"><span class="pre">colormath</span></tt>-package&#8217;s functionality.
 Furthermore, three light weight color definitions are supported for convenience:</p>
 <ul class="simple">
-<li>hex: <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
-<li>html: <tt class="docutils literal"><span class="pre">str</span></tt> in form of <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>hex: <tt class="docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">unicode</span></tt> in form of <tt class="docutils literal"><span class="pre">0xrrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
+<li>html: <tt class="docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">unicode</span></tt> in form of <tt class="docutils literal"><span class="pre">#rrggbb</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes.</li>
 <li>rgb: <tt class="docutils literal"><span class="pre">tuple</span></tt> in form of <tt class="docutils literal"><span class="pre">(r,</span> <span class="pre">g,</span> <span class="pre">b)</span></tt>, where <tt class="docutils literal"><span class="pre">r</span></tt>, <tt class="docutils literal"><span class="pre">g</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are integers in [0, 255].</li>
 </ul>
 <div class="admonition note">
@@ -147,8 +149,8 @@ changing to and from Lab color space.</p>
 </div>
 <blockquote>
 <div><div class="line-block">
-<div class="line">a_head (<tt class="docutils literal"><span class="pre">float</span></tt>): amount of head color to mix. Should be in [0, 1]. </div>
-<div class="line">a_lab (<tt class="docutils literal"><span class="pre">tuple</span></tt>): amount of each head color component to </div>
+<div class="line">a_head (float): amount of head color to mix. Should be in [0, 1]. </div>
+<div class="line">a_lab (tuple): amount of each head color component to </div>
 <div class="line">mix, each value in tuple should be in [0, 1].</div>
 </div>
 </div></blockquote>
@@ -185,7 +187,7 @@ Input colors can be in any supported format.</p>
 <dd><p>Convert hex-string color into rgb-tuple.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>hex (<tt class="docutils literal"><span class="pre">str</span></tt>): Color in hex-format, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
+<dd>hex (str): Color in hex-format, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
 <dt><strong>Returns:</strong></dt>
 <dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
 </dl>
@@ -197,7 +199,7 @@ Input colors can be in any supported format.</p>
 <dd><p>Convert html color format string into rgb-tuple.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>html (<tt class="docutils literal"><span class="pre">str</span></tt>): color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt></dd>
+<dd>html (str): color in html-format, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt></dd>
 <dt><strong>Returns:</strong></dt>
 <dd>Color in rgb as 3-tuple, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
 </dl>
@@ -238,7 +240,7 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 <p>Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Variable to be verified.</dd>
+<dd>rgb (tuple): Variable to be verified.</dd>
 <dt><strong>Returns:</strong></dt>
 <dd><tt class="docutils literal"><span class="pre">True</span></tt> if variable is in rgb-format, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
 </dl>
@@ -250,7 +252,7 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 <dd><p>Convert rgb-tuple into hex-color string.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): Color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
+<dd>rgb (tuple): Color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt>.</dd>
 <dt><strong>Returns:</strong></dt>
 <dd>Color as hex-string, e.g. <tt class="docutils literal"><span class="pre">0xffeedd</span></tt>.</dd>
 </dl>
@@ -262,7 +264,7 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
 <dd><p>Convert rgb-tuple into html color format string.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
-<dd>rgb (<tt class="docutils literal"><span class="pre">tuple</span></tt>): color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt></dd>
+<dd>rgb (tuple): color in rgb-format, e.g. <tt class="docutils literal"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></tt></dd>
 <dt><strong>Returns:</strong></dt>
 <dd>Color in html-format string, e.g. <tt class="docutils literal"><span class="pre">#ffeedd</span></tt>.</dd>
 </dl>
@@ -279,7 +281,7 @@ and <tt class="docutils literal"><span class="pre">b</span></tt> are hex codes..
         <a href="resources_utils.html" class="btn btn-neutral float-right" title="Resources Utilities"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="views.html" class="btn btn-neutral" title="Views"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="color_semantics.html" class="btn btn-neutral" title="Color Semantics"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

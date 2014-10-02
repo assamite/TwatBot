@@ -58,12 +58,16 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
 </ul>
 </li>
 </ul>
@@ -130,14 +134,14 @@
     <span class="sd">&quot;&quot;&quot;Color representations.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | html (``CharField``): html style color definition</span>
-<span class="sd">        | hex (``CharField``): hex style color definition</span>
-<span class="sd">        | rgb_r (``IntegerField``): red value of the rgb-color space</span>
-<span class="sd">        | rgb_g (``IntegerField``): green value of the rgb-color space</span>
-<span class="sd">        | rgb_b (``IntegerField``): blue value of the rgb-color space</span>
-<span class="sd">        | l (``FloatField``): lightness value of the Lab-color space</span>
-<span class="sd">        | a (``FloatField``): a color-opponent value of the Lab-color space</span>
-<span class="sd">        | b (``FloatField``): b color-opponent value of the Lab-color space</span>
+<span class="sd">        | html (CharField): html style color definition</span>
+<span class="sd">        | hex (CharField): hex style color definition</span>
+<span class="sd">        | rgb_r (IntegerField): red value of the rgb-color space</span>
+<span class="sd">        | rgb_g (IntegerField): green value of the rgb-color space</span>
+<span class="sd">        | rgb_b (IntegerField): blue value of the rgb-color space</span>
+<span class="sd">        | l (FloatField): lightness value of the Lab-color space</span>
+<span class="sd">        | a (FloatField): a color-opponent value of the Lab-color space</span>
+<span class="sd">        | b (FloatField): b color-opponent value of the Lab-color space</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">html</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="nb">hex</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
@@ -181,11 +185,11 @@
     <span class="sd">&quot;&quot;&quot;Bracketed bigrams.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | start_bracket (``CharField``): starting bracket, ``max_length = 40``.</span>
-<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
-<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
-<span class="sd">        | end_bracket (``CharField``): ending bracket, ``max_length = 40``.</span>
-<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency</span>
+<span class="sd">        | start_bracket (CharField): starting bracket, ``max_length = 40``.</span>
+<span class="sd">        | w1 (CharField): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (CharField): second word, ``max_length = 40``.</span>
+<span class="sd">        | end_bracket (CharField): ending bracket, ``max_length = 40``.</span>
+<span class="sd">        | f (PositiveIntegerField): bigram&#39;s frequency</span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries:</span>
 <span class="sd">        </span>
@@ -217,9 +221,9 @@
     <span class="sd">&quot;&quot;&quot;Color stereotype - color value pairs with base color names.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | stereotype (``CharField``): Name of the color stereotype, ``max_length = 40``.</span>
-<span class="sd">        | base_color (``CharField``): Base color name, ``max_length = 40``.</span>
-<span class="sd">        | color (``ForeignKey``): Reference to ``Color``-model object.  </span>
+<span class="sd">        | stereotype (CharField): Name of the color stereotype, ``max_length = 40``.</span>
+<span class="sd">        | base_color (CharField): Base color name, ``max_length = 40``.</span>
+<span class="sd">        | color (ForeignKey): Reference to ``Color``-model object.  </span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries:</span>
 <span class="sd">    </span>
@@ -246,8 +250,8 @@
     <span class="sd">&quot;&quot;&quot;Color unigrams.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | solid_compound (``CharField``): Solid compound of the unigram, ``max_length = 50``.</span>
-<span class="sd">        | f (``PositiveIntegerField``): unigram&#39;s frequency</span>
+<span class="sd">        | solid_compound (CharField): Solid compound of the unigram, ``max_length = 50``.</span>
+<span class="sd">        | f (PositiveIntegerField): unigram&#39;s frequency</span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries: </span>
 <span class="sd">    </span>
@@ -277,9 +281,9 @@
 <span class="sd">    two words. Hopefully from somewhere it makes sense. </span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | w1 (``CharField``): First word of the unigram split, ``max_length = 40``.</span>
-<span class="sd">        | w2 (``CharField``): Second word of the unigram split, ``max_length = 40``.</span>
-<span class="sd">        | original (``ForeignKey``): Reference to original ``ColorUnigram`` -model instance.</span>
+<span class="sd">        | w1 (CharField): First word of the unigram split, ``max_length = 40``.</span>
+<span class="sd">        | w2 (CharField): Second word of the unigram split, ``max_length = 40``.</span>
+<span class="sd">        | original (ForeignKey): Reference to original ``ColorUnigram`` -model instance.</span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries (should look something like this): </span>
 <span class="sd">    </span>
@@ -309,22 +313,24 @@
     <span class="sd">&quot;&quot;&quot; URL&#39;s and colors for Everycolorbot&#39;s tweets.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | color (``ForeignKey``): Reference to ``Color``-model object.</span>
-<span class="sd">        | url (``URLField``): URL for the tweet.</span>
+<span class="sd">        | color (ForeignKey): Reference to ``Color``-model object.</span>
+<span class="sd">        | tweeted (BooleanField): Has the color been used in a tweet.</span>
+<span class="sd">        | url (URLField): URL for the tweet.</span>
 <span class="sd">         </span>
 <span class="sd">    Sample entries:    </span>
 <span class="sd">     </span>
-<span class="sd">        =========    ====</span>
-<span class="sd">        color.hex    url</span>
-<span class="sd">        =========    ====</span>
-<span class="sd">        0x634ef9     http://t.co/9OXdTPFOXK</span>
-<span class="sd">        0x31a77c     http://t.co/99kdUpov9E</span>
-<span class="sd">        0x98d3be     http://t.co/Os53Hh3qs7</span>
-<span class="sd">        =========    ====</span>
+<span class="sd">        =========    =======    ===</span>
+<span class="sd">        color.hex    tweeted    url</span>
+<span class="sd">        =========    =======    ===</span>
+<span class="sd">        0x634ef9     False      http://t.co/9OXdTPFOXK</span>
+<span class="sd">        0x31a77c     False      http://t.co/99kdUpov9E</span>
+<span class="sd">        0x98d3be     False      http://t.co/Os53Hh3qs7</span>
+<span class="sd">        =========    =======    ===</span>
 
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
+    <span class="n">tweeted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -335,10 +341,10 @@
     <span class="sd">&quot;&quot;&quot;Plural color bigrams.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
-<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
-<span class="sd">        | singular (``CharField``): singular of the second word, ``max_length = 40``.</span>
-<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency </span>
+<span class="sd">        | w1 (CharField): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (CharField): second word, ``max_length = 40``.</span>
+<span class="sd">        | singular (CharField): singular of the second word, ``max_length = 40``.</span>
+<span class="sd">        | f (PositiveIntegerField): bigram&#39;s frequency </span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries:</span>
 <span class="sd">    </span>
@@ -370,9 +376,9 @@
     <span class="sd">&quot;&quot;&quot;Unbracketed bigrams.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
-<span class="sd">        | w1 (``CharField``): first word, ``max_length = 40``.</span>
-<span class="sd">        | w2 (``CharField``): second word, ``max_length = 40``.</span>
-<span class="sd">        | f (``PositiveIntegerField``): bigram&#39;s frequency  </span>
+<span class="sd">        | w1 (CharField): first word, ``max_length = 40``.</span>
+<span class="sd">        | w2 (CharField): second word, ``max_length = 40``.</span>
+<span class="sd">        | f (PositiveIntegerField): bigram&#39;s frequency  </span>
 <span class="sd">        </span>
 <span class="sd">    Sample entries:</span>
 <span class="sd">    </span>

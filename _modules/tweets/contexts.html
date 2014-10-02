@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>color_tweets.views &mdash; Twatbot 0.0.1 documentation</title>
+  <title>tweets.contexts &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -95,7 +95,7 @@
       
           <li><a href="../index.html">Module code</a> &raquo;</li>
       
-    <li>color_tweets.views</li>
+    <li>tweets.contexts</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -104,29 +104,50 @@
 </div>
           <div role="main">
             
-  <h1>Source code for color_tweets.views</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. py:module:: `views`</span>
+  <h1>Source code for tweets.contexts</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. py:module:: contexts</span>
 <span class="sd">    :platform: Unix</span>
-<span class="sd">    :synopsis: Views for Django app.</span>
+<span class="sd">    </span>
+<span class="sd">Contexts for framing the tweets. </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+
+<div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Abstract base class for contexts.</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Create a child class of this and override ``build_tweet`` -method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+     
+<div class="viewcode-block" id="Context.build_tweet"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.Context.build_tweet">[docs]</a>    <span class="k">def</span> <span class="nf">build_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build tweet for color and its name.</span>
 <span class="sd">        </span>
-<span class="sd">Custom views for the app for testing and publishing new tweets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-
-<span class="c"># Create your views here.</span>
-
-<div class="viewcode-block" id="home"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.home">[docs]</a><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Basic view to be implemented.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
-
-</div>
-<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../color_tweets/views.html#color_tweets.views.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Blend two colors view mock.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+<span class="sd">        .. note:: </span>
+<span class="sd">            Override in child class!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_name</span><span class="p">)</span>
+    
+    </div></div>
+<div class="viewcode-block" id="TextContext"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.TextContext">[docs]</a><span class="k">class</span> <span class="nc">TextContext</span><span class="p">(</span><span class="n">Context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basic text context. Nothing fancy here, yet.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="TextContext.build_tweet"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.TextContext.build_tweet">[docs]</a>    <span class="k">def</span> <span class="nf">build_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build tweet for color name.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | color_name (str): Human readable name for the color.</span>
+<span class="sd">            | \**kwargs: Optional keyword arguments. Should have ``color_code`` -key and supports optionally at least ``everycolorbot_url`` which personalizes the response for Everycolorbot.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            str, tweet for the color code-name pair.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;everycolorbot_url&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;@everycolorbot Gee, that&#39;s a nice color. I call it </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">color_name</span>
+        <span class="k">return</span> <span class="s">&quot;By hard thinking, I have come to the conclusion that color </span><span class="si">%s</span><span class="s"> is called </span><span class="si">%s</span><span class="s">. #geniusatwork&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_name</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
