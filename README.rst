@@ -51,8 +51,11 @@ For this weeks changes to take place (if you are using ``git pull`) you have to
 scracth content in the database (due to schema changes).
 
 	$> python manage.py sqlclear > drop.txt
+	
 	$> python manage.py dbshell < drop.txt
+	
 	$> python manage.py syncdb
+	
 	$> python manage.py loaddata tweets/fixtures/fixtures.json
 	
 This week I mostly set up general module layout and work flow, i.e. generated 
@@ -68,8 +71,8 @@ Test tweets can be found from:
 
 	http://127.0.0.1:8000/tweets
 	
-Although nothing is tweeted yet, but the functionality is in place. The url generates
-one tweet for one random everycolorbot color / refresh. As you can see, it is 
+Although nothing is tweeted yet, but the functionality is in place (and one flag set away from tweeting). 
+The url generates one tweet for one random everycolorbot color / refresh. As you can see, it is 
 just a dummy template still.
 
 
