@@ -75,6 +75,8 @@ Although nothing is tweeted yet, but the functionality is in place (and one flag
 The url generates one tweet for one random everycolorbot color / refresh. As you can see, it is 
 just a dummy template still.
 
+The project's documentation is little bit dragging behind, will try to fix this in the upcoming week.
+
 
 
 
