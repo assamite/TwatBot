@@ -25,7 +25,7 @@ class ColorSemantics():
    
     .. warning::
         You should not instantiate this class by yourself, instead use the automatically
-        loaded class instance available at ``tweets.semantics``.
+        loaded class instance available at ``tweets.core.COLOR_SEMANTICS``.
     """ 
     def __init__(self):
         self.reload_resources()
@@ -72,6 +72,12 @@ class ColorSemantics():
         ugs = ColorUnigramSplit.objects.all()
         for u in ugs:
             self.unigram_splits.append((u.w1, u.w2))
+            
+        self.blended_unigram_splits = {}
+        ret = self.blend_all_unigram_splits(frmt = 'html', a_head = 0.55)
+        for u in ret:
+            blend_color = u[1][2]
+            self.blended_unigram_splits[blend_color] = u[0]    
          
         self.bigrams = {}
         bigs = UnbracketedColorBigram.objects.all()
@@ -147,6 +153,29 @@ class ColorSemantics():
         return dists[:k]
     
     
+    def get_knn_blended_unigrams(self, color_code, k = 1):
+        """Retrieve k-nearest color codes for given color code from blended unigram colors.
+        
+        .. note:: 
+            This function is not optimalized in anyway and thus may take quite
+            some time while it parses through all the available colors.
+            
+        **Args:**
+            | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module.
+            | k (int): Amount of nearest neighbors to return.
+            
+        **Returns:**
+            List of tuples, (color code, distance, color name) k-nearest colors from resources,
+            where color code is an unicode string in html-format, distance
+            is non-negative float and color name is the... name of the color.   
+        """
+        assert(type(k) is int)
+        assert(k > 0)
+        color_dict = self.blended_unigram_splits
+        dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, color_dict[c]), color_dict.keys()))
+        return dists[:k]
+    
+    
     def blend_all_unigram_splits(self, frmt = 'html', **blend_options):
         """Convenience function to blend all loaded ``ColorUnigramSplit`` s. 
         
@@ -205,6 +234,22 @@ class ColorSemantics():
         if frmt == 'html':
             color_blend = cu.rgb2html(color_blend)
         return (chead, cmodifier, color_blend)
+    
+    
+    def name_color(self, color_code, **kwargs):
+        """Give name for the given color code.
+        
+        **Args:**
+             | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module. 
+             | \**kwargs: Optional keyword arguments. Currently pass
+        
+        **Returns:**
+            str or unicode, human readable name for the color.
+        """
+        ret = self.get_knn_blended_unigrams(color_code, k = 1)
+        return ret[0][2][0] + ret[0][2][1]
+        
+        
         
         
     

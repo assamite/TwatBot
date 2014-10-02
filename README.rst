@@ -45,4 +45,33 @@ Mostly this has to do with the way the "head" and "modifier" words should be
 selected from the unigram split. Sometimes head should be the first word and 
 sometimes the second word.
 
+Week 4
+*****************
+For this weeks changes to take place (if you are using ``git pull`) you have to 
+scracth content in the database (due to schema changes).
+
+	$> python manage.py sqlclear > drop.txt
+	$> python manage.py dbshell < drop.txt
+	$> python manage.py syncdb
+	$> python manage.py loaddata tweets/fixtures/fixtures.json
+	
+This week I mostly set up general module layout and work flow, i.e. generated 
+a lot of dummy implementations for context framing, core mechanics and 
+tweet generation.
+	
+After starting the test server, Everycolorbot colors - new color name matches 
+can be found from (random 10 are :
+
+	http://127.0.0.1:8000/names
+	
+Test tweets can be found from:
+
+	http://127.0.0.1:8000/tweets
+	
+Although nothing is tweeted yet, but the functionality is in place. The url generates
+one tweet for one random everycolorbot color / refresh. As you can see, it is 
+just a dummy template still.
+
+
+
 

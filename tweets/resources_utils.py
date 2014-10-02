@@ -40,7 +40,7 @@ def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bi
         The first line of the file is though to contain field names and is omitted.
     
     **Args**
-        | filepath (``str``): Path to the file with entries.
+        | filepath (str): Path to the file with entries.
     """
     __set_django()
     from tweets.models import BracketedColorBigram
@@ -66,7 +66,7 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
         The first line of the file is though to contain field names and is omitted.
     
     **Args**
-        | filepath (``str``): Path to the file with entries.
+        | filepath (str): Path to the file with entries.
     """
     __set_django()
     from tweets.models import ColorMap, Color
@@ -100,7 +100,7 @@ def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
         The first line of the file is though to contain field names and is omitted.
     
     **Args**
-        | filepath (``str``): Path to the file with entries.
+        | filepath (str): Path to the file with entries.
     """
     __set_django()
     from tweets.models import ColorUnigram
@@ -125,7 +125,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
         The first line of the file is though to contain field names and is omitted.
     
     **Args**
-        | filepath (``str``): Path to the file with entries.
+        | filepath (str): Path to the file with entries.
     """
     __set_django()
     from tweets.models import EveryColorBotTweet, Color
@@ -144,7 +144,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
         if color_inst is None:
             color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
             color_inst.save()
-        instance = EveryColorBotTweet(url = u, color = color_inst)
+        instance = EveryColorBotTweet(url = u, color = color_inst, tweeted = False)
         instance.save()
         
         
@@ -158,7 +158,7 @@ def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.
         The first line of the file is though to contain field names and is omitted.
     
     **Args**
-        | filepath (``str``): Path to the file with entries.
+        | filepath (str): Path to the file with entries.
     """
     __set_django()
     from tweets.models import PluralColorBigram

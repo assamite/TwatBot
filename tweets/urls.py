@@ -5,7 +5,7 @@
 Custom urls for tweets-app.   
 """
 from django.conf.urls import patterns, include, url
-from views import home, blend
+from views import home, blend, names, tweets
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,4 +14,6 @@ urlpatterns = patterns('',
 
     url(r'^$', home, name='twatbot_home_url'),
     url(r'^blend$', blend, name='twatbot_blend_url'),
+    url(r'^names$', names, name='twatbot_names_url'),
+    url(r'^tweets$', tweets, name='twatbot_tweets_url'),
 )

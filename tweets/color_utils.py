@@ -13,8 +13,8 @@ this module.
 The module relies on ``colormath``-package's functionality.
 Furthermore, three light weight color definitions are supported for convenience:
 
-* hex: ``str`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.
-* html: ``str`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.
+* hex: ``str`` or ``unicode`` in form of ``0xrrggbb``, where ``r``, ``g`` and ``b`` are hex codes.
+* html: ``str`` or ``unicode`` in form of ``#rrggbb``, where ``r``, ``g``, ``b`` are hex codes.
 * rgb: ``tuple`` in form of ``(r, g, b)``, where ``r``, ``g`` and ``b`` are integers in [0, 255].
 
 .. note::
@@ -39,7 +39,7 @@ def is_rgb(rgb):
     Accepted rgb-format is an integer 3-tuple with all values in [0, 255]
     
     **Args:**
-        rgb (``tuple``): Variable to be verified.
+        rgb (tuple): Variable to be verified.
         
     **Returns:**
         ``True`` if variable is in rgb-format, ``False`` otherwise.   
@@ -134,7 +134,7 @@ def hex2rgb(hex):
     """Convert hex-string color into rgb-tuple.
     
     **Args:**
-        hex (``str``): Color in hex-format, e.g. ``0xffeedd``.
+        hex (str): Color in hex-format, e.g. ``0xffeedd``.
     
     **Returns:**
         Color in rgb as 3-tuple, e.g. ``(255, 255, 255)``.
@@ -148,7 +148,7 @@ def rgb2hex(rgb):
     """Convert rgb-tuple into hex-color string.
     
     **Args:**
-        rgb (``tuple``): Color in rgb-format, e.g. ``(255, 255, 255)``.
+        rgb (tuple): Color in rgb-format, e.g. ``(255, 255, 255)``.
     
     **Returns:**
         Color as hex-string, e.g. ``0xffeedd``.
@@ -162,7 +162,7 @@ def html2rgb(html):
     """Convert html color format string into rgb-tuple.
     
     **Args:**
-        html (``str``): color in html-format, e.g. ``#ffeedd``
+        html (str): color in html-format, e.g. ``#ffeedd``
     
     **Returns:**
         Color in rgb as 3-tuple, e.g. ``(255, 255, 255)``.
@@ -176,7 +176,7 @@ def rgb2html(rgb):
     """Convert rgb-tuple into html color format string.
     
     **Args:**
-        rgb (``tuple``): color in rgb-format, e.g. ``(255, 255, 255)``
+        rgb (tuple): color in rgb-format, e.g. ``(255, 255, 255)``
     
     **Returns:**
         Color in html-format string, e.g. ``#ffeedd``.
@@ -202,8 +202,8 @@ def blend(head, modifier, **kwargs):
         | modifier: modifier color in any supported format.
         | kwargs: Optional blending instructions. Currently supported keyword arguments are:
         
-            | a_head (``float``): amount of head color to mix. Should be in [0, 1]. 
-            | a_lab (``tuple``): amount of each head color component to 
+            | a_head (float): amount of head color to mix. Should be in [0, 1]. 
+            | a_lab (tuple): amount of each head color component to 
             | mix, each value in tuple should be in [0, 1].
             
         | If a_lab is present, a_head is ignored. 
