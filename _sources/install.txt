@@ -15,6 +15,10 @@ using this project.
 
 **Short installing notes:**
 
+* Clone (or fork) project's git-repository::
+
+	$> git clone https://github.com/assamite/TwatBot.git
+
 * Install `pip <https://pypi.python.org/pypi/pip>`_
 * Install third party libraries::
 

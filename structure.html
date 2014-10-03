@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Bot’s Structure &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -28,7 +28,9 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="Tweets Package" href="tweets/index.html"/>
+        <link rel="prev" title="Installing" href="install.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -44,7 +46,7 @@
       <div class="wy-side-nav-search">
         <a href="index.html" class="fa fa-home"> Twatbot</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -55,10 +57,14 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code_layout.html">Code Layout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Bot&#8217;s Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#code-layout">Code Layout</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tweets/general.html">General Info</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/framing.html">Framing</a></li>
@@ -68,7 +74,6 @@
 <li class="toctree-l2"><a class="reference internal" href="tweets/resources_utils.html">Resources Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
 </ul>
@@ -94,8 +99,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>Bot&#8217;s Structure</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/structure.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -103,22 +110,48 @@
 </div>
           <div role="main">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="bot-s-structure">
+<h1>Bot&#8217;s Structure<a class="headerlink" href="#bot-s-structure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="code-layout">
+<h2>Code Layout<a class="headerlink" href="#code-layout" title="Permalink to this headline">¶</a></h2>
+<p>Basic structure of the bot&#8217;s code follows modern Django project&#8217;s layout:</p>
+<div class="highlight-python"><div class="highlight"><pre>project_root/
+        manage.py        -- Django&#39;s management module
+        README.rst       -- Readme for Github
+        requirements.txt -- requirements for pip installation
 
-  
-  <div id="search-results">
-  
-  </div>
+        TwatBot/
+                __init__.py
+                settings.py  -- Django settings
+                lsettings.py -- User created local settings
+                urls.py      -- Root url-config for Django
+                wsgi.py      -- Django module for wsgi
+
+        tweets/
+                -- main app of the project, see package&#39;s documentation
+                fixtures/
+                        -- initial data dumps, created from pregiven resources
+        resources/
+                -- pregiven resources for the project
+        docs/
+                -- Sphinx documentation source files
+</pre></div>
+</div>
+</div>
+</div>
+
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tweets/index.html" class="btn btn-neutral float-right" title="Tweets Package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installing"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -154,7 +187,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -170,14 +202,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

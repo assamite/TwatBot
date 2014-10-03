@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Tweets Module" href="index.html"/>
+        <link rel="up" title="Tweets Package" href="index.html"/>
         <link rel="next" title="Framing" href="framing.html"/>
         <link rel="prev" title="Core Functionality" href="core.html"/> 
 
@@ -60,7 +60,8 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Module</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
@@ -70,6 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
 </ul>
@@ -95,7 +97,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Tweets Module</a> &raquo;</li>
+          <li><a href="index.html">Tweets Package</a> &raquo;</li>
       
     <li>Muses</li>
       <li class="wy-breadcrumbs-aside">
@@ -126,12 +128,20 @@ mappings&#8217; values would suffer if no <tt class="docutils literal"><span cla
 <dd><p>Muse which inspires tweets by selecting colors from Everycolorbot&#8217;s 
 tweets.</p>
 <p>Does not pick same color twice, i.e. the results are saved to the
-database, and if run out of Everycolorbot tweet&#8217;s then does not inspire
+database, and if run out of Everycolorbot tweet&#8217;s does not inspire
 anymore.</p>
+<p>The saving of the tweeted status happens only after the tweet has been 
+successfully made by the core.</p>
 <dl class="method">
 <dt id="tweets.muses.EveryColorBotMuse.inspire">
 <tt class="descname">inspire</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse.inspire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse.inspire" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select random color from Everycolorbot&#8217;s untweeted colors.</p>
+<dd><p>Select random color from the Everycolorbot&#8217;s tweets, which TwatBot
+has not tweeted yet.</p>
+<dl class="docutils">
+<dt><strong>Returns:</strong></dt>
+<dd>Dict, which has <tt class="docutils literal"><span class="pre">color_code</span></tt> and <tt class="docutils literal"><span class="pre">everycolorbot_url</span></tt> -keys. If 
+all the colors has been tweeted, returns empty dict.</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

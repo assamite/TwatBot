@@ -58,7 +58,8 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Module</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
@@ -68,6 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
 </ul>
@@ -134,8 +136,9 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">def</span> <span class="nf">__set_django</span><span class="p">():</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
 
 <div class="viewcode-block" id="populate_bracketed_color_bigrams"><a class="viewcode-back" href="../../tweets/resources_utils.html#tweets.resources_utils.populate_bracketed_color_bigrams">[docs]</a><span class="k">def</span> <span class="nf">populate_bracketed_color_bigrams</span><span class="p">(</span><span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;../resources/bracketed_color_bigrams.tsv&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Populate BracketedColorBigrams model with entries found from file.</span>

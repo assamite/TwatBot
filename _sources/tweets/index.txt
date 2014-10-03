@@ -1,4 +1,4 @@
-Tweets Module
+Tweets Package
 ================
 
 .. toctree::
@@ -15,7 +15,7 @@ Tweets Module
 	views
 	
 	
-Main package of the project, developed as a Django app. It has currently following modules.
+Main package of the project, developed as a Django app. The app has currently following modules.
 
 * **Django App Modules:**
 
@@ -34,3 +34,51 @@ Main package of the project, developed as a Django app. It has currently followi
 	* :py:mod:`color_semantics`: Semantically informed color manipulations
 	* :py:mod:`color_utils`: Semantic ignorant color utility functions
 	* :py:mod:`resources_utils`: Functions to populate Django models with contents in ``resources/``
+	
+
+General Functionality
+---------------------
+
+.. note:: 
+	A lot of this is still in dummy implementations.
+
+General functionality and data flow of the package starts from the :py:mod:`core` -module.
+It gathers and unifies other modules' functionality together and also acts
+as a jury which allows or does no allow tweets to be made. Other modules provide
+partial contents and act in different roles in the building of the tweets.
+
+*Muses*
+
+	Muses are the sources of the inspiration for the TwatBot. In essence, they are
+	sources which generate color codes on demand. However, they are not restricted 
+	to only provide color codes, but can also give various framing -- or other --
+	information of the inspiration source, e.g. images, attitudes and such.
+
+*Contexts*
+
+	Contexts provide framings for the tweets. They provide actual contents of the
+	tweet and should be versatile enough in their own right to prohibit meaningless 
+	repetition in the tweets. Good contexts accept and use different resources given
+	by the muses.
+
+*Color Semantics*
+
+	The main functionality of the color semantics is to provide name suggestions for 
+	the color codes -- with an idea how good the matching is -- provided by the muses. 
+	The contexts use these name suggestions in generating the suggestions for the 
+	tweets contents.
+
+*Core*
+
+	Core glues together color code - color name - context mappings and evaluates if 
+	they are good enough to be tweeted. It also compares given color codes and contexts
+	to last tweets memory (to be implemented) so that TwatBot does not appear to be
+	too repetitive.
+
+
+
+
+
+
+	
+
