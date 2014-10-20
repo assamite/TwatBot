@@ -15,11 +15,22 @@ using this project.
 
 **Short installing notes:**
 
+* Clone (or fork) project's git-repository::
+
+	$> git clone https://github.com/assamite/TwatBot.git
+
 * Install `pip <https://pypi.python.org/pypi/pip>`_
 * Install third party libraries::
 
 	$> cd project_root/
 	$> pip install -r requirements.txt // you might need root privileges
+	
+* Create MySQL database::
+
+	$>mysql -u root -p
+	mysql> create database your_db_name character set 'utf8' collate 'utf8_general_ci';
+	mysql> grant usage on *.* to your_user@localhost identified by 'your_user_password';
+	mysql> grant all privileges on your_db_name.* to your_user@localhost ;	
 	
 * Create local settings file::
 
@@ -33,16 +44,36 @@ using this project.
 	TWITTER_API_SECRET  = 'Your Twitter API secret'
 	TWITTER_ACCESS_TOKEN = 'Your Twitter access token'
 	TWITTER_ACCESS_TOKEN_SECRET = 'Your Twitter access token secret'
-	
-* Create DB-tables and populate ``tweets``-app models with initial data::
+	DATABASE = 'your_db_name'
+	USER = 'your_user'
+	PASSWORD = 'your_user_password'
+
+* Create DB-tables and apply migrations::
 	
 	$> cd project_root/
 	$> python manage.py syncdb
+	$> python manage.py migrate django_cron
+	$> python manage.py migrate tweets
+	
+* Populate ``tweets``-app models with initial data::	
+
 	$> python manage.py loaddata tweets/fixtures/fixtures.json
 	
-.. note:: 
-	In case the syncdb fails, comment out everything in ``tweets/.__init__.py``
-	before running syncdb and remove comments afterwards. Will fix this later.
+* Configure project's cronjobs to be run every 5 minutes (or so)
+
+	* Open crontab in new editor from terminal::
+
+		$> env EDITOR=nano crontab -e
+		
+	* Write the cronjob (you need to change the paths to bash profile and project)::
+	
+		*/5 * * * * source ~/.bash_profile && python path/to/TwatBot/manage.py runcrons > path/to/TwatBot/logs/cronjob.log
+		
+	* Save and exit. Now the terminal should say something like::
+	
+		crontab: installing new crontab
+	
+* Install `Node.js <http://nodejs.org/>`_, it is needed for some of the context generators.
 	
 **Local Usage:**
 	

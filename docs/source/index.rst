@@ -21,6 +21,7 @@ Contents:
 	:includehidden:
 	
 	install
+	code_layout
 	tweets/index
 
 Indices and tables

@@ -10,7 +10,6 @@ import random
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from tweets.core import COLOR_SEMANTICS as semantics
 from tweets.core import TWEET_CORE
 
 
@@ -23,7 +22,8 @@ def home(request):
 
 def blend(request):
     """Test blending of splitted unigrams."""
-    ret = semantics.blend_all_unigram_splits(a_head = 0.7)
+    from tweets.core import COLOR_SEMANTICS as semantics
+    ret = semantics.blend_all_unigram_splits(a_head = 0.60)
     blends = []
     for r in ret:
         h, m = r[0]
@@ -35,6 +35,7 @@ def blend(request):
 
 def names(request):
     """Test color names for the everycolorbot tweets."""
+    from tweets.core import COLOR_SEMANTICS as semantics
     from models import EveryColorBotTweet
     objects = EveryColorBotTweet.objects.all()
     names = []
@@ -52,10 +53,18 @@ def names(request):
     return render_to_response('names_test.html', context)
         
     
-def tweets(request):
-    """Test tweeting functionality."""
-    ret = TWEET_CORE.tweet(send_to_twitter = False)
-    return HttpResponse(ret[0])
+def tweets(request, num = 1):
+    """Test tweeting functionality."""   
+    tweets = []
+    for i in xrange(int(num)):
+        ret = TWEET_CORE.tweet(send_to_twitter = False)
+        tweet = ret['tweet']
+        color_code = ret['metadata']['color_code']
+        value = ret['value']
+        tweets.append({'tweet': tweet, 'color_code': color_code, 'value': value})
+        
+    context = RequestContext(request, {'tweets': tweets})
+    return render_to_response('tweets_test.html', context)
     
     
     

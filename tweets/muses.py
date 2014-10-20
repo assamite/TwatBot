@@ -76,13 +76,24 @@ class EveryColorBotMuse(Muse):
     tweets. 
     
     Does not pick same color twice, i.e. the results are saved to the
-    database, and if run out of Everycolorbot tweet's then does not inspire
-    anymore."""
-
+    database, and if run out of Everycolorbot tweet's does not inspire
+    anymore.
     
+    The saving of the tweeted status happens only after the tweet has been 
+    successfully made by the core.
+    """
+
     def inspire(self):
-        """Select random color from Everycolorbot's untweeted colors."""
+        """Select random color from the Everycolorbot's tweets, which TwatBot
+        has not tweeted yet.
+        
+        **Returns:**
+            Dict, which has ``color_code`` and ``everycolorbot_url`` -keys. If 
+            all the colors has been tweeted, returns empty dict.
+        """
         untweeted = EveryColorBotTweet.objects.filter(tweeted=False)
+        if len(untweeted) == 0: 
+            return {}
         choice = random.choice(untweeted)
         return {'color_code': choice.color.html, 'everycolorbot_url': choice.url}
         

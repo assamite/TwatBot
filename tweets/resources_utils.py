@@ -27,8 +27,9 @@ import os
 import sys
 
 def __set_django():
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
+    if not 'DJANGO_SETTINGS_MODULE' in os.environ:
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 
 def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bigrams.tsv"):
     """Populate BracketedColorBigrams model with entries found from file.
@@ -49,11 +50,14 @@ def populate_bracketed_color_bigrams(filepath = "../resources/bracketed_color_bi
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        sb, w1, w2, eb, f = e.strip().split("\t")
-        print "Reading: ", sb, w1, w2, eb, f
-        instance = BracketedColorBigram(start_bracket = sb, w1 = w1, w2 = w2,\
-                                         end_bracket = eb, f = int(f))
-        instance.save()
+        try:
+            sb, w1, w2, eb, f = e.strip().split("\t")
+            print "Reading: ", sb, w1, w2, eb, f
+            instance = BracketedColorBigram(start_bracket = sb, w1 = w1, w2 = w2,\
+                                             end_bracket = eb, f = int(f))
+            instance.save()
+        except:
+            pass
 
 
 def populate_colormap(filepath = "../resources/color_map.tsv"):
@@ -76,18 +80,21 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        s, c, html = e.strip().split("\t")
-        print "Reading: ", s, c, html
-        html = html.strip()
-        R, G, B = cu.html2rgb(html)
-        chex = cu.rgb2hex((R, G, B))
-        l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
-        color_inst = Color.objects.get_or_none(html = html)                                                   
-        if color_inst is None:
-            color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
-            color_inst.save()
-        instance = ColorMap(stereotype = s, base_color = c, color = color_inst)
-        instance.save()
+        try:
+            s, c, html = e.strip().split("\t")
+            print "Reading: ", s, c, html
+            html = html.strip()
+            R, G, B = cu.html2rgb(html)
+            chex = cu.rgb2hex((R, G, B))
+            l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
+            color_inst = Color.objects.get_or_none(html = html)                                                   
+            if color_inst is None:
+                color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
+                color_inst.save()
+            instance = ColorMap(stereotype = s, base_color = c, color = color_inst)
+            instance.save()
+        except:
+            pass
         
         
 def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
@@ -109,11 +116,14 @@ def populate_color_unigrams(filepath = "../resources/color_unigrams.tsv"):
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        s, f = e.strip().split("\t")
-        print "Reading: ", s, f
-        instance = ColorUnigram(solid_compound = s, f = int(f))
-        instance.save()
-        
+        try:
+            s, f = e.strip().split("\t")
+            print "Reading: ", s, f
+            instance = ColorUnigram(solid_compound = s, f = int(f))
+            instance.save()
+        except:
+            pass
+            
         
 def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.tsv"):
     """Populate EveryColorBotTweets model with entries found from file.
@@ -135,17 +145,20 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        chex, u = e.strip().split("\t")
-        print "Reading: ", chex, u
-        R, G, B = cu.hex2rgb(chex)
-        html = cu.rgb2html((R, G, B))
-        l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
-        color_inst = Color.objects.get_or_none(html = html)                                                   
-        if color_inst is None:
-            color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
-            color_inst.save()
-        instance = EveryColorBotTweet(url = u, color = color_inst, tweeted = False)
-        instance.save()
+        try: 
+            chex, u = e.strip().split("\t")
+            print "Reading: ", chex, u
+            R, G, B = cu.hex2rgb(chex)
+            html = cu.rgb2html((R, G, B))
+            l, a, b = (cu._2lab((R, G, B))).get_value_tuple()
+            color_inst = Color.objects.get_or_none(html = html)                                                   
+            if color_inst is None:
+                color_inst = Color(html = html, hex = chex, rgb_r = R, rgb_g = G, rgb_b = B, l = l, a = a, b = b)
+                color_inst.save()
+            instance = EveryColorBotTweet(url = u, color = color_inst, tweeted = False)
+            instance.save()
+        except:
+            pass
         
         
 def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.tsv"):
@@ -167,11 +180,14 @@ def populate_plural_color_bigrams(filepath = "../resources/plural_color_bigrams.
         entries = filehandle.readlines()
         
     for e in entries[1:]:
-        w1, w2, f, s = e.strip().split("\t")
-        print "Reading: ", w1, w2, f, s
-        instance = PluralColorBigram(w1 = w1, w2 = w2,\
-                                         singular = s, f = int(f))
-        instance.save()
+        try:
+            w1, w2, f, s = e.strip().split("\t")
+            print "Reading: ", w1, w2, f, s
+            instance = PluralColorBigram(w1 = w1, w2 = w2,\
+                                             singular = s, f = int(f))
+            instance.save()
+        except:
+            pass
 
 
 def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_color_bigrams.tsv"):
@@ -195,8 +211,11 @@ def populate_unbracketed_color_bigrams(filepath = "../resources/unbracketed_colo
     for e in entries[1:]:
         w1, w2, f = e.strip().split("\t")
         print "Reading: ", w1, w2, f
-        instance = UnbracketedColorBigram(w1 = w1, w2 = w2, f = int(f))
-        instance.save()
+        try: 
+            instance = UnbracketedColorBigram(w1 = w1, w2 = w2, f = int(f))
+            instance.save()
+        except:
+            pass
 
 
 def split_unigrams():
@@ -240,12 +259,12 @@ def populate_default():
     
     Default parameter for each model points into `../resources/<relevant_file_name>.tsv`.
     """
-    populate_everycolorbot_tweets("../resources/everycolorbot_tweets.tsv")
-    populate_plural_color_bigrams("../resources/plural_color_bigrams.tsv")
+    populate_plural_color_bigrams("../resources/plural_color_bigrams.tsv") 
     populate_color_unigrams("../resources/color_unigrams.tsv")
     populate_colormap("../resources/color_map.tsv")
     populate_unbracketed_color_bigrams("../resources/unbracketed_color_bigrams.tsv")
     populate_bracketed_color_bigrams("../resources/bracketed_color_bigrams.tsv")
+    populate_everycolorbot_tweets("../resources/everycolorbot_tweets.tsv")
     split_unigrams()
     
     

@@ -61,6 +61,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'south',
+    'django_cron',
     'tweets'
 )
 
@@ -83,8 +85,11 @@ WSGI_APPLICATION = 'TwatBot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': ls.DATABASE,
+        'USER': ls.DB_USER,
+        'PASSWORD': ls.DB_PASSWORD,
+        'DEFAULT_CHARSET': 'utf-8',
     }
 }
 
@@ -107,3 +112,48 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+#CRON_CLASSES = [
+#    "tweets.cron.TwitterAccountListener",
+#    # ...
+#]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'debug.log'),
+        },
+        'cron': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_cron.log'),
+        },
+                 
+        'core': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'tweets_core.log'),
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'tweets.cron': {
+            'handlers': ['cron'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+           'tweets.core': {
+            'handlers': ['core'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },    
+}

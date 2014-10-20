@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^$', home, name='twatbot_home_url'),
     url(r'^blend$', blend, name='twatbot_blend_url'),
     url(r'^names$', names, name='twatbot_names_url'),
-    url(r'^tweets$', tweets, name='twatbot_tweets_url'),
+    url(r'^tweets/(?P<num>.*)$', tweets, name='twatbot_tweets_url'),
 )

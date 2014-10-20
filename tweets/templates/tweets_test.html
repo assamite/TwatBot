@@ -1,0 +1,23 @@
+{% extends 'home.html' %}
+
+{% block body %}
+<h1>Test for tweets for Everycolorbot color codes</h1>
+
+N color tweets are sampled at random to tackle the load times.
+
+<table>
+<tr>
+	<td><div class='blend_title'>Search Color</div></td>
+	<td><div class='blend_title'>value</div></td>
+	<td><div class='blend_title'>tweet</div></td>
+</tr>
+{% for t in tweets %}
+<tr>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ t.color_code }}"></td>
+	<td height=40>{{ t.value }}</td>
+	<td height=40>{{ t.tweet }}</td>
+	
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -95,11 +95,11 @@ class BracketedColorBigram(models.Model):
         =============    =======    ======    ===========    =    
      
     """   
-    start_bracket = models.CharField(max_length = 40, blank = True)
-    w1 = models.CharField(max_length = 40, blank = True)
-    w2 = models.CharField(max_length = 40, blank = True)
-    end_bracket = models.CharField(max_length = 40, blank = True)
-    f = models.PositiveIntegerField(blank = True)
+    start_bracket = models.CharField(max_length = 40)
+    w1 = models.CharField(max_length = 40)
+    w2 = models.CharField(max_length = 40)
+    end_bracket = models.CharField(max_length = 40)
+    f = models.PositiveIntegerField(default = 0)
     objects = GetOrNoneManager()
     
     def __str__(self):
@@ -129,7 +129,7 @@ class ColorMap(models.Model):
         ==========    ==========     ===    
          
     """ 
-    stereotype = models.CharField(max_length = 40, blank = True)
+    stereotype = models.CharField(max_length = 40)
     base_color = models.CharField(max_length = 40, blank = True)
     color = models.ForeignKey(Color)
     objects = GetOrNoneManager()
@@ -156,8 +156,8 @@ class ColorUnigram(models.Model):
         amberdawn          300
         ===============    =    
     """   
-    solid_compound = models.CharField(max_length = 50, blank = True)
-    f = models.PositiveIntegerField(blank = True) 
+    solid_compound = models.CharField(max_length = 50)
+    f = models.PositiveIntegerField(default = 0) 
     objects = GetOrNoneManager()
     
     def __str__(self):
@@ -189,8 +189,8 @@ class ColorUnigramSplit(models.Model):
         ========    ======= 
     """   
     
-    w1 = models.CharField(max_length = 40, blank = True)
-    w2 = models.CharField(max_length = 40, blank = True)
+    w1 = models.CharField(max_length = 40)
+    w2 = models.CharField(max_length = 40)
     original = models.ForeignKey(ColorUnigram)
     objects = GetOrNoneManager()
     
@@ -206,6 +206,7 @@ class EveryColorBotTweet(models.Model):
     """ URL's and colors for Everycolorbot's tweets.
     
     **Fields:**
+        | added (DateTimeField): When the tweet was added to the database.
         | color (ForeignKey): Reference to ``Color``-model object.
         | tweeted (BooleanField): Has the color been used in a tweet.
         | url (URLField): URL for the tweet.
@@ -221,9 +222,11 @@ class EveryColorBotTweet(models.Model):
         =========    =======    ===
 
     """ 
-    url = models.URLField(blank = True, unique = True)
+    url = models.URLField(unique = True)
     color = models.ForeignKey(Color)
     tweeted = models.BooleanField(default = False)
+    added = models.DateTimeField(auto_now_add = True, null = True)
+    tweet_id = models.CharField(max_length = 200, null = True)
     objects = GetOrNoneManager()
     
     def __str__(self):
@@ -250,10 +253,10 @@ class PluralColorBigram(models.Model):
         =======    ======    =====    ========  
         
     """
-    w1 = models.CharField(max_length = 40, blank = True)
-    w2 = models.CharField(max_length = 40, blank = True)
+    w1 = models.CharField(max_length = 40)
+    w2 = models.CharField(max_length = 40)
     singular = models.CharField(max_length = 40, blank = True)
-    f = models.PositiveIntegerField(blank = True)
+    f = models.PositiveIntegerField(default = 0)
     objects = GetOrNoneManager()
     
     def __str__(self):
@@ -283,9 +286,9 @@ class UnbracketedColorBigram(models.Model):
         tan        leather    2282
         =======    =======    =
     """
-    w1 = models.CharField(max_length = 40, blank = True)
-    w2 = models.CharField(max_length = 40, blank = True)
-    f = models.PositiveIntegerField(blank = True)
+    w1 = models.CharField(max_length = 40)
+    w2 = models.CharField(max_length = 40)
+    f = models.PositiveIntegerField(default = 0)
     objects = GetOrNoneManager()
     
     def __str__(self):
@@ -294,3 +297,24 @@ class UnbracketedColorBigram(models.Model):
     class Meta:
         unique_together = ('w1', 'w2')
         ordering = ['-f']
+        
+        
+class Tweet(models.Model):
+    """Tweets made by the bot.
+    
+    **Fields:**
+        | message (CharField): Tweet's text
+        | muse (CharField): Class name of the used muse
+        | context (CharField): Class name of the used context generator
+        | color_code (CharField): Color code of the tweet, in html format.
+        | color_name (CharField): Color name. 
+        | value (Float): Appreciation of the tweet, estimates color_code - color_name - message mapping's aptness.
+        
+    """
+    tweeted = models.DateTimeField(auto_now_add = True)
+    message = models.CharField(max_length = 160)
+    muse = models.CharField(max_length = 100)
+    context = models.CharField(max_length = 100)
+    color_code = models.CharField(max_length = 10)
+    color_name = models.CharField(max_length = 100)
+    value = models.FloatField(default = 0.0)

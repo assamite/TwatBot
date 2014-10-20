@@ -8,12 +8,18 @@ Semantic informed color manipulations.
 Color manipulations that are semantically informed, i.e. they have access to
 database models for color information and linguistic readymades.
 """
+import sys
+import os
 import operator
 import random
 
 import tweets.color_utils as cu
 
-from tweets.models import ColorMap, EveryColorBotTweet, UnbracketedColorBigram
+if 'DJANGO_SETTINGS_MODULE' not in os.environ:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
+
+from tweets.models import ColorMap, UnbracketedColorBigram
 from tweets.models import ColorUnigramSplit, ColorUnigram, PluralColorBigram
 from tweets.models import Color
 
@@ -74,10 +80,11 @@ class ColorSemantics():
             self.unigram_splits.append((u.w1, u.w2))
             
         self.blended_unigram_splits = {}
-        ret = self.blend_all_unigram_splits(frmt = 'html', a_head = 0.55)
-        for u in ret:
-            blend_color = u[1][2]
-            self.blended_unigram_splits[blend_color] = u[0]    
+        for a_head in (0.35, 0.5, 0.65):
+            ret = self.blend_all_unigram_splits(frmt = 'html', a_head = a_head)
+            for u in ret:
+                blend_color = u[1][2]
+                self.blended_unigram_splits[blend_color] = u[0]    
          
         self.bigrams = {}
         bigs = UnbracketedColorBigram.objects.all()
@@ -169,10 +176,10 @@ class ColorSemantics():
             where color code is an unicode string in html-format, distance
             is non-negative float and color name is the... name of the color.   
         """
-        assert(type(k) is int)
-        assert(k > 0)
+        if type(k) is not int or k < 1:
+            raise ValueError('k should be positive integer.')
         color_dict = self.blended_unigram_splits
-        dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, color_dict[c]), color_dict.keys()))
+        dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, color_dict[c][0] + " " + color_dict[c][1]), color_dict.keys()))
         return dists[:k]
     
     
@@ -236,18 +243,25 @@ class ColorSemantics():
         return (chead, cmodifier, color_blend)
     
     
-    def name_color(self, color_code, **kwargs):
-        """Give name for the given color code.
+    def name_color(self, color_code, k = 1, **kwargs):
+        """Give name(s) for the given color code.
         
         **Args:**
              | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module. 
-             | \**kwargs: Optional keyword arguments. Currently pass
+             | k (int): How many best names are retrieved.
+             | \**kwargs: Optional keyword arguments. Currently omitted.
         
         **Returns:**
-            str or unicode, human readable name for the color.
+            List of (name, distance)-tuples, where name is str or unicode, human 
+            readable name for the color and distance is distance for the color code-name, 
+            pairing.
         """
-        ret = self.get_knn_blended_unigrams(color_code, k = 1)
-        return ret[0][2][0] + ret[0][2][1]
+        if type(k) is not int or k < 1:
+            raise ValueError('k should be positive integer.')
+        ret = self.get_knn_blended_unigrams(color_code, k = k)
+        names = []
+        for r in ret: names.append((r[2], r[1]))
+        return names
         
         
         
