@@ -63,13 +63,12 @@
 <li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -135,6 +134,22 @@ $&gt; pip install -r requirements.txt // you might need root privileges
 </pre></div>
 </div>
 </li>
+<li><p class="first">From dependencies, <a class="reference external" href="http://www.nltk.org/">nltk</a>-package needs wordnet and <a class="reference external" href="https://textblob.readthedocs.org/en/dev/">textblob</a> some other corporas to be able to function. You can download them using following commands:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt;python -m textblob.download_corpora
+$&gt;python -c &quot;import nltk; nltk.download()&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install <a class="reference external" href="http://nodejs.org/">Node.js</a>, it is needed for some of the context generators.</p>
+</li>
+<li><p class="first">Install <a class="reference external" href="http://www.mysql.com/">MySQL</a> and create MySQL database:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt;mysql -u root -p
+mysql&gt; create database your_db_name character set &#39;utf8&#39; collate &#39;utf8_general_ci&#39;;
+mysql&gt; grant usage on *.* to your_user@localhost identified by &#39;your_user_password&#39;;
+mysql&gt; grant all privileges on your_db_name.* to your_user@localhost ;
+</pre></div>
+</div>
+</li>
 <li><p class="first">Create local settings file:</p>
 <div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/TwatBot/
 $&gt; touch lsettings.py
@@ -147,22 +162,53 @@ $&gt; touch lsettings.py
 <span class="n">TWITTER_API_SECRET</span>  <span class="o">=</span> <span class="s">&#39;Your Twitter API secret&#39;</span>
 <span class="n">TWITTER_ACCESS_TOKEN</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token&#39;</span>
 <span class="n">TWITTER_ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="s">&#39;Your Twitter access token secret&#39;</span>
+<span class="n">DATABASE</span> <span class="o">=</span> <span class="s">&#39;your_db_name&#39;</span>
+<span class="n">USER</span> <span class="o">=</span> <span class="s">&#39;your_user&#39;</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&#39;your_user_password&#39;</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create DB-tables and populate <tt class="docutils literal"><span class="pre">tweets</span></tt>-app models with initial data:</p>
+<li><p class="first">Create DB-tables and apply migrations:</p>
 <div class="highlight-python"><div class="highlight"><pre>$&gt; cd project_root/
 $&gt; python manage.py syncdb
-$&gt; python manage.py loaddata tweets/fixtures/fixtures.json
+$&gt; python manage.py migrate django_cron
+$&gt; python manage.py migrate tweets
+</pre></div>
+</div>
+</li>
+<li><p class="first">Populate <tt class="docutils literal"><span class="pre">tweets</span></tt>-app models with initial data:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; python manage.py loaddata tweets/fixtures/fixtures.json
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure project&#8217;s cronjobs to be run every 5 minutes (or so)</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This will make your bot to Tweet every once in a while, so only do this
+when you are ready to face the consequences.</p>
+<p class="last"><strong>If you just want to test the bot locally, don&#8217;t enable cronjobs.</strong></p>
+</div>
+<ul>
+<li><p class="first">Open crontab in new editor from terminal:</p>
+<div class="highlight-python"><div class="highlight"><pre>$&gt; env EDITOR=nano crontab -e
+</pre></div>
+</div>
+</li>
+<li><p class="first">Write the cronjob on new line (you need to change the paths to your bash profile and project):</p>
+<div class="highlight-python"><div class="highlight"><pre>*/5 * * * * source ~/.bash_profile &amp;&amp; python path/to/TwatBot/manage.py runcrons &gt; path/to/TwatBot/logs/cronjob.log
+</pre></div>
+</div>
+</li>
+<li><p class="first">Save and exit. Now the terminal should say something like:</p>
+<div class="highlight-python"><div class="highlight"><pre>crontab: installing new crontab
 </pre></div>
 </div>
 </li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In case the syncdb fails, comment out everything in <tt class="docutils literal"><span class="pre">tweets/.__init__.py</span></tt>
-before running syncdb and remove comments afterwards. Will fix this later.</p>
-</div>
+</div></blockquote>
+</li>
+</ul>
 <p><strong>Local Usage:</strong></p>
 <ul>
 <li><p class="first">Run the Django&#8217;s builtin test server:</p>

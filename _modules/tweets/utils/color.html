@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>tweets.color_utils &mdash; Twatbot 0.0.1 documentation</title>
+  <title>tweets.utils.color &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -24,12 +24,12 @@
 
   
   
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -43,9 +43,9 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <a href="../../../index.html" class="fa fa-home"> Twatbot</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -57,18 +57,18 @@
         
         
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/utils/index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
 </ul>
@@ -83,7 +83,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">Twatbot</a>
+        <a href="../../../index.html">Twatbot</a>
       </nav>
 
 
@@ -92,11 +92,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
       
-    <li>tweets.color_utils</li>
+    <li>tweets.utils.color</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -105,7 +105,7 @@
 </div>
           <div role="main">
             
-  <h1>Source code for tweets.color_utils</h1><div class="highlight"><pre>
+  <h1>Source code for tweets.utils.color</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">.. py:module:: color_utils</span>
@@ -137,11 +137,13 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">colormath.color_objects</span> <span class="kn">import</span> <span class="n">sRGBColor</span><span class="p">,</span> <span class="n">LabColor</span> 
 <span class="kn">from</span> <span class="nn">colormath.color_conversions</span> <span class="kn">import</span> <span class="n">convert_color</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 
 <span class="n">re_html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^#[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 <span class="n">re_hex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^0x[0-9a-fA-F]{6}$&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="is_rgb"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.is_rgb">[docs]</a><span class="k">def</span> <span class="nf">is_rgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted rgb-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted rgb-format is an integer 3-tuple with all values in [0, 255]</span>
@@ -163,7 +165,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+<div class="viewcode-block" id="is_html"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.is_html">[docs]</a><span class="k">def</span> <span class="nf">is_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted html-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted html-format is a string (or unicode string) in form of `#rrggbb``, where ``r``, ``g`` </span>
@@ -182,7 +184,7 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
+<div class="viewcode-block" id="is_hex"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.is_hex">[docs]</a><span class="k">def</span> <span class="nf">is_hex</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Verify that color variable is in accepted hex-format.</span>
 <span class="sd">    </span>
 <span class="sd">    Accepted hex-format is a string (or unicode string) in form of ``0xrrggbb``, where ``r``, ``g`` </span>
@@ -238,7 +240,7 @@
     <span class="k">return</span> <span class="n">c</span>
 
 
-<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
+<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert hex-string color into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -252,7 +254,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into hex-color string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -266,7 +268,7 @@
     <span class="k">return</span> <span class="s">&quot;0x{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
 
 </div>
-<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+<div class="viewcode-block" id="html2rgb"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.html2rgb">[docs]</a><span class="k">def</span> <span class="nf">html2rgb</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert html color format string into rgb-tuple.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -280,7 +282,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">html</span><span class="p">[</span><span class="mi">5</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2html"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.rgb2html">[docs]</a><span class="k">def</span> <span class="nf">rgb2html</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert rgb-tuple into html color format string.</span>
 <span class="sd">    </span>
 <span class="sd">    **Args:**</span>
@@ -294,7 +296,7 @@
     <span class="k">return</span> <span class="s">&quot;#{:02x}{:02x}{:02x}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
    
     </div>
-<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">modifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Blend two colors in Lab color space.</span>
 <span class="sd">    </span>
 <span class="sd">    Blending of colors is done based on optional keyword arguments that are </span>
@@ -335,7 +337,7 @@
     <span class="k">return</span> <span class="n">_2rgb</span><span class="p">(</span><span class="n">LabColor</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="ed"><a class="viewcode-back" href="../../tweets/color_utils.html#tweets.color_utils.ed">[docs]</a><span class="k">def</span> <span class="nf">ed</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
+<div class="viewcode-block" id="ed"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.ed">[docs]</a><span class="k">def</span> <span class="nf">ed</span><span class="p">(</span><span class="n">color1</span><span class="p">,</span> <span class="n">color2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Euclidean distance between two colors.</span>
 <span class="sd">    </span>
 <span class="sd">    The distance calculation is done in CIE Lab color space. </span>
@@ -351,7 +353,42 @@
     <span class="n">l1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">_2lab</span><span class="p">(</span><span class="n">color1</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
     <span class="n">l2</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">_2lab</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span><span class="o">.</span><span class="n">get_value_tuple</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">l1</span> <span class="o">-</span> <span class="n">l2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">a1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">b1</span> <span class="o">-</span> <span class="n">b2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_closest"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.get_closest">[docs]</a><span class="k">def</span> <span class="nf">get_closest</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get color closest to color code from the color list.</span>
+<span class="sd">    </span>
+<span class="sd">    **Returns:**</span>
+<span class="sd">        Tuple, (distance, color code)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">color_list</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Color list should be non-empty list.&quot;</span><span class="p">)</span>
+    <span class="n">min_ed</span> <span class="o">=</span> <span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">color_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">color_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">cur_ed</span> <span class="o">=</span> <span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cur_ed</span> <span class="o">&lt;</span> <span class="n">min_ed</span><span class="p">:</span>
+            <span class="n">min_ed</span> <span class="o">=</span> <span class="n">cur_ed</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">min_ed</span><span class="p">,</span> <span class="n">cur</span><span class="p">)</span>
     
+    </div>
+<div class="viewcode-block" id="create_temp_image"><a class="viewcode-back" href="../../../tweets/utils/color_utils.html#tweets.utils.color.create_temp_image">[docs]</a><span class="k">def</span> <span class="nf">create_temp_image</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">color_code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create temporal jpg-image of the color code.</span>
+<span class="sd">    </span>
+<span class="sd">    File is deleted when it is closed.</span>
+<span class="sd">    </span>
+<span class="sd">    **Args:**</span>
+<span class="sd">        | size (tuple): (int, int), dimensions for the image</span>
+<span class="sd">        | color_code: Color in any supported format.</span>
+<span class="sd">        </span>
+<span class="sd">    **Returns:**</span>
+<span class="sd">        NamedTemporaryFile, file&#39;s name has &#39;.jpg&#39;-suffix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">_2rgb</span><span class="p">(</span><span class="n">color_code</span><span class="p">))</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.jpg&quot;</span><span class="p">)</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="s">&quot;JPEG&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tmp</span>
     
             
     
@@ -385,22 +422,22 @@
 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
+            URL_ROOT:'../../../',
             VERSION:'0.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
         };
     </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
   
 
   

@@ -24,14 +24,13 @@
 
   
   
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Tweets Package" href="index.html"/>
-        <link rel="next" title="Models" href="models.html"/>
-        <link rel="prev" title="Color Utilities" href="color_utils.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Utils Package" href="index.html"/>
+        <link rel="prev" title="Utilities for Strings and Unicode" href="text_utils.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -45,9 +44,9 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="../index.html" class="fa fa-home"> Twatbot</a>
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -59,18 +58,18 @@
         
         
             <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
-<li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Resources Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#general-functionality">General Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tweets Package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../views.html">Views</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
 </ul>
@@ -85,7 +84,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">Twatbot</a>
+        <a href="../../index.html">Twatbot</a>
       </nav>
 
 
@@ -94,14 +93,16 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Tweets Package</a> &raquo;</li>
+          <li><a href="../index.html">Tweets Package</a> &raquo;</li>
+      
+          <li><a href="index.html">Utils Package</a> &raquo;</li>
       
     <li>Resources Utilities</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/tweets/resources_utils.txt" rel="nofollow"> View page source</a>
+          <a href="../../_sources/tweets/utils/resources_utils.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -130,7 +131,7 @@ $&gt; python manage.py dumpdata --format=json --indent=4 tweets &gt; tweets/fixt
 </div>
 <dl class="function">
 <dt id="tweets.utils.resources.populate_bracketed_color_bigrams">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_bracketed_color_bigrams</tt><big>(</big><em>filepath='../resources/bracketed_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_bracketed_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_bracketed_color_bigrams" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_bracketed_color_bigrams</tt><big>(</big><em>filepath='../resources/bracketed_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_bracketed_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_bracketed_color_bigrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate BracketedColorBigrams model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>start_bracket, w1, w2, end_bracket, f</em>.</p>
@@ -149,7 +150,7 @@ in the following order: <em>start_bracket, w1, w2, end_bracket, f</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_color_unigrams">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_color_unigrams</tt><big>(</big><em>filepath='../resources/color_unigrams.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_color_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_color_unigrams" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_color_unigrams</tt><big>(</big><em>filepath='../resources/color_unigrams.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_color_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_color_unigrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate ColorUnigrams model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>solid_compound, f</em>.</p>
@@ -168,7 +169,7 @@ in the following order: <em>solid_compound, f</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_colormap">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_colormap</tt><big>(</big><em>filepath='../resources/color_map.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_colormap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_colormap" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_colormap</tt><big>(</big><em>filepath='../resources/color_map.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_colormap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_colormap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate ColorMap model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>stereotype, color, html</em>.</p>
@@ -187,14 +188,14 @@ in the following order: <em>stereotype, color, html</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_default">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_default</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_default" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_default</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_default" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call all distinct populate functions with default parameters.</p>
 <p>Default parameter for each model points into <cite>../resources/&lt;relevant_file_name&gt;.tsv</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_everycolorbot_tweets">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_everycolorbot_tweets</tt><big>(</big><em>filepath='../resources/everycolorbot_tweets.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_everycolorbot_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_everycolorbot_tweets" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_everycolorbot_tweets</tt><big>(</big><em>filepath='../resources/everycolorbot_tweets.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_everycolorbot_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_everycolorbot_tweets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate EveryColorBotTweets model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>hex, url</em>.</p>
@@ -213,7 +214,7 @@ in the following order: <em>hex, url</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_plural_color_bigrams">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_plural_color_bigrams</tt><big>(</big><em>filepath='../resources/plural_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_plural_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_plural_color_bigrams" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_plural_color_bigrams</tt><big>(</big><em>filepath='../resources/plural_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_plural_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_plural_color_bigrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate PluralColorBigrams model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>w1, w2, f, singular</em>.</p>
@@ -232,7 +233,7 @@ in the following order: <em>w1, w2, f, singular</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.populate_unbracketed_color_bigrams">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_unbracketed_color_bigrams</tt><big>(</big><em>filepath='../resources/unbracketed_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#populate_unbracketed_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_unbracketed_color_bigrams" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">populate_unbracketed_color_bigrams</tt><big>(</big><em>filepath='../resources/unbracketed_color_bigrams.tsv'</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#populate_unbracketed_color_bigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.populate_unbracketed_color_bigrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate UnnracketedColorBigrams model with entries found from file.</p>
 <p>File should be in tab separated format, where each line has model fields
 in the following order: <em>w1, w2, f</em>.</p>
@@ -251,7 +252,7 @@ in the following order: <em>w1, w2, f</em>.</p>
 
 <dl class="function">
 <dt id="tweets.utils.resources.split_unigrams">
-<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">split_unigrams</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/utils/resources.html#split_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.split_unigrams" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">tweets.utils.resources.</tt><tt class="descname">split_unigrams</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/resources.html#split_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.resources.split_unigrams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split <tt class="docutils literal"><span class="pre">ColorUnigram</span></tt>-instances from database into two words and save them into
 <tt class="docutils literal"><span class="pre">ColorUnigramSplit</span></tt>-model.</p>
 <p>Splitting is done by looking for color names from <tt class="docutils literal"><span class="pre">ColorMap</span></tt>-model&#8217;s <tt class="docutils literal"><span class="pre">stereotype</span></tt>
@@ -267,10 +268,8 @@ based on these color names are omitted.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="models.html" class="btn btn-neutral float-right" title="Models"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="color_utils.html" class="btn btn-neutral" title="Color Utilities"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="text_utils.html" class="btn btn-neutral" title="Utilities for Strings and Unicode"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -298,22 +297,22 @@ based on these color names are omitted.</p>
 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
+            URL_ROOT:'../../',
             VERSION:'0.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
         };
     </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
   
 
   

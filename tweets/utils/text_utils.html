@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Utilities for Strings and Unicode &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Utils Package" href="index.html"/>
+        <link rel="next" title="Resources Utilities" href="resources_utils.html"/>
+        <link rel="prev" title="Color Utilities" href="color_utils.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tweets Package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../views.html">Views</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-functionality">General Functionality</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Tweets Package</a> &raquo;</li>
+      
+          <li><a href="index.html">Utils Package</a> &raquo;</li>
+      
+    <li>Utilities for Strings and Unicode</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../../_sources/tweets/utils/text_utils.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="module-tweets.utils.text">
+<span id="utilities-for-strings-and-unicode"></span><h1>Utilities for Strings and Unicode<a class="headerlink" href="#module-tweets.utils.text" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-text_utils"></span><p>Some utility functions for working with texts.</p>
+<dl class="function">
+<dt id="tweets.utils.text.prettify_sentence">
+<tt class="descclassname">tweets.utils.text.</tt><tt class="descname">prettify_sentence</tt><big>(</big><em>words</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/text.html#prettify_sentence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.text.prettify_sentence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prettify given iterable that represents words and part of words and
+other characters of the sentence. ie, there can be indeces with only
+&#8220;&#8216;ll&#8221; or &#8220;&#8217;&#8221; in them.</p>
+<p>Kinda hackish code, which could be looked into in some point of time.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">words (iterable): Iterable with sentence&#8217;s words and other characters. This iterable is considered to be created by nltk &gt;=2.04 part of speech tagging (and replacing some words in it).</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>str or unicode, prettified sentence as one string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tweets.utils.text.sentiment">
+<tt class="descclassname">tweets.utils.text.</tt><tt class="descname">sentiment</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="../../_modules/tweets/utils/text.html#sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.utils.text.sentiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text&#8217;s sentiment analysis.</p>
+<p>Calculates a sum of all the text&#8217;s sentences sentiment.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">text (str or unicode): Text to analyse</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>Tuple (subjectivity, polarity), where subjectivity is float in [0, 1]
+and polarity is float in [-1, 1].</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="resources_utils.html" class="btn btn-neutral float-right" title="Resources Utilities"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="color_utils.html" class="btn btn-neutral" title="Color Utilities"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -113,7 +112,20 @@
 <span class="sd">    </span>
 <span class="sd">Contexts for framing the tweets. </span>
 <span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+
+<span class="k">if</span> <span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="kn">from</span> <span class="nn">tweets.utils.text</span> <span class="kn">import</span> <span class="n">prettify_sentence</span>
+
 
 <div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Abstract base class for contexts.</span>
@@ -148,9 +160,277 @@
 <span class="sd">            str, tweet for the color code-name pair.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s">&quot;everycolorbot_url&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&quot;@everycolorbot Gee, that&#39;s a nice color. I call it </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">color_name</span>
-        <span class="k">return</span> <span class="s">&quot;By hard thinking, I have come to the conclusion that color </span><span class="si">%s</span><span class="s"> is called </span><span class="si">%s</span><span class="s">. #geniusatwork&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_name</span><span class="p">)</span></div></div>
-</pre></div>
+            <span class="k">return</span> <span class="p">(</span><span class="s">&quot;.everycolorbot Gee, that&#39;s a nice color. I call it </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">color_name</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;By hard thinking, I have come to the conclusion that color </span><span class="si">%s</span><span class="s"> is called </span><span class="si">%s</span><span class="s">. #geniusatwork&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">color_name</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+    
+    
+    </div></div>
+<div class="viewcode-block" id="DCContext"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.DCContext">[docs]</a><span class="k">class</span> <span class="nc">DCContext</span><span class="p">(</span><span class="n">Context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Framing with &#39;random&#39; new age liirumlaarum from Deepak Chopra.</span>
+<span class="sd">    </span>
+<span class="sd">    Uses `Wisdom of Deepak Chopra &lt;www.wisdomofchopra.com&gt;`_ as a help for framing. </span>
+<span class="sd">    </span>
+<span class="sd">    .. warning::</span>
+<span class="sd">        www.wisdomofchopra.com seems to be down.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://www.wisdomofchopra.com/iframe.php&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span> <span class="k">as</span> <span class="n">bs</span>
+        <span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span><span class="p">,</span> <span class="n">pos_tag</span>
+        <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">wordnet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bs</span> <span class="o">=</span> <span class="n">bs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">word_tokenize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_tag</span> <span class="o">=</span> <span class="n">pos_tag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span> <span class="o">=</span> <span class="n">wordnet</span>
+       
+        
+<div class="viewcode-block" id="DCContext.build_tweet"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.DCContext.build_tweet">[docs]</a>    <span class="k">def</span> <span class="nf">build_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build tweet for color name.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | color_name (str): Human readable name for the color.</span>
+<span class="sd">            | wisdom_count (int): How many different wisdoms are considered in order to find the best framing.</span>
+<span class="sd">            | \**kwargs: Optional keyword arguments. Should have ``color_code`` -key and supports optionally at least ``retweet``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            str, tweet for the color code-name pair. If no tweet can be constructed (e.g. wisdomofchopra is down, no internet connection), </span>
+<span class="sd">            returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+        
+        <span class="n">wisdoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_wisdoms</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="n">wisdom_count</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wisdoms</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span> 
+        <span class="n">tweets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wis</span> <span class="ow">in</span> <span class="n">wisdoms</span><span class="p">:</span>
+            <span class="n">tokenized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">wis</span><span class="p">)</span>
+            <span class="n">tagged_wisdom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">tokenized</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_color_place</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">tagged_wisdom</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">place</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">ret</span>
+                <span class="n">tweet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prettify_tweet</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">tokenized</span><span class="p">,</span> <span class="n">place</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s">&#39;retweet&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+                    <span class="n">tweet</span> <span class="o">=</span> <span class="s">&quot;RT @{} {} {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;screen_name&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;original_tweet&#39;</span><span class="p">],</span> <span class="n">tweet</span><span class="p">)</span> 
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">140</span><span class="p">:</span>
+                    <span class="n">tweets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+         
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sorted_tweets</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>    
+            <span class="k">return</span> <span class="n">sorted_tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+               
+            </div>
+    <span class="k">def</span> <span class="nf">_get_wisdoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get wisdoms from www.wisdomofchopra.com.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">wisdom_count</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">wisdom_count</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;wisdom_count must be positive integer.&quot;</span><span class="p">)</span>
+        
+        <span class="n">wisdoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">wisdoms</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">wisdom_count</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">soup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+                <span class="n">wisdom</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="s">&quot;quote&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;h2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span>
+                <span class="n">wisdom</span> <span class="o">=</span> <span class="n">wisdom</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+                <span class="n">wisdom</span> <span class="o">=</span> <span class="n">wisdom</span> <span class="k">if</span> <span class="n">wisdom</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;.&quot;</span> <span class="k">else</span> <span class="n">wisdom</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wisdom</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_name</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">120</span><span class="p">:</span> 
+                    <span class="n">wisdoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wisdom</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">break</span> <span class="c"># If there is no connection, etc.</span>
+            
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wisdoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">wisdoms</span>
+        
+        
+    <span class="k">def</span> <span class="nf">_get_color_place</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">tagged_wisdom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define place where to put the color name in the tagged sentence.&quot;&quot;&quot;</span>
+        <span class="n">place_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tagged_wisdom</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;JJ&#39;</span><span class="p">:</span>
+                <span class="n">place_candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;NN&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;NN&#39;</span><span class="p">:</span>
+                    <span class="n">place_candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+           
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">place_candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="bp">None</span>   
+        
+        <span class="n">color_split</span> <span class="o">=</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>  
+        <span class="n">color_synsets</span> <span class="o">=</span> <span class="p">[]</span>   
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">color_split</span><span class="p">:</span>
+            <span class="n">cs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">cs</span><span class="p">:</span>
+                    <span class="n">color_synsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">synset</span><span class="p">)</span>
+           
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_synsets</span><span class="p">)</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+                  
+        <span class="n">place_fits</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">place</span> <span class="ow">in</span> <span class="n">place_candidates</span><span class="p">:</span>
+            <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">ADJ</span> <span class="k">if</span> <span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">place</span><span class="p">][</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;JJ&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">NOUN</span>
+            <span class="n">place_synsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">place</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">place_synsets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">place_synset</span> <span class="ow">in</span> <span class="n">place_synsets</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">csynset</span> <span class="ow">in</span> <span class="n">color_synsets</span><span class="p">:</span>
+                        <span class="n">sim</span> <span class="o">=</span> <span class="n">place_synset</span><span class="o">.</span><span class="n">path_similarity</span><span class="p">(</span><span class="n">csynset</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">sim</span> <span class="o">&gt;</span> <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]:</span>
+                            <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span>
+        
+        <span class="n">sorted_sim</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">place_fits</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">sorted_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sorted_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    
+    <span class="k">def</span> <span class="nf">_prettify_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">tokenized</span><span class="p">,</span> <span class="n">place</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">place</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">color_name</span> <span class="o">=</span> <span class="n">color_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">color_name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        
+        <span class="n">words</span> <span class="o">=</span> <span class="n">tokenized</span><span class="p">[:</span><span class="n">place</span><span class="p">]</span> <span class="o">+</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="o">+</span> <span class="n">tokenized</span><span class="p">[</span><span class="n">place</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">prettify_sentence</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            
+        
+    </div>
+<div class="viewcode-block" id="NewAgeContext"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.NewAgeContext">[docs]</a><span class="k">class</span> <span class="nc">NewAgeContext</span><span class="p">(</span><span class="n">Context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Framing with &#39;random&#39; new age liirumlaarum.</span>
+<span class="sd">    </span>
+<span class="sd">    Bases on the work done by `Seb Pearce &lt;http://sebpearce.com/bullshit/&gt;`_, and needs </span>
+<span class="sd">    `Node.js &lt;http://nodejs.org/&gt;`_ to work.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span> <span class="k">as</span> <span class="n">bs</span>
+        <span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span><span class="p">,</span> <span class="n">pos_tag</span>
+        <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">wordnet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bs</span> <span class="o">=</span> <span class="n">bs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">word_tokenize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_tag</span> <span class="o">=</span> <span class="n">pos_tag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span> <span class="o">=</span> <span class="n">wordnet</span>
+        
+<div class="viewcode-block" id="NewAgeContext.build_tweet"><a class="viewcode-back" href="../../tweets/contexts.html#tweets.contexts.NewAgeContext.build_tweet">[docs]</a>    <span class="k">def</span> <span class="nf">build_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build tweet for color name.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | color_name (str): Human readable name for the color.</span>
+<span class="sd">            | wisdom_count (int): How many different wisdoms are considered in order to find the best framing.</span>
+<span class="sd">            | \**kwargs: Optional keyword arguments. Should have ``color_code`` -key and supports optionally at least ``everycolorbot_url`` which personalizes the response for Everycolorbot.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            str, tweet for the color code-name pair. If no tweet can be constructed, returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wisdoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_wisdoms</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="n">wisdom_count</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wisdoms</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span> 
+        <span class="n">tweets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wis</span> <span class="ow">in</span> <span class="n">wisdoms</span><span class="p">:</span>
+            <span class="n">places</span><span class="p">,</span> <span class="n">parsed_wisdom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_color_places</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">wis</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">places</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_color_places</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">places</span><span class="p">,</span> <span class="n">parsed_wisdom</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">place</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">ret</span>
+                    <span class="n">tweet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prettify_tweet</span><span class="p">(</span><span class="n">color_name</span><span class="p">,</span> <span class="n">parsed_wisdom</span><span class="p">,</span> <span class="n">place</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s">&#39;retweet&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+                        <span class="n">tweet</span> <span class="o">=</span> <span class="s">&#39;RT @{} &quot;{}&quot; {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;screen_name&#39;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;original_tweet&#39;</span><span class="p">],</span> <span class="n">tweet</span><span class="p">)</span> 
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">120</span><span class="p">:</span>
+                        <span class="n">tweets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+         
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sorted_tweets</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>    
+            <span class="k">return</span> <span class="n">sorted_tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+               
+            </div>
+    <span class="k">def</span> <span class="nf">_get_wisdoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get wisdoms from js/sentence.js&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">wisdom_count</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">wisdom_count</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;wisdom_count must be positive integer.&quot;</span><span class="p">)</span>
+        
+        <span class="n">wisdoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">js_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">&#39;tweets&#39;</span><span class="p">,</span> <span class="s">&#39;js&#39;</span><span class="p">,</span> <span class="s">&#39;sentence.js&#39;</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">wisdom_count</span><span class="p">):</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">&#39;node&#39;</span><span class="p">,</span> <span class="n">js_path</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">],</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+                <span class="n">output</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">b</span><span class="s">&quot;input data that is passed to subprocess&#39; stdin&quot;</span><span class="p">)</span>
+                <span class="n">wisdoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+            
+        <span class="k">return</span> <span class="n">wisdoms</span>
+        
+        
+    <span class="k">def</span> <span class="nf">_get_color_places</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">sentence</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define place where to put the color name in the sentence.&quot;&quot;&quot;</span>
+        <span class="n">split_wisdom</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">parsed_wisdom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">place_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">split_wisdom</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">split_wisdom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&gt;&#39;</span><span class="p">:</span>
+                <span class="n">place_candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">removed</span><span class="p">)</span>
+                <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parsed_wisdom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_wisdom</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+           
+        <span class="k">print</span> <span class="n">place_candidates</span><span class="p">,</span> <span class="n">parsed_wisdom</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">place_candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="n">parsed_wisdom</span>
+        
+        <span class="k">return</span> <span class="n">place_candidates</span><span class="p">,</span> <span class="n">parsed_wisdom</span>    
+         
+        
+    <span class="k">def</span> <span class="nf">_evaluate_color_places</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">place_candidates</span><span class="p">,</span> <span class="n">tagged_wisdom</span><span class="p">):</span> 
+        <span class="n">color_split</span> <span class="o">=</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>  
+        <span class="n">color_synsets</span> <span class="o">=</span> <span class="p">[]</span>   
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">color_split</span><span class="p">:</span>
+            <span class="n">cs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">color_synsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+           
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">color_synsets</span><span class="p">)</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+                  
+        <span class="n">place_fits</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">place</span> <span class="ow">in</span> <span class="n">place_candidates</span><span class="p">:</span>
+            <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">place_synsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordnet</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">tagged_wisdom</span><span class="p">[</span><span class="n">place</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">place_synsets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">place_synset</span> <span class="ow">in</span> <span class="n">place_synsets</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">csynset</span> <span class="ow">in</span> <span class="n">color_synsets</span><span class="p">:</span>
+                        <span class="n">sim</span> <span class="o">=</span> <span class="n">place_synset</span><span class="o">.</span><span class="n">path_similarity</span><span class="p">(</span><span class="n">csynset</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">sim</span> <span class="o">&gt;</span> <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]:</span>
+                            <span class="n">place_fits</span><span class="p">[</span><span class="n">place</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span>
+        
+        <span class="n">sorted_sim</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">place_fits</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">sorted_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sorted_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    
+    <span class="k">def</span> <span class="nf">_prettify_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">tokenized</span><span class="p">,</span> <span class="n">place</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">tokenized</span>
+        <span class="k">if</span> <span class="n">place</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">tokenized</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">color_name</span> <span class="o">=</span> <span class="n">color_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">color_name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="o">+</span> <span class="n">tokenized</span><span class="p">[</span><span class="n">place</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">tokenized</span><span class="p">[:</span><span class="n">place</span><span class="p">]</span> <span class="o">+</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="o">+</span> <span class="n">tokenized</span><span class="p">[</span><span class="n">place</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">prettify_sentence</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            
+                
+</pre></div></div>
 
           </div>
           <footer>

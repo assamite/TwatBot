@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -119,8 +118,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="kn">import</span> <span class="nn">twitter</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
 
 <span class="c"># In case we are not running these through Django, let module know</span>
 <span class="c"># the correct twitter app settings from TwatBot&#39;s settings file.</span>
@@ -128,13 +127,19 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">tweepy</span>
 
 <span class="kn">from</span> <span class="nn">muses</span> <span class="kn">import</span> <span class="n">EveryColorBotMuse</span>
 <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span>
-<span class="kn">from</span> <span class="nn">framing</span> <span class="kn">import</span> <span class="n">frame</span>
-
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">ReTweet</span><span class="p">,</span> <span class="n">Tweet</span>
+<span class="kn">from</span> <span class="nn">contexts</span> <span class="kn">import</span> <span class="n">NewAgeContext</span>
 <span class="kn">from</span> <span class="nn">color_semantics</span> <span class="kn">import</span> <span class="n">ColorSemantics</span>
+<span class="kn">from</span> <span class="nn">tweets.utils.color</span> <span class="kn">import</span> <span class="n">create_temp_image</span>
+
 <span class="n">COLOR_SEMANTICS</span> <span class="o">=</span> <span class="n">ColorSemantics</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;tweets.core&#39;</span><span class="p">)</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
 
 <div class="viewcode-block" id="TweetCore"><a class="viewcode-back" href="../../tweets/core.html#tweets.core.TweetCore">[docs]</a><span class="k">class</span> <span class="nc">TweetCore</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Core of the color tweets.</span>
@@ -145,30 +150,55 @@
 <span class="sd">        At the moment class is quite deterministic. It should not be somewhere </span>
 <span class="sd">        in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_semantics</span> <span class="o">=</span> <span class="n">COLOR_SEMANTICS</span><span class="p">,</span> <span class="n">muse</span> <span class="o">=</span> <span class="n">EveryColorBotMuse</span><span class="p">(),</span> <span class="n">context</span> <span class="o">=</span> <span class="n">NewAgeContext</span><span class="p">()):</span>      
         <span class="bp">self</span><span class="o">.</span><span class="n">tak</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TWITTER_API_KEY</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tas</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TWITTER_API_SECRET</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tat</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TWITTER_ACCESS_TOKEN</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tats</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TWITTER_ACCESS_TOKEN_SECRET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_semantics</span> <span class="o">=</span> <span class="n">color_semantics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">muse</span> <span class="o">=</span> <span class="n">muse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span>
     
     
-    <span class="k">def</span> <span class="nf">_get_new_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Build a new tweet for the bot.</span>
+    <span class="k">def</span> <span class="nf">_get_new_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inspiration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a new tweet for the bot with given inspiration.</span>
 <span class="sd">        </span>
 <span class="sd">        **Returns:**</span>
 <span class="sd">            Tuple (str, float, dict), (tweet, value, inspiration) where ``tweet`` </span>
 <span class="sd">            is the generated tweet, ``value`` is estimated value for the tweet </span>
 <span class="sd">            and ``inspiration`` is a dictionary returned by used muse.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">muse</span> <span class="o">=</span> <span class="n">EveryColorBotMuse</span><span class="p">()</span>
-        <span class="n">inspiration</span> <span class="o">=</span> <span class="n">muse</span><span class="o">.</span><span class="n">inspire</span><span class="p">()</span>
-        <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">frame</span><span class="p">(</span><span class="n">context</span> <span class="o">=</span> <span class="s">&#39;text&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">inspiration</span><span class="p">)</span>
+        <span class="n">semantics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_semantics</span>
+        <span class="k">if</span> <span class="s">&#39;color_semantics&#39;</span> <span class="ow">in</span> <span class="n">inspiration</span><span class="p">:</span>
+            <span class="n">semantics</span> <span class="o">=</span> <span class="n">inspiration</span><span class="p">[</span><span class="s">&#39;color_semantics&#39;</span><span class="p">]</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>    
+        <span class="k">if</span> <span class="s">&#39;context&#39;</span> <span class="ow">in</span> <span class="n">inspiration</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="n">inspiration</span><span class="p">[</span><span class="s">&#39;context&#39;</span><span class="p">]</span> 
+        <span class="n">inspiration</span><span class="p">[</span><span class="s">&#39;context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+            
+        <span class="n">names</span> <span class="o">=</span> <span class="n">semantics</span><span class="o">.</span><span class="n">name_color</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">inspiration</span><span class="p">)</span>
+        
+        <span class="n">tweets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span> 
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">/</span> <span class="mi">100</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">build_tweet</span><span class="p">(</span><span class="n">color_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">,</span> <span class="n">wisdom_count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>  <span class="o">**</span><span class="n">inspiration</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">value</span>
+                <span class="n">value</span> <span class="o">+=</span> <span class="n">distance</span> 
+                <span class="n">tweets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                <span class="n">inspiration</span><span class="p">[</span><span class="s">&#39;color_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
         <span class="c">#TODO: See value of the tweet and the tweet memory and allow the tweet</span>
         <span class="c">#if the stars are right.</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">inspiration</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">inspiration</span><span class="p">)</span>
     
     
-    <span class="k">def</span> <span class="nf">_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tweet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tweet</span><span class="p">,</span> <span class="n">img_name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Tweet to the twitter.</span>
 <span class="sd">        </span>
 <span class="sd">        .. warning:: </span>
@@ -178,37 +208,94 @@
 <span class="sd">        **Returns:**</span>
 <span class="sd">            True if the tweet was send successfully, False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> 
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;DEBUG mode on, choosing not to tweet.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+            
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">Api</span><span class="p">(</span><span class="n">consumer_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tak</span><span class="p">,</span>
-                                   <span class="n">consumer_secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tas</span><span class="p">,</span>
-                                   <span class="n">access_token_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tak</span><span class="p">,</span>
-                                   <span class="n">access_token_secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tats</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">postUpdate</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+            <span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tak</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tas</span><span class="p">)</span>
+            <span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tats</span><span class="p">)</span>
+            <span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">img_name</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">update_with_media</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">img_name</span><span class="p">,</span><span class="n">status</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">status</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Could not tweet to Twitter. Error: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">False</span>
         
         <span class="k">return</span> <span class="bp">True</span>
     
     
-<div class="viewcode-block" id="TweetCore.tweet"><a class="viewcode-back" href="../../tweets/core.html#tweets.core.TweetCore.tweet">[docs]</a>    <span class="k">def</span> <span class="nf">tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">send_to_twitter</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="TweetCore.tweet"><a class="viewcode-back" href="../../tweets/core.html#tweets.core.TweetCore.tweet">[docs]</a>    <span class="k">def</span> <span class="nf">tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">send_to_twitter</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">inspiration</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a tweet for the bot and optionally send it to twitter and store it to bot&#39;s memory.</span>
 <span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | send_to_twitter (bool): Is succesfully generated and enough appreciation gained tweet send to twitter.</span>
+<span class="sd">            | inspiration (dict): Optional, given inspiration for this tweet, should contain at least &#39;color_code&#39;-key. If no inspiration is given, the standard muse is used to provide inspiration.</span>
+<span class="sd">        </span>
 <span class="sd">        **Returns:**</span>
-<span class="sd">            Tuple (str, bool), (tweet, sended), where ``tweet`` is the generated </span>
-<span class="sd">            tweet and ``sended`` is True if the tweet was send successfully, False otherwise.</span>
+<span class="sd">            Dictionary, with following keys: tweet, sended, value, metadata. </span>
+<span class="sd">            Tweet is the generated tweet and sended is True if the tweet was send </span>
+<span class="sd">            successfully, False otherwise. Value is estimated appreciation of the</span>
+<span class="sd">            code-name-tweet mapping. Metadata contains other information of the </span>
+<span class="sd">            tweet generation process, including used color code and name, etc.</span>
+<span class="sd">            </span>
+<span class="sd">            If no tweet could be generated, then returns empty string as tweet. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">inspiration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_tweet</span><span class="p">()</span>
-        <span class="n">tweeted</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">inspiration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">muse</span><span class="o">.</span><span class="n">inspire</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inspiration</span><span class="p">:</span> <span class="k">return</span> <span class="p">{</span><span class="s">&#39;tweet&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&#39;sended&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{}}</span>    
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_tweet</span><span class="p">(</span><span class="n">inspiration</span><span class="p">)</span>
+        <span class="n">rdict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;tweet&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&#39;sended&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">rdict</span>
+        <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">reasoning</span> <span class="o">=</span> <span class="n">ret</span>
         <span class="k">if</span> <span class="n">send_to_twitter</span><span class="p">:</span>
-            <span class="n">tweeted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tweet</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tweeted</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s">&#39;everycolorbot_url&#39;</span> <span class="ow">in</span> <span class="n">inspiration</span><span class="p">:</span>
-                <span class="n">inst</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">inspiration</span><span class="p">[</span><span class="s">&#39;everycolorbot_url&#39;</span><span class="p">])</span>
-                <span class="n">inst</span><span class="o">.</span><span class="n">tweeted</span> <span class="o">=</span> <span class="bp">True</span>
-                <span class="n">inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-                   
-        <span class="k">return</span> <span class="p">(</span><span class="n">tweet</span><span class="p">,</span> <span class="n">tweeted</span><span class="p">)</span>
-    </div></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Build tweet: &quot;{}&quot; with value: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="n">tweeted</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">send_to_twitter</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Value of the tweet was below threshold ({}). Trying to tweet it.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">))</span>          
+                <span class="n">tmp_img</span> <span class="o">=</span> <span class="n">create_temp_image</span><span class="p">((</span><span class="mi">480</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;color_code&#39;</span><span class="p">])</span>
+                <span class="n">tweeted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tweet</span><span class="p">(</span><span class="n">tweet</span><span class="p">,</span> <span class="n">img_name</span> <span class="o">=</span> <span class="n">tmp_img</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">tmp_img</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">tweeted</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_to_db</span><span class="p">(</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">reasoning</span><span class="p">)</span>
+           
+        <span class="n">rdict</span><span class="p">[</span><span class="s">&#39;tweet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tweet</span>
+        <span class="n">rdict</span><span class="p">[</span><span class="s">&#39;sended&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tweeted</span>
+        <span class="n">rdict</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">rdict</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasoning</span>
+        <span class="k">return</span> <span class="n">rdict</span>
+    
+    </div>
+    <span class="k">def</span> <span class="nf">_save_to_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">reasoning</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the tweet to db.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Tweet was send succesfully. Saving the tweet to database.&quot;</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;context&#39;</span><span class="p">]</span>
+        <span class="n">muse</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;muse&#39;</span><span class="p">]</span>   
+        <span class="n">color_code</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;color_code&#39;</span><span class="p">]</span>
+        <span class="n">color_name</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;color_name&#39;</span><span class="p">]</span>
+
+        <span class="n">twinst</span> <span class="o">=</span> <span class="n">Tweet</span><span class="p">(</span><span class="n">message</span> <span class="o">=</span> <span class="n">tweet</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">,</span> <span class="n">muse</span> <span class="o">=</span> <span class="n">muse</span><span class="p">,</span>\
+                     <span class="n">context</span> <span class="o">=</span> <span class="n">context</span><span class="p">,</span> <span class="n">color_code</span> <span class="o">=</span> <span class="n">color_code</span><span class="p">,</span>\
+                     <span class="n">color_name</span> <span class="o">=</span> <span class="n">color_name</span><span class="p">)</span>
+        <span class="n">twinst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="n">retweet</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;retweet&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;retweet&#39;</span> <span class="ow">in</span> <span class="n">reasoning</span> <span class="k">else</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">retweet</span><span class="p">:</span>
+            <span class="n">screen_name</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;screen_name&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">screen_name</span> <span class="o">==</span> <span class="s">&#39;everycolorbot&#39;</span><span class="p">:</span>
+                <span class="n">inst</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">inst</span><span class="p">:</span>
+                    <span class="n">inst</span><span class="o">.</span><span class="n">tweeted</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    
+            <span class="n">reinst</span> <span class="o">=</span> <span class="n">ReTweet</span><span class="p">(</span><span class="n">tweet_url</span> <span class="o">=</span> <span class="n">reasoning</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">],</span>\
+                             <span class="n">screen_name</span> <span class="o">=</span> <span class="n">screen_name</span><span class="p">,</span> <span class="n">tweet</span> <span class="o">=</span> <span class="n">twinst</span><span class="p">)</span>
+            <span class="n">reinst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+ 
+    </div>
 <span class="n">TWEET_CORE</span> <span class="o">=</span> <span class="n">TweetCore</span><span class="p">()</span>
         
         

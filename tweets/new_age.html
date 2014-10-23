@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Core Functionality &mdash; Twatbot 0.0.1 documentation</title>
+  <title>New Age Personality &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
         <link rel="up" title="Tweets Package" href="index.html"/>
-        <link rel="next" title="Muses" href="muses.html"/>
-        <link rel="prev" title="Tweets Package" href="index.html"/> 
+        <link rel="next" title="Models" href="models.html"/>
+        <link rel="prev" title="Color Semantics" href="color_semantics.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -62,11 +62,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
@@ -98,10 +98,10 @@
       
           <li><a href="index.html">Tweets Package</a> &raquo;</li>
       
-    <li>Core Functionality</li>
+    <li>New Age Personality</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/tweets/core.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/tweets/new_age.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -109,42 +109,59 @@
 </div>
           <div role="main">
             
-  <div class="section" id="module-tweets.core">
-<span id="core-functionality"></span><h1>Core Functionality<a class="headerlink" href="#module-tweets.core" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-core"></span><p>Core of the color tweets.</p>
-<p>Class TweetCore defined in the module glues muses, framing contexts and other 
-tweet related stuff together and allows the constructed messages to be tweeted,
-if the stars are right and everything is well in the kingdom.</p>
+  <div class="section" id="module-tweets.new_age">
+<span id="new-age-personality"></span><h1>New Age Personality<a class="headerlink" href="#module-tweets.new_age" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-new_age"></span><p>New age personality affected by moon phases, etc.</p>
 <dl class="class">
-<dt id="tweets.core.TweetCore">
-<em class="property">class </em><tt class="descclassname">tweets.core.</tt><tt class="descname">TweetCore</tt><big>(</big><em>color_semantics=&lt;tweets.color_semantics.ColorSemantics instance at 0x10a69fcb0&gt;</em>, <em>muse=&lt;tweets.muses.EveryColorBotMuse instance at 0x10c267bd8&gt;</em>, <em>context=&lt;tweets.contexts.NewAgeContext instance at 0x10cf09b90&gt;</em><big>)</big><a class="reference internal" href="../_modules/tweets/core.html#TweetCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.core.TweetCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Core of the color tweets.</p>
-<p>Class attachs muses and framing contexts together to single functionality.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">At the moment class is quite deterministic. It should not be somewhere 
-in the future.</p>
-</div>
+<dt id="tweets.new_age.NewAgePersonality">
+<em class="property">class </em><tt class="descclassname">tweets.new_age.</tt><tt class="descname">NewAgePersonality</tt><big>(</big><em>date=datetime.date(2014</em>, <em>10</em>, <em>23)</em><big>)</big><a class="reference internal" href="../_modules/tweets/new_age.html#NewAgePersonality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.new_age.NewAgePersonality" title="Permalink to this definition">¶</a></dt>
+<dd><p>New age personality traits for given date.</p>
 <dl class="method">
-<dt id="tweets.core.TweetCore.tweet">
-<tt class="descname">tweet</tt><big>(</big><em>send_to_twitter=False</em>, <em>inspiration=None</em><big>)</big><a class="reference internal" href="../_modules/tweets/core.html#TweetCore.tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.core.TweetCore.tweet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a tweet for the bot and optionally send it to twitter and store it to bot&#8217;s memory.</p>
+<dt id="tweets.new_age.NewAgePersonality.get_aura_color">
+<tt class="descname">get_aura_color</tt><big>(</big><em>lunation</em>, <em>date=datetime.date(2014</em>, <em>10</em>, <em>23)</em><big>)</big><a class="reference internal" href="../_modules/tweets/new_age.html#NewAgePersonality.get_aura_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.new_age.NewAgePersonality.get_aura_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get aura color for given date with given lunation.</p>
+<p>The lunation&#8217;s correctness to the date is not checked.
+Lunation affects the <em>a</em>- and <em>b</em>-color opponent dimensions in LAB-color 
+space. Lightness depends on the time of the year. More precisely, how long
+the sun is above the horizon in Helsinki during the day, i.e. aura colors 
+tend to be darker during the winter.</p>
+<p>The exact formulas for <em>l</em>, <em>a</em> and <em>b</em> is:</p>
+<div class="highlight-python"><div class="highlight"><pre>l = (sun_above_horizon / 24h)*100 + N(0, 40)
+a = sin(2 * PI * lunation)*80 + N(0, 30)
+b = cos(2 * PI * lunation)*80 + N(0, 30),
+</pre></div>
+</div>
+<p>where <em>N(0, X)</em> is normal distribution with zero mean and <em>X</em> variance.
+The lightness value is restricted to the interval [20, 100].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.new_age.NewAgePersonality.get_mood">
+<tt class="descname">get_mood</tt><big>(</big><em>date=datetime.date(2014</em>, <em>10</em>, <em>23)</em><big>)</big><a class="reference internal" href="../_modules/tweets/new_age.html#NewAgePersonality.get_mood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.new_age.NewAgePersonality.get_mood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current mood of the personality.</p>
+<p>Mood is a dictionary with at least the following keys:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">lunation: current lunation in the interval of [0, 1]</div>
+<div class="line">moon_phase: current moon phase as a string</div>
+<div class="line">aura_color: current aura color</div>
+</div>
+</div></blockquote>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
 <dd><div class="first last line-block">
-<div class="line">send_to_twitter (bool): Is succesfully generated and enough appreciation gained tweet send to twitter.</div>
-<div class="line">inspiration (dict): Optional, given inspiration for this tweet, should contain at least &#8216;color_code&#8217;-key. If no inspiration is given, the standard muse is used to provide inspiration.</div>
+<div class="line">date (date): Date for the mood. Date affects mood traits, see e.g. <tt class="docutils literal"><span class="pre">get_aura_color</span></tt>.</div>
 </div>
 </dd>
 <dt><strong>Returns:</strong></dt>
-<dd><p class="first">Dictionary, with following keys: tweet, sended, value, metadata. 
-Tweet is the generated tweet and sended is True if the tweet was send 
-successfully, False otherwise. Value is estimated appreciation of the
-code-name-tweet mapping. Metadata contains other information of the 
-tweet generation process, including used color code and name, etc.</p>
-<p class="last">If no tweet could be generated, then returns empty string as tweet.</p>
-</dd>
+<dd>dict, current mood traits.</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.new_age.NewAgePersonality.get_phase_on_day">
+<tt class="descname">get_phase_on_day</tt><big>(</big><em>date=datetime.date(2014</em>, <em>10</em>, <em>23)</em><big>)</big><a class="reference internal" href="../_modules/tweets/new_age.html#NewAgePersonality.get_phase_on_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.new_age.NewAgePersonality.get_phase_on_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a floating-point number from 0-1. where 0=new, 0.5=full, 1=new</p>
 </dd></dl>
 
 </dd></dl>
@@ -157,10 +174,10 @@ tweet generation process, including used color code and name, etc.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="muses.html" class="btn btn-neutral float-right" title="Muses"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="models.html" class="btn btn-neutral float-right" title="Models"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Tweets Package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="color_semantics.html" class="btn btn-neutral" title="Color Semantics"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

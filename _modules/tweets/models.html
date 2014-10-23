@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -116,7 +115,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
-<span class="kn">import</span> <span class="nn">color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
+<span class="kn">from</span> <span class="nn">tweets.utils</span> <span class="kn">import</span> <span class="n">color</span> <span class="k">as</span> <span class="n">cu</span>
 
 <div class="viewcode-block" id="GetOrNoneManager"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.GetOrNoneManager">[docs]</a><span class="k">class</span> <span class="nc">GetOrNoneManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Manager which overrides Django&#39;s standard manager in all of the module&#39;s models.</span>
@@ -204,11 +203,11 @@
 <span class="sd">        =============    =======    ======    ===========    =    </span>
 <span class="sd">     </span>
 <span class="sd">    &quot;&quot;&quot;</span>   
-    <span class="n">start_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">start_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">end_bracket</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -238,7 +237,7 @@
 <span class="sd">        ==========    ==========     ===    </span>
 <span class="sd">         </span>
 <span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">stereotype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">stereotype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
     <span class="n">base_color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
@@ -265,8 +264,8 @@
 <span class="sd">        amberdawn          300</span>
 <span class="sd">        ===============    =    </span>
 <span class="sd">    &quot;&quot;&quot;</span>   
-    <span class="n">solid_compound</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span> 
+    <span class="n">solid_compound</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> 
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -298,8 +297,8 @@
 <span class="sd">        ========    ======= </span>
 <span class="sd">    &quot;&quot;&quot;</span>   
     
-    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
     <span class="n">original</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ColorUnigram</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
@@ -315,9 +314,12 @@
     <span class="sd">&quot;&quot;&quot; URL&#39;s and colors for Everycolorbot&#39;s tweets.</span>
 <span class="sd">    </span>
 <span class="sd">    **Fields:**</span>
+<span class="sd">        | added (DateTimeField): When the tweet was added to the database.</span>
 <span class="sd">        | color (ForeignKey): Reference to ``Color``-model object.</span>
 <span class="sd">        | tweeted (BooleanField): Has the color been used in a tweet.</span>
 <span class="sd">        | url (URLField): URL for the tweet.</span>
+<span class="sd">        | added (DateTimeField): Time when tweet was added to the database.</span>
+<span class="sd">        | tweet_id (CharField): Tweet&#39;s id_str from Twitter</span>
 <span class="sd">         </span>
 <span class="sd">    Sample entries:    </span>
 <span class="sd">     </span>
@@ -330,13 +332,18 @@
 <span class="sd">        =========    =======    ===</span>
 
 <span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">unique</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span>
     <span class="n">tweeted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">added</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">null</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">tweet_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">null</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-added&#39;</span><span class="p">,</span> <span class="s">&#39;color&#39;</span><span class="p">,</span> <span class="s">&#39;url&#39;</span><span class="p">,</span> <span class="s">&#39;tweeted&#39;</span><span class="p">]</span>
     
 </div>
 <div class="viewcode-block" id="PluralColorBigram"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.PluralColorBigram">[docs]</a><span class="k">class</span> <span class="nc">PluralColorBigram</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -359,10 +366,10 @@
 <span class="sd">        =======    ======    =====    ========  </span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
     <span class="n">singular</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -392,9 +399,9 @@
 <span class="sd">        tan        leather    2282</span>
 <span class="sd">        =======    =======    =</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">blank</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
     
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -402,7 +409,55 @@
     
     <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;w1&#39;</span><span class="p">,</span> <span class="s">&#39;w2&#39;</span><span class="p">)</span>
-        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span></div>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-f&#39;</span><span class="p">]</span>
+        
+        </div>
+<div class="viewcode-block" id="Tweet"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.Tweet">[docs]</a><span class="k">class</span> <span class="nc">Tweet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tweets made by the bot.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | message (CharField): Tweet&#39;s text</span>
+<span class="sd">        | muse (CharField): Class name of the used muse</span>
+<span class="sd">        | context (CharField): Class name of the used context generator</span>
+<span class="sd">        | color_code (CharField): Color code of the tweet, in html format.</span>
+<span class="sd">        | color_name (CharField): Color name. </span>
+<span class="sd">        | value (Float): Appreciation of the tweet, estimates color_code - color_name - message mapping&#39;s aptness.</span>
+<span class="sd">        | reasoning (TextField): Varying reasoning arguments.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tweeted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">160</span><span class="p">)</span>
+    <span class="n">muse</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
+    <span class="n">color_code</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">&quot;0xffffff&quot;</span><span class="p">)</span>
+    <span class="n">color_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">reasoning</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-tweeted&#39;</span><span class="p">]</span>
+     
+        </div>
+<div class="viewcode-block" id="ReTweet"><a class="viewcode-back" href="../../tweets/models.html#tweets.models.ReTweet">[docs]</a><span class="k">class</span> <span class="nc">ReTweet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tweets retweeted by the bot.</span>
+<span class="sd">    </span>
+<span class="sd">    **Fields:**</span>
+<span class="sd">        | retweeted (DateTimeField): When the tweet was retweeted.</span>
+<span class="sd">        | tweet_url (URlField): Original Tweet&#39;s Twitter URL</span>
+<span class="sd">        | tweet_id (CharField): Original Tweet&#39;s Twitter id_str</span>
+<span class="sd">        | screen_name (CharField): Screen name of the original tweeter.</span>
+<span class="sd">        | tweet (ForeignKey): Reference to the bot&#39;s Tweet-model.</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">retweeted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">tweet_url</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">URLField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">null</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">screen_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">null</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">tweet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Tweet</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">GetOrNoneManager</span><span class="p">()</span>
+        
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-retweeted&#39;</span><span class="p">]</span>    
+    </div>
 </pre></div>
 
           </div>

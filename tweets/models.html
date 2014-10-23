@@ -31,7 +31,7 @@
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
         <link rel="up" title="Tweets Package" href="index.html"/>
         <link rel="next" title="Views" href="views.html"/>
-        <link rel="prev" title="Resources Utilities" href="resources_utils.html"/> 
+        <link rel="prev" title="New Age Personality" href="new_age.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,13 +64,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -339,9 +338,12 @@ two words. Hopefully from somewhere it makes sense.</p>
 <dl class="docutils">
 <dt><strong>Fields:</strong></dt>
 <dd><div class="first last line-block">
+<div class="line">added (DateTimeField): When the tweet was added to the database.</div>
 <div class="line">color (ForeignKey): Reference to <tt class="docutils literal"><span class="pre">Color</span></tt>-model object.</div>
 <div class="line">tweeted (BooleanField): Has the color been used in a tweet.</div>
 <div class="line">url (URLField): URL for the tweet.</div>
+<div class="line">added (DateTimeField): Time when tweet was added to the database.</div>
+<div class="line">tweet_id (CharField): Tweet&#8217;s id_str from Twitter</div>
 </div>
 </dd>
 </dl>
@@ -442,6 +444,42 @@ two words. Hopefully from somewhere it makes sense.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="tweets.models.ReTweet">
+<em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">ReTweet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#ReTweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.ReTweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tweets retweeted by the bot.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">retweeted (DateTimeField): When the tweet was retweeted.</div>
+<div class="line">tweet_url (URlField): Original Tweet&#8217;s Twitter URL</div>
+<div class="line">tweet_id (CharField): Original Tweet&#8217;s Twitter id_str</div>
+<div class="line">screen_name (CharField): Screen name of the original tweeter.</div>
+<div class="line">tweet (ForeignKey): Reference to the bot&#8217;s Tweet-model.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="tweets.models.Tweet">
+<em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">Tweet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#Tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.Tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tweets made by the bot.</p>
+<dl class="docutils">
+<dt><strong>Fields:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">message (CharField): Tweet&#8217;s text</div>
+<div class="line">muse (CharField): Class name of the used muse</div>
+<div class="line">context (CharField): Class name of the used context generator</div>
+<div class="line">color_code (CharField): Color code of the tweet, in html format.</div>
+<div class="line">color_name (CharField): Color name. </div>
+<div class="line">value (Float): Appreciation of the tweet, estimates color_code - color_name - message mapping&#8217;s aptness.</div>
+<div class="line">reasoning (TextField): Varying reasoning arguments.</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
 <dt id="tweets.models.UnbracketedColorBigram">
 <em class="property">class </em><tt class="descclassname">tweets.models.</tt><tt class="descname">UnbracketedColorBigram</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/models.html#UnbracketedColorBigram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.models.UnbracketedColorBigram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unbracketed bigrams.</p>
@@ -497,7 +535,7 @@ two words. Hopefully from somewhere it makes sense.</p>
         <a href="views.html" class="btn btn-neutral float-right" title="Views"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="resources_utils.html" class="btn btn-neutral" title="Resources Utilities"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="new_age.html" class="btn btn-neutral" title="New Age Personality"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

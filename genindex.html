@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -108,10 +107,11 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#B"><strong>B</strong></a>
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
- | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -125,11 +125,21 @@
  | <a href="#V"><strong>V</strong></a>
  
 </div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/muses.html#tweets.muses.EveryColorBotMuse.approve_color">approve_color() (tweets.muses.EveryColorBotMuse method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.blend">blend() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.blend">blend() (in module tweets.utils.color)</a>
   </dt>
 
       <dd><dl>
@@ -158,6 +168,14 @@
 
       <dd><dl>
         
+  <dt><a href="tweets/contexts.html#tweets.contexts.DCContext.build_tweet">(tweets.contexts.DCContext method)</a>
+  </dt>
+
+        
+  <dt><a href="tweets/contexts.html#tweets.contexts.NewAgeContext.build_tweet">(tweets.contexts.NewAgeContext method)</a>
+  </dt>
+
+        
   <dt><a href="tweets/contexts.html#tweets.contexts.TextContext.build_tweet">(tweets.contexts.TextContext method)</a>
   </dt>
 
@@ -169,6 +187,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="tweets/muses.html#tweets.muses.EveryColorBotMuse.choose_color">choose_color() (tweets.muses.EveryColorBotMuse method)</a>
+  </dt>
+
+      
   <dt><a href="tweets/models.html#tweets.models.Color">Color (class in tweets.models)</a>
   </dt>
 
@@ -177,7 +199,7 @@
   </dt>
 
       
-  <dt><a href="tweets/color_utils.html#module-color_utils">color_utils (module)</a>
+  <dt><a href="tweets/utils/color_utils.html#module-color_utils">color_utils (module)</a>
   </dt>
 
       
@@ -214,6 +236,20 @@
   <dt><a href="tweets/models.html#tweets.models.Color.create">create() (tweets.models.Color class method)</a>
   </dt>
 
+      
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.create_temp_image">create_temp_image() (in module tweets.utils.color)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/contexts.html#tweets.contexts.DCContext">DCContext (class in tweets.contexts)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -221,7 +257,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.ed">ed() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.ed">ed() (in module tweets.utils.color)</a>
   </dt>
 
       
@@ -237,25 +273,21 @@
   </dl></td>
 </tr></table>
 
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="tweets/framing.html#tweets.framing.frame">frame() (in module tweets.framing)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="tweets/framing.html#module-framing">framing (module)</a>
-  </dt>
-
-  </dl></td>
-</tr></table>
-
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="tweets/new_age.html#tweets.new_age.NewAgePersonality.get_aura_color">get_aura_color() (tweets.new_age.NewAgePersonality method)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/muses.html#tweets.muses.EveryColorBotMuse.get_choices">get_choices() (tweets.muses.EveryColorBotMuse method)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.get_closest">get_closest() (in module tweets.utils.color)</a>
+  </dt>
+
       
   <dt><a href="tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.get_color_code">get_color_code() (tweets.color_semantics.ColorSemantics method)</a>
   </dt>
@@ -275,7 +307,15 @@
   </dt>
 
       
+  <dt><a href="tweets/new_age.html#tweets.new_age.NewAgePersonality.get_mood">get_mood() (tweets.new_age.NewAgePersonality method)</a>
+  </dt>
+
+      
   <dt><a href="tweets/models.html#tweets.models.GetOrNoneManager.get_or_none">get_or_none() (tweets.models.GetOrNoneManager method)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/new_age.html#tweets.new_age.NewAgePersonality.get_phase_on_day">get_phase_on_day() (tweets.new_age.NewAgePersonality method)</a>
   </dt>
 
       
@@ -289,7 +329,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.hex2rgb">hex2rgb() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.hex2rgb">hex2rgb() (in module tweets.utils.color)</a>
   </dt>
 
       
@@ -299,7 +339,7 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.html2rgb">html2rgb() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.html2rgb">html2rgb() (in module tweets.utils.color)</a>
   </dt>
 
   </dl></td>
@@ -319,17 +359,17 @@
 
       </dl></dd>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_hex">is_hex() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.is_hex">is_hex() (in module tweets.utils.color)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_html">is_html() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.is_html">is_html() (in module tweets.utils.color)</a>
   </dt>
 
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.is_rgb">is_rgb() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.is_rgb">is_rgb() (in module tweets.utils.color)</a>
   </dt>
 
   </dl></td>
@@ -362,10 +402,22 @@
   <dt><a href="tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.name_color">name_color() (tweets.color_semantics.ColorSemantics method)</a>
   </dt>
 
+      
+  <dt><a href="tweets/views.html#tweets.views.names">names() (in module tweets.views)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/new_age.html#module-new_age">new_age (module)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/views.html#tweets.views.names">names() (in module tweets.views)</a>
+  <dt><a href="tweets/contexts.html#tweets.contexts.NewAgeContext">NewAgeContext (class in tweets.contexts)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/new_age.html#tweets.new_age.NewAgePersonality">NewAgePersonality (class in tweets.new_age)</a>
   </dt>
 
   </dl></td>
@@ -379,33 +431,37 @@
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_bracketed_color_bigrams">populate_bracketed_color_bigrams() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_bracketed_color_bigrams">populate_bracketed_color_bigrams() (in module tweets.utils.resources)</a>
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_color_unigrams">populate_color_unigrams() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_color_unigrams">populate_color_unigrams() (in module tweets.utils.resources)</a>
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_colormap">populate_colormap() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_colormap">populate_colormap() (in module tweets.utils.resources)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_default">populate_default() (in module tweets.utils.resources)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_default">populate_default() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_everycolorbot_tweets">populate_everycolorbot_tweets() (in module tweets.utils.resources)</a>
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_everycolorbot_tweets">populate_everycolorbot_tweets() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_plural_color_bigrams">populate_plural_color_bigrams() (in module tweets.utils.resources)</a>
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_plural_color_bigrams">populate_plural_color_bigrams() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.populate_unbracketed_color_bigrams">populate_unbracketed_color_bigrams() (in module tweets.utils.resources)</a>
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.populate_unbracketed_color_bigrams">populate_unbracketed_color_bigrams() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/text_utils.html#tweets.utils.text.prettify_sentence">prettify_sentence() (in module tweets.utils.text)</a>
   </dt>
 
   </dl></td>
@@ -419,17 +475,21 @@
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#module-resources_utils">resources_utils (module)</a>
+  <dt><a href="tweets/utils/resources_utils.html#module-resources_utils">resources_utils (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/models.html#tweets.models.ReTweet">ReTweet (class in tweets.models)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.rgb2hex">rgb2hex() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.rgb2hex">rgb2hex() (in module tweets.utils.color)</a>
   </dt>
 
       
-  <dt><a href="tweets/color_utils.html#tweets.color_utils.rgb2html">rgb2html() (in module tweets.color_utils)</a>
+  <dt><a href="tweets/utils/color_utils.html#tweets.utils.color.rgb2html">rgb2html() (in module tweets.utils.color)</a>
   </dt>
 
   </dl></td>
@@ -442,10 +502,14 @@
   <dt><a href="tweets/muses.html#tweets.muses.Muse.select_color">select_color() (tweets.muses.Muse method)</a>
   </dt>
 
+      
+  <dt><a href="tweets/utils/text_utils.html#tweets.utils.text.sentiment">sentiment() (in module tweets.utils.text)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="tweets/resources_utils.html#tweets.resources_utils.split_unigrams">split_unigrams() (in module tweets.resources_utils)</a>
+  <dt><a href="tweets/utils/resources_utils.html#tweets.utils.resources.split_unigrams">split_unigrams() (in module tweets.utils.resources)</a>
   </dt>
 
   </dl></td>
@@ -455,7 +519,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="tweets/utils/text_utils.html#module-text_utils">text_utils (module)</a>
+  </dt>
+
+      
   <dt><a href="tweets/contexts.html#tweets.contexts.TextContext">TextContext (class in tweets.contexts)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/models.html#tweets.models.Tweet">Tweet (class in tweets.models)</a>
   </dt>
 
       
@@ -475,10 +547,6 @@
   </dt>
 
       
-  <dt><a href="tweets/color_utils.html#module-tweets.color_utils">tweets.color_utils (module)</a>
-  </dt>
-
-      
   <dt><a href="tweets/contexts.html#module-tweets.contexts">tweets.contexts (module)</a>
   </dt>
 
@@ -486,10 +554,6 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="tweets/core.html#module-tweets.core">tweets.core (module)</a>
-  </dt>
-
-      
-  <dt><a href="tweets/framing.html#module-tweets.framing">tweets.framing (module)</a>
   </dt>
 
       
@@ -501,7 +565,19 @@
   </dt>
 
       
-  <dt><a href="tweets/resources_utils.html#module-tweets.resources_utils">tweets.resources_utils (module)</a>
+  <dt><a href="tweets/new_age.html#module-tweets.new_age">tweets.new_age (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/utils/color_utils.html#module-tweets.utils.color">tweets.utils.color (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/utils/resources_utils.html#module-tweets.utils.resources">tweets.utils.resources (module)</a>
+  </dt>
+
+      
+  <dt><a href="tweets/utils/text_utils.html#module-tweets.utils.text">tweets.utils.text (module)</a>
   </dt>
 
       

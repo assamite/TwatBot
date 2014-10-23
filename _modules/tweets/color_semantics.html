@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -117,12 +116,20 @@
 <span class="sd">Color manipulations that are semantically informed, i.e. they have access to</span>
 <span class="sd">database models for color information and linguistic readymades.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">import</span> <span class="nn">tweets.color_utils</span> <span class="kn">as</span> <span class="nn">cu</span>
+<span class="kn">from</span> <span class="nn">tweets.utils</span> <span class="kn">import</span> <span class="n">color</span> <span class="k">as</span> <span class="n">cu</span>
 
-<span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">UnbracketedColorBigram</span>
+<span class="k">if</span> <span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;..&#39;</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TwatBot.settings&#39;</span>
+
+<span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorMap</span><span class="p">,</span> <span class="n">UnbracketedColorBigram</span>
 <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">ColorUnigramSplit</span><span class="p">,</span> <span class="n">ColorUnigram</span><span class="p">,</span> <span class="n">PluralColorBigram</span>
 <span class="kn">from</span> <span class="nn">tweets.models</span> <span class="kn">import</span> <span class="n">Color</span>
 
@@ -137,7 +144,9 @@
 <span class="sd">        loaded class instance available at ``tweets.core.COLOR_SEMANTICS``.</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">wordnet</span> <span class="k">as</span> <span class="n">wn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_resources</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wn</span> <span class="o">=</span> <span class="n">wn</span>
         
                    
 <div class="viewcode-block" id="ColorSemantics.reload_resources"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.reload_resources">[docs]</a>    <span class="k">def</span> <span class="nf">reload_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -279,10 +288,10 @@
 <span class="sd">            where color code is an unicode string in html-format, distance</span>
 <span class="sd">            is non-negative float and color name is the... name of the color.   </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="k">assert</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;k should be positive integer.&#39;</span><span class="p">)</span>
         <span class="n">color_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blended_unigram_splits</span>
-        <span class="n">dists</span> <span class="o">=</span>  <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">,</span> <span class="n">color_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]),</span> <span class="n">color_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">dists</span> <span class="o">=</span>  <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">cu</span><span class="o">.</span><span class="n">ed</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">c</span><span class="p">,</span> <span class="n">color_dict</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">color_dict</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="n">color_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">dists</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
     
     </div>
@@ -346,18 +355,49 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">chead</span><span class="p">,</span> <span class="n">cmodifier</span><span class="p">,</span> <span class="n">color_blend</span><span class="p">)</span>
     
     </div>
-<div class="viewcode-block" id="ColorSemantics.name_color"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.name_color">[docs]</a>    <span class="k">def</span> <span class="nf">name_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Give name for the given color code.</span>
+    <span class="k">def</span> <span class="nf">_modify_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify color name based on wordnet lemma names. Only the parts that</span>
+<span class="sd">        have synset of &#39;color&#39; in their hypernym-closures are altered.&quot;&quot;&quot;</span>
+        <span class="n">hyper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">hypernyms</span><span class="p">()</span>
+        <span class="n">sscolor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wn</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="s">&#39;color&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">color_split</span> <span class="o">=</span> <span class="n">color_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">modified_color_name</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">color_split</span><span class="p">:</span>
+            <span class="c"># Only modify color name with lemmas if the color name has &#39;color&#39;</span>
+            <span class="c"># synset as its parent.</span>
+            <span class="n">ss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wn</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>                           
+            <span class="k">if</span> <span class="n">ss</span> <span class="ow">and</span> <span class="n">sscolor</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span><span class="n">hyper</span><span class="p">)):</span>    
+                <span class="n">lemmas</span> <span class="o">=</span> <span class="n">ss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lemma_names</span><span class="p">()</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">lemmas</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="n">choice_split</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">modified_color_name</span> <span class="o">+=</span> <span class="n">choice_split</span>
+        
+        <span class="c"># Remove possible duplicate names &quot;blue green blue&quot; -&gt; &quot;blue green&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">modified_color_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+    
+    
+<div class="viewcode-block" id="ColorSemantics.name_color"><a class="viewcode-back" href="../../tweets/color_semantics.html#tweets.color_semantics.ColorSemantics.name_color">[docs]</a>    <span class="k">def</span> <span class="nf">name_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Give name(s) for the given color code.</span>
 <span class="sd">        </span>
 <span class="sd">        **Args:**</span>
 <span class="sd">             | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module. </span>
-<span class="sd">             | \**kwargs: Optional keyword arguments. Currently pass</span>
+<span class="sd">             | k (int): How many best names are retrieved.</span>
+<span class="sd">             | \**kwargs: Optional keyword arguments. Currently omitted.</span>
 <span class="sd">        </span>
 <span class="sd">        **Returns:**</span>
-<span class="sd">            str or unicode, human readable name for the color.</span>
+<span class="sd">            List of (name, color_code, distance)-tuples, where name is str or unicode, human </span>
+<span class="sd">            readable name for the color and distance is distance for the color code-name, </span>
+<span class="sd">            pairing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_knn_blended_unigrams</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;k should be positive integer.&#39;</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_knn_blended_unigrams</span><span class="p">(</span><span class="n">color_code</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">:</span> <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_modify_name</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">names</span>
         
         
         

@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tweets.new_age &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>tweets.new_age</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for tweets.new_age</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. py:module:: new_age</span>
+<span class="sd">    :platform: Unix</span>
+
+<span class="sd">New age personality affected by moon phases, etc.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">ephem</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">bisect</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">colormath.color_objects</span> <span class="kn">import</span> <span class="n">sRGBColor</span><span class="p">,</span> <span class="n">LabColor</span> 
+
+<span class="kn">from</span> <span class="nn">tweets.utils</span> <span class="kn">import</span> <span class="n">color</span> <span class="k">as</span> <span class="n">cu</span>
+
+<span class="c"># Precision used when describing the moon&#39;s phase in textual format,</span>
+<span class="c"># in phase_string().</span>
+<span class="n">PRECISION</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">NEW</span> <span class="o">=</span>   <span class="mf">0.0</span> <span class="o">/</span> <span class="mf">4.0</span>
+<span class="n">FIRST</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">4.0</span>
+<span class="n">FULL</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="mf">4.0</span>
+<span class="n">LAST</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">/</span> <span class="mf">4.0</span>
+<span class="n">NEXTNEW</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">/</span> <span class="mf">4.0</span>
+
+<span class="c"># MOON PHASE MAGICS: http://www.moonsmuses.com/moonphases.html</span>
+<span class="n">magics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;new&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;love&quot;</span><span class="p">,</span> <span class="s">&quot;romance&quot;</span><span class="p">,</span> <span class="s">&quot;health&quot;</span><span class="p">,</span> <span class="s">&quot;hunting&quot;</span><span class="p">],</span>
+    <span class="s">&quot;waxing crescent&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;constructive&quot;</span><span class="p">,</span> <span class="s">&quot;love&quot;</span><span class="p">,</span> <span class="s">&quot;wealth&quot;</span><span class="p">,</span> <span class="s">&quot;success&quot;</span><span class="p">,</span> <span class="s">&quot;courage&quot;</span><span class="p">,</span> <span class="s">&quot;friendship&quot;</span><span class="p">,</span> <span class="s">&quot;luck&quot;</span><span class="p">,</span> <span class="s">&quot;health&quot;</span><span class="p">],</span>
+    <span class="s">&quot;first quarter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;constructive&quot;</span><span class="p">,</span> <span class="s">&quot;love&quot;</span><span class="p">,</span> <span class="s">&quot;wealth&quot;</span><span class="p">,</span> <span class="s">&quot;success&quot;</span><span class="p">,</span> <span class="s">&quot;courage&quot;</span><span class="p">,</span> <span class="s">&quot;friendship&quot;</span><span class="p">,</span> <span class="s">&quot;luck&quot;</span><span class="p">,</span> <span class="s">&quot;health&quot;</span><span class="p">],</span>
+    <span class="s">&quot;waxing gibbous&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;constructive&quot;</span><span class="p">,</span> <span class="s">&quot;love&quot;</span><span class="p">,</span> <span class="s">&quot;wealth&quot;</span><span class="p">,</span> <span class="s">&quot;success&quot;</span><span class="p">,</span> <span class="s">&quot;courage&quot;</span><span class="p">,</span> <span class="s">&quot;friendship&quot;</span><span class="p">,</span> <span class="s">&quot;luck&quot;</span><span class="p">,</span> <span class="s">&quot;health&quot;</span><span class="p">],</span>
+    <span class="s">&quot;full&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;prophecy&quot;</span><span class="p">,</span> <span class="s">&quot;protection&quot;</span><span class="p">,</span> <span class="s">&quot;divination&quot;</span><span class="p">,</span>  <span class="s">&quot;love&quot;</span><span class="p">,</span> <span class="s">&quot;knowledge&quot;</span><span class="p">,</span> <span class="s">&quot;money&quot;</span><span class="p">,</span> <span class="s">&quot;dreams&quot;</span><span class="p">],</span>
+    <span class="s">&quot;waning gibbous&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;banish&quot;</span><span class="p">,</span> <span class="s">&quot;addiction&quot;</span><span class="p">,</span> <span class="s">&quot;detox&quot;</span><span class="p">,</span> <span class="s">&quot;illness&quot;</span><span class="p">,</span> <span class="s">&quot;negativity&quot;</span><span class="p">],</span>
+    <span class="s">&quot;last quarter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;banish&quot;</span><span class="p">,</span> <span class="s">&quot;addiction&quot;</span><span class="p">,</span> <span class="s">&quot;detox&quot;</span><span class="p">,</span> <span class="s">&quot;illness&quot;</span><span class="p">,</span> <span class="s">&quot;negativity&quot;</span><span class="p">],</span>
+    <span class="s">&quot;waning crescent&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;detox&quot;</span><span class="p">,</span> <span class="s">&quot;anger&quot;</span><span class="p">,</span> <span class="s">&quot;passion&quot;</span><span class="p">,</span> <span class="s">&quot;understanding&quot;</span><span class="p">,</span> <span class="s">&quot;justice&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+<span class="c"># AURA COLOR MEANINGS: http://www.reiki-for-holistic-health.com/auracolormeanings.html </span>
+<span class="n">auras</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;#8B0000&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;deep red&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;grounded&#39;</span><span class="p">,</span> <span class="s">&#39;realistic&#39;</span><span class="p">,</span> <span class="s">&#39;active&#39;</span><span class="p">,</span> <span class="s">&#39;strong willed&#39;</span><span class="p">,</span> <span class="s">&#39;survival-oriented&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;physical body&#39;</span><span class="p">,</span> <span class="s">&#39;heart&#39;</span><span class="p">,</span> <span class="s">&#39;circulation&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#7F462C&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;muddied red&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;anger&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;physical body&#39;</span><span class="p">,</span> <span class="s">&#39;heart&#39;</span><span class="p">,</span> <span class="s">&#39;circulation&#39;</span><span class="p">]</span>
+    <span class="p">},</span>   
+    <span class="s">&quot;#EF1111&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;clear red&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;powerful&#39;</span><span class="p">,</span> <span class="s">&#39;energetic&#39;</span><span class="p">,</span> <span class="s">&#39;competitive&#39;</span><span class="p">,</span> <span class="s">&#39;sexual&#39;</span><span class="p">,</span> <span class="s">&#39;passionate&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;physical body&#39;</span><span class="p">,</span> <span class="s">&#39;heart&#39;</span><span class="p">,</span> <span class="s">&#39;circulation&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#FFC0CB&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bright pink&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;loving&#39;</span><span class="p">,</span> <span class="s">&#39;tender&#39;</span><span class="p">,</span> <span class="s">&#39;sensitive&#39;</span><span class="p">,</span> <span class="s">&#39;sensual&#39;</span><span class="p">,</span> <span class="s">&#39;artistic&#39;</span><span class="p">,</span> <span class="s">&#39;pure&#39;</span><span class="p">,</span> <span class="s">&#39;compassionate&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;clairaudience&#39;</span><span class="p">,</span> <span class="s">&#39;romantic relationship&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#FF4500&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;orange red&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;confident&#39;</span><span class="p">,</span> <span class="s">&#39;creative&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#FF9900&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;orange-yellow&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;creative&#39;</span><span class="p">,</span> <span class="s">&#39;intelligent&#39;</span><span class="p">,</span> <span class="s">&#39;detail oriented&#39;</span><span class="p">,</span> <span class="s">&#39;perfectionist&#39;</span><span class="p">,</span> <span class="s">&#39;scientific&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;reproducive organs&#39;</span><span class="p">,</span> <span class="s">&#39;emotions&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#FFFFE0&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;pale yellow&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;awaking&#39;</span><span class="p">,</span> <span class="s">&#39;inspiring&#39;</span><span class="p">,</span> <span class="s">&#39;intelligent&#39;</span><span class="p">,</span> <span class="s">&#39;creative&#39;</span><span class="p">,</span> <span class="s">&#39;playful&#39;</span><span class="p">,</span> <span class="s">&#39;optimistic&#39;</span><span class="p">,</span> <span class="s">&#39;easy-going&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;psychic awareness&#39;</span><span class="p">,</span> <span class="s">&#39;spiritual awareness&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#FFFACD&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;lemon&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;fearful&#39;</span><span class="p">,</span> <span class="s">&#39;wary&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;losing control&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#FFD700&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;gold&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;inspiring&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;spiritual energy&#39;</span><span class="p">,</span> <span class="s">&#39;spiritual power&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#BDB76B&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;dark yellow&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;over analytic&#39;</span><span class="p">,</span> <span class="s">&#39;fatigued&#39;</span><span class="p">,</span> <span class="s">&#39;stressed&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;studying&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#5B9C64&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;emerald green&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;love-centered&#39;</span><span class="p">,</span> <span class="s">&#39;comforting&#39;</span><span class="p">,</span> <span class="s">&#39;healing&#39;</span><span class="p">,</span> <span class="s">&#39;social&#39;</span><span class="p">,</span> <span class="s">&#39;teacher&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;healing&#39;</span><span class="p">,</span> <span class="s">&#39;growth&#39;</span><span class="p">,</span> <span class="s">&#39;balance&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#99CC32&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;yellow-green&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;communicative&#39;</span><span class="p">,</span> <span class="s">&#39;creative&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#006400&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;dark green&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;jealous&#39;</span><span class="p">,</span> <span class="s">&#39;resentment&#39;</span><span class="p">,</span> <span class="s">&#39;victimized&#39;</span><span class="p">,</span> <span class="s">&#39;insecure&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;lack of understanding&#39;</span><span class="p">,</span> <span class="s">&#39;low self-esteem&#39;</span><span class="p">,</span> <span class="s">&#39;sensitive to criticism&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#40E0D0&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;turquoise&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;sensitive&#39;</span><span class="p">,</span> <span class="s">&#39;compassionate&#39;</span><span class="p">,</span> <span class="s">&#39;healing&#39;</span><span class="p">,</span> <span class="s">&#39;therapist&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;immune system&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#D9E9FF&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;soft blue&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;caring&#39;</span><span class="p">,</span> <span class="s">&#39;loving&#39;</span><span class="p">,</span> <span class="s">&#39;peaceful&#39;</span><span class="p">,</span> <span class="s">&#39;clear&#39;</span><span class="p">,</span> <span class="s">&#39;bright&#39;</span><span class="p">,</span> <span class="s">&#39;uncluttered&#39;</span><span class="p">,</span> <span class="s">&#39;thruthful&#39;</span><span class="p">,</span> <span class="s">&#39;intuitive&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;caring&#39;</span><span class="p">,</span> <span class="s">&#39;loving&#39;</span><span class="p">,</span> <span class="s">&#39;sensitive&#39;</span><span class="p">,</span> <span class="s">&#39;intuitive&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+    <span class="s">&quot;#4169E1 &quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;royal blue&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;clairvoyant&#39;</span><span class="p">,</span> <span class="s">&#39;generous&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;high spiritual nature&#39;</span><span class="p">]</span>
+    <span class="p">},</span>  
+    <span class="s">&quot;#00008B&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;dark blue&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;fearing&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;fear of future&#39;</span><span class="p">,</span> <span class="s">&#39;fear of self-expression&#39;</span><span class="p">,</span> <span class="s">&#39;fear of speaking the truth&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+   <span class="s">&quot;#12008B&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;indigo&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;intuitive&#39;</span><span class="p">,</span> <span class="s">&#39;sensitive&#39;</span><span class="p">,</span> <span class="s">&#39;deep feeling&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;third eye&#39;</span><span class="p">,</span> <span class="s">&#39;visual&#39;</span><span class="p">,</span> <span class="s">&#39;pituitary gland&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#8A2BE2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;violet&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;intuitive&#39;</span><span class="p">,</span> <span class="s">&#39;visionary&#39;</span><span class="p">,</span> <span class="s">&#39;futuristic&#39;</span><span class="p">,</span> <span class="s">&#39;idealistic&#39;</span><span class="p">,</span> <span class="s">&#39;artistic&#39;</span><span class="p">,</span> <span class="s">&#39;magical&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;crown&#39;</span><span class="p">,</span> <span class="s">&#39;pineal gland&#39;</span><span class="p">,</span> <span class="s">&#39;nervous system&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#E6E6FA&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;lavender&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;imaginative&#39;</span><span class="p">,</span> <span class="s">&#39;visionary&#39;</span><span class="p">,</span> <span class="s">&#39;daydreaming&#39;</span><span class="p">,</span> <span class="s">&#39;etheric&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#C0C0C0&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;silver&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;awaking&#39;</span><span class="p">,</span> <span class="s">&#39;rich&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;abundance&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#BCC6CC&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bright metallic silver&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;receptive&#39;</span><span class="p">,</span> <span class="s">&#39;intuitive&#39;</span><span class="p">,</span> <span class="s">&#39;nurturing&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;#666666&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;dark gray&#39;</span><span class="p">,</span>
+        <span class="s">&#39;traits&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;unhealthy&#39;</span><span class="p">,</span> <span class="s">&#39;stressed&#39;</span><span class="p">],</span>
+        <span class="s">&#39;relates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;health problems&#39;</span><span class="p">]</span>
+    <span class="p">},</span> 
+<span class="p">}</span>
+
+<div class="viewcode-block" id="NewAgePersonality"><a class="viewcode-back" href="../../tweets/new_age.html#tweets.new_age.NewAgePersonality">[docs]</a><span class="k">class</span> <span class="nc">NewAgePersonality</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;New age personality traits for given date.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fate</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moon_phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phase_on_day</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moon_phase_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phase_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moon_phase</span><span class="p">)</span>
+    
+    
+<div class="viewcode-block" id="NewAgePersonality.get_phase_on_day"><a class="viewcode-back" href="../../tweets/new_age.html#tweets.new_age.NewAgePersonality.get_phase_on_day">[docs]</a>    <span class="k">def</span> <span class="nf">get_phase_on_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a floating-point number from 0-1. where 0=new, 0.5=full, 1=new&quot;&quot;&quot;</span>
+        <span class="c">#Ephem stores its date numbers as floating points, which the following uses</span>
+        <span class="c">#to conveniently extract the percent time between one new moon and the next</span>
+        <span class="c">#This corresponds (somewhat roughly) to the phase of the moon.</span>
+        
+        <span class="c">#Use Year, Month, Day as arguments</span>
+        <span class="n">date</span><span class="o">=</span><span class="n">ephem</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        
+        <span class="n">nnm</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">next_new_moon</span>    <span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">pnm</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">previous_new_moon</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        
+        <span class="n">lunation</span><span class="o">=</span><span class="p">(</span><span class="n">date</span><span class="o">-</span><span class="n">pnm</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">nnm</span><span class="o">-</span><span class="n">pnm</span><span class="p">)</span>
+        
+        <span class="c">#Note that there is a ephem.Moon().phase() command, but this returns the</span>
+        <span class="c">#percentage of the moon which is illuminated. This is not really what we want.</span>
+        
+        <span class="k">return</span> <span class="n">lunation</span>
+    </div>
+    <span class="k">def</span> <span class="nf">get_phase_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lunation</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">lunation</span>
+        
+        <span class="n">phase_strings</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">NEW</span> <span class="o">+</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;new&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">FIRST</span> <span class="o">-</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;waxing crescent&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">FIRST</span> <span class="o">+</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;first quarter&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">FULL</span> <span class="o">-</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;waxing gibbous&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">FULL</span> <span class="o">+</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;full&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">LAST</span> <span class="o">-</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;waning gibbous&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">LAST</span> <span class="o">+</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;last quarter&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">NEXTNEW</span> <span class="o">-</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;waning crescent&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">NEXTNEW</span> <span class="o">+</span> <span class="n">PRECISION</span><span class="p">,</span> <span class="s">&quot;new&quot;</span><span class="p">))</span>
+    
+        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">phase_strings</span><span class="p">],</span> <span class="n">p</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">phase_strings</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="NewAgePersonality.get_mood"><a class="viewcode-back" href="../../tweets/new_age.html#tweets.new_age.NewAgePersonality.get_mood">[docs]</a>    <span class="k">def</span> <span class="nf">get_mood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;Current mood of the personality.</span>
+<span class="sd">        </span>
+<span class="sd">        Mood is a dictionary with at least the following keys:</span>
+<span class="sd">        </span>
+<span class="sd">            | lunation: current lunation in the interval of [0, 1]</span>
+<span class="sd">            | moon_phase: current moon phase as a string</span>
+<span class="sd">            | aura_color: current aura color</span>
+<span class="sd">            </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | date (date): Date for the mood. Date affects mood traits, see e.g. ``get_aura_color``.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            dict, current mood traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lunation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phase_on_day</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">moon_phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_phase_string</span><span class="p">(</span><span class="n">lunation</span><span class="p">)</span>
+        <span class="n">aura_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aura_color</span><span class="p">(</span><span class="n">lunation</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;lunation&#39;</span><span class="p">:</span> <span class="n">lunation</span><span class="p">,</span> <span class="s">&#39;moon_phase&#39;</span><span class="p">:</span> <span class="n">moon_phase</span><span class="p">,</span> <span class="s">&#39;aura_color&#39;</span><span class="p">:</span> <span class="n">aura_color</span><span class="p">}</span>
+        
+        </div>
+<div class="viewcode-block" id="NewAgePersonality.get_aura_color"><a class="viewcode-back" href="../../tweets/new_age.html#tweets.new_age.NewAgePersonality.get_aura_color">[docs]</a>    <span class="k">def</span> <span class="nf">get_aura_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lunation</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>   
+        <span class="sd">&quot;&quot;&quot;Get aura color for given date with given lunation. </span>
+<span class="sd">        </span>
+<span class="sd">        The lunation&#39;s correctness to the date is not checked.</span>
+<span class="sd">        Lunation affects the *a*- and *b*-color opponent dimensions in LAB-color </span>
+<span class="sd">        space. Lightness depends on the time of the year. More precisely, how long</span>
+<span class="sd">        the sun is above the horizon in Helsinki during the day, i.e. aura colors </span>
+<span class="sd">        tend to be darker during the winter.</span>
+<span class="sd">        </span>
+<span class="sd">        The exact formulas for *l*, *a* and *b* is::</span>
+<span class="sd">            </span>
+<span class="sd">            l = (sun_above_horizon / 24h)*100 + N(0, 40)</span>
+<span class="sd">            a = sin(2 * PI * lunation)*80 + N(0, 30)</span>
+<span class="sd">            b = cos(2 * PI * lunation)*80 + N(0, 30),</span>
+<span class="sd">            </span>
+<span class="sd">        where *N(0, X)* is normal distribution with zero mean and *X* variance.</span>
+<span class="sd">        The lightness value is restricted to the interval [20, 100].     </span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lab_coordinate</span><span class="p">(</span><span class="n">lunation</span><span class="p">)</span>
+        <span class="n">na</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">nb</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_lightness</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>  
+        <span class="n">lc</span> <span class="o">=</span> <span class="n">LabColor</span><span class="p">(</span><span class="n">lab_l</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">lab_a</span> <span class="o">=</span> <span class="n">na</span><span class="p">,</span> <span class="n">lab_b</span> <span class="o">=</span> <span class="n">nb</span><span class="p">)</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">cu</span><span class="o">.</span><span class="n">_lab2rgb</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rgb</span>
+    
+    </div>
+    <span class="k">def</span> <span class="nf">__get_lightness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">hki</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">city</span><span class="p">(</span><span class="s">&#39;Helsinki&#39;</span><span class="p">)</span>
+        <span class="n">hki</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="n">sun</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Sun</span><span class="p">()</span>
+        <span class="n">nsr</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">hki</span><span class="o">.</span><span class="n">next_rising</span><span class="p">(</span><span class="n">sun</span><span class="p">))</span>
+        <span class="n">nss</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">hki</span><span class="o">.</span><span class="n">next_setting</span><span class="p">(</span><span class="n">sun</span><span class="p">))</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">nss</span> <span class="o">-</span> <span class="n">nsr</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+        <span class="n">part_of_day</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">/</span> <span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="n">lightness</span> <span class="o">=</span> <span class="p">(</span><span class="n">part_of_day</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+        <span class="n">lightness</span> <span class="o">=</span> <span class="mi">20</span> <span class="k">if</span> <span class="n">lightness</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="n">lightness</span>
+        <span class="n">lightness</span> <span class="o">=</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">lightness</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">lightness</span>
+        <span class="k">return</span> <span class="n">lightness</span>
+    
+    
+    <span class="k">def</span> <span class="nf">__lab_coordinate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lunation</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">lunation</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">80</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="mi">80</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    
+    
+    
+    </div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

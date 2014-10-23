@@ -62,13 +62,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tweets/resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -119,7 +118,6 @@
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span>
 <span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
-<span class="kn">from</span> <span class="nn">tweets.core</span> <span class="kn">import</span> <span class="n">COLOR_SEMANTICS</span> <span class="k">as</span> <span class="n">semantics</span>
 <span class="kn">from</span> <span class="nn">tweets.core</span> <span class="kn">import</span> <span class="n">TWEET_CORE</span>
 
 
@@ -132,7 +130,8 @@
 </div>
 <div class="viewcode-block" id="blend"><a class="viewcode-back" href="../../tweets/views.html#tweets.views.blend">[docs]</a><span class="k">def</span> <span class="nf">blend</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Test blending of splitted unigrams.&quot;&quot;&quot;</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">semantics</span><span class="o">.</span><span class="n">blend_all_unigram_splits</span><span class="p">(</span><span class="n">a_head</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">tweets.core</span> <span class="kn">import</span> <span class="n">COLOR_SEMANTICS</span> <span class="k">as</span> <span class="n">semantics</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">semantics</span><span class="o">.</span><span class="n">blend_all_unigram_splits</span><span class="p">(</span><span class="n">a_head</span> <span class="o">=</span> <span class="mf">0.60</span><span class="p">)</span>
     <span class="n">blends</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">:</span>
         <span class="n">h</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -144,6 +143,7 @@
 </div>
 <div class="viewcode-block" id="names"><a class="viewcode-back" href="../../tweets/views.html#tweets.views.names">[docs]</a><span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Test color names for the everycolorbot tweets.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">tweets.core</span> <span class="kn">import</span> <span class="n">COLOR_SEMANTICS</span> <span class="k">as</span> <span class="n">semantics</span>
     <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -161,14 +161,41 @@
     <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;names_test.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
         
     </div>
-<div class="viewcode-block" id="tweets"><a class="viewcode-back" href="../../tweets/views.html#tweets.views.tweets">[docs]</a><span class="k">def</span> <span class="nf">tweets</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Test tweeting functionality.&quot;&quot;&quot;</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">TWEET_CORE</span><span class="o">.</span><span class="n">tweet</span><span class="p">(</span><span class="n">send_to_twitter</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    
-    
+<div class="viewcode-block" id="tweets"><a class="viewcode-back" href="../../tweets/views.html#tweets.views.tweets">[docs]</a><span class="k">def</span> <span class="nf">tweets</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test tweeting functionality.&quot;&quot;&quot;</span>   
+    <span class="n">tweets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">TWEET_CORE</span><span class="o">.</span><span class="n">tweet</span><span class="p">(</span><span class="n">send_to_twitter</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;tweet&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">tweet</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;tweet&#39;</span><span class="p">]</span>
+            <span class="n">color_code</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">][</span><span class="s">&#39;color_code&#39;</span><span class="p">]</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+            <span class="n">tweets</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;tweet&#39;</span><span class="p">:</span> <span class="n">tweet</span><span class="p">,</span> <span class="s">&#39;color_code&#39;</span><span class="p">:</span> <span class="n">color_code</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+        
+    <span class="n">context</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;tweets&#39;</span><span class="p">:</span> <span class="n">tweets</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;tweets_test.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
     
     </div>
+<span class="k">def</span> <span class="nf">aura_color</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">datetime</span>
+    <span class="kn">from</span> <span class="nn">new_age</span> <span class="kn">import</span> <span class="n">NewAgePersonality</span> <span class="k">as</span> <span class="n">NAP</span>
+    <span class="kn">from</span> <span class="nn">tweets.utils</span> <span class="kn">import</span> <span class="n">color</span>
+    <span class="n">nap</span> <span class="o">=</span> <span class="n">NAP</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    <span class="n">auras</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">365</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">nap</span><span class="o">.</span><span class="n">get_mood</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">ac</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;aura_color&#39;</span><span class="p">])</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;moon_phase&#39;</span><span class="p">]</span>
+        <span class="n">lunation</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;lunation&#39;</span><span class="p">]</span>
+        <span class="n">auras</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;color_code&#39;</span><span class="p">:</span> <span class="n">ac</span><span class="p">,</span> <span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s">&#39;moon_phase&#39;</span><span class="p">:</span> <span class="n">phase</span><span class="p">,</span> <span class="s">&#39;lunation&#39;</span><span class="p">:</span> <span class="n">lunation</span> <span class="p">})</span>
+        <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;auras&#39;</span><span class="p">:</span> <span class="n">auras</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;aura_test.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    
+    
 </pre></div>
 
           </div>

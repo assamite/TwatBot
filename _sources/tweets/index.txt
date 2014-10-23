@@ -6,13 +6,12 @@ Tweets Package
 	
 	core
 	muses
-	framing
 	contexts
 	color_semantics
-	color_utils
-	resources_utils
+	new_age
 	models
 	views
+	utils/index
 	
 	
 Main package of the project, developed as a Django app. The app has currently following modules.
@@ -29,11 +28,9 @@ Main package of the project, developed as a Django app. The app has currently fo
 
 	* :py:mod:`core`: Core of the color tweets. Glues other modules' functionality together.
 	* :py:mod:`muses`: Muses for the tweets, i.e. sources for color codes.
-	* :py:mod:`framing`: Framing of the color tweets
 	* :py:mod:`contexts`: Different contexts for framing
 	* :py:mod:`color_semantics`: Semantically informed color manipulations
-	* :py:mod:`color_utils`: Semantic ignorant color utility functions
-	* :py:mod:`resources_utils`: Functions to populate Django models with contents in ``resources/``
+	* :py:mod:`new_age`: New Age personality for the tweets
 	
 
 General Functionality
@@ -56,8 +53,8 @@ partial contents and act in different roles in the building of the tweets.
 
 *Contexts*
 
-	Contexts provide framings for the tweets. They provide actual contents of the
-	tweet and should be versatile enough in their own right to prohibit meaningless 
+	Contexts provide framings for the tweets. They generate actual tweet contents
+	and should be versatile enough in their own right to prohibit meaningless 
 	repetition in the tweets. Good contexts accept and use different resources given
 	by the muses.
 
@@ -72,7 +69,7 @@ partial contents and act in different roles in the building of the tweets.
 
 	Core glues together color code - color name - context mappings and evaluates if 
 	they are good enough to be tweeted. It also compares given color codes and contexts
-	to last tweets memory (to be implemented) so that TwatBot does not appear to be
+	to last tweets in memory (to be implemented) so that TwatBot does not appear to be
 	too repetitive.
 
 

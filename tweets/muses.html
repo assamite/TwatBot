@@ -30,7 +30,7 @@
   
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
         <link rel="up" title="Tweets Package" href="index.html"/>
-        <link rel="next" title="Framing" href="framing.html"/>
+        <link rel="next" title="Contexts" href="contexts.html"/>
         <link rel="prev" title="Core Functionality" href="core.html"/> 
 
   
@@ -64,13 +64,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -121,7 +120,7 @@ and context generation algorithms, which are passed as is by the underlying
 tweet-motor, i.e. one could create a muse which would name the selected color 
 itself. However, as the underlying tweet-motor would not know how well the name
 represents the color, it might produce undesired results as color code-name-framing
-mappings&#8217; values would suffer if no <tt class="docutils literal"><span class="pre">value</span></tt>-key is added to the optional information.</p>
+mappings&#8217; values would suffer if no <tt class="docutils literal"><span class="pre">muse_value</span></tt>-key is added to the optional information.</p>
 <dl class="class">
 <dt id="tweets.muses.EveryColorBotMuse">
 <em class="property">class </em><tt class="descclassname">tweets.muses.</tt><tt class="descname">EveryColorBotMuse</tt><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse" title="Permalink to this definition">¶</a></dt>
@@ -133,10 +132,32 @@ anymore.</p>
 <p>The saving of the tweeted status happens only after the tweet has been 
 successfully made by the core.</p>
 <dl class="method">
+<dt id="tweets.muses.EveryColorBotMuse.approve_color">
+<tt class="descname">approve_color</tt><big>(</big><em>chtml</em><big>)</big><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse.approve_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse.approve_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirm that not too similar color has been tweeted in recent
+tweets.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.muses.EveryColorBotMuse.choose_color">
+<tt class="descname">choose_color</tt><big>(</big><em>aura_color</em>, <em>choices</em><big>)</big><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse.choose_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse.choose_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choose EveryColorBotTweet which is closest to the given aura color.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.muses.EveryColorBotMuse.get_choices">
+<tt class="descname">get_choices</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse.get_choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse.get_choices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get possible EveryColorBotTweet choices depending on the bot&#8217;s 
+current activity.</p>
+<p>More recent tweets (based on database addition time) are emphasized.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="tweets.muses.EveryColorBotMuse.inspire">
 <tt class="descname">inspire</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/muses.html#EveryColorBotMuse.inspire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.muses.EveryColorBotMuse.inspire" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select random color from the Everycolorbot&#8217;s tweets, which TwatBot
-has not tweeted yet.</p>
+<dd><p>Define a mood for the muse and select a color from the Everycolorbot&#8217;s 
+tweets, which the bot has not tweeted yet.</p>
+<p>The color selected from choices is the closest to the current mood of the muse.</p>
 <dl class="docutils">
 <dt><strong>Returns:</strong></dt>
 <dd>Dict, which has <tt class="docutils literal"><span class="pre">color_code</span></tt> and <tt class="docutils literal"><span class="pre">everycolorbot_url</span></tt> -keys. If 
@@ -191,7 +212,7 @@ for its purposes and should be passable to <tt class="docutils literal"><span cl
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="framing.html" class="btn btn-neutral float-right" title="Framing"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="contexts.html" class="btn btn-neutral float-right" title="Contexts"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="core.html" class="btn btn-neutral" title="Core Functionality"><span class="fa fa-arrow-circle-left"></span> Previous</a>

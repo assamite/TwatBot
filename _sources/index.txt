@@ -17,7 +17,7 @@ certain color codes is easy to follow from a web site.
 Contents:
 
 .. toctree::
-	:maxdepth: 3
+	:maxdepth: 4
 	:includehidden:
 	
 	install

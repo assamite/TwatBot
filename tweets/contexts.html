@@ -31,7 +31,7 @@
     <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
         <link rel="up" title="Tweets Package" href="index.html"/>
         <link rel="next" title="Color Semantics" href="color_semantics.html"/>
-        <link rel="prev" title="Framing" href="framing.html"/> 
+        <link rel="prev" title="Muses" href="muses.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,13 +64,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -134,6 +133,60 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="tweets.contexts.DCContext">
+<em class="property">class </em><tt class="descclassname">tweets.contexts.</tt><tt class="descname">DCContext</tt><a class="reference internal" href="../_modules/tweets/contexts.html#DCContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.contexts.DCContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Framing with &#8216;random&#8217; new age liirumlaarum from Deepak Chopra.</p>
+<p>Uses <a class="reference external" href="www.wisdomofchopra.com">Wisdom of Deepak Chopra</a> as a help for framing.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">www.wisdomofchopra.com seems to be down.</p>
+</div>
+<dl class="method">
+<dt id="tweets.contexts.DCContext.build_tweet">
+<tt class="descname">build_tweet</tt><big>(</big><em>color_name</em>, <em>wisdom_count=5</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/contexts.html#DCContext.build_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.contexts.DCContext.build_tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build tweet for color name.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_name (str): Human readable name for the color.</div>
+<div class="line">wisdom_count (int): How many different wisdoms are considered in order to find the best framing.</div>
+<div class="line">**kwargs: Optional keyword arguments. Should have <tt class="docutils literal"><span class="pre">color_code</span></tt> -key and supports optionally at least <tt class="docutils literal"><span class="pre">retweet</span></tt>.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>str, tweet for the color code-name pair. If no tweet can be constructed (e.g. wisdomofchopra is down, no internet connection), 
+returns None.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tweets.contexts.NewAgeContext">
+<em class="property">class </em><tt class="descclassname">tweets.contexts.</tt><tt class="descname">NewAgeContext</tt><a class="reference internal" href="../_modules/tweets/contexts.html#NewAgeContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.contexts.NewAgeContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Framing with &#8216;random&#8217; new age liirumlaarum.</p>
+<p>Bases on the work done by <a class="reference external" href="http://sebpearce.com/bullshit/">Seb Pearce</a>, and needs 
+<a class="reference external" href="http://nodejs.org/">Node.js</a> to work.</p>
+<dl class="method">
+<dt id="tweets.contexts.NewAgeContext.build_tweet">
+<tt class="descname">build_tweet</tt><big>(</big><em>color_name</em>, <em>wisdom_count=10</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/contexts.html#NewAgeContext.build_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.contexts.NewAgeContext.build_tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build tweet for color name.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">color_name (str): Human readable name for the color.</div>
+<div class="line">wisdom_count (int): How many different wisdoms are considered in order to find the best framing.</div>
+<div class="line">**kwargs: Optional keyword arguments. Should have <tt class="docutils literal"><span class="pre">color_code</span></tt> -key and supports optionally at least <tt class="docutils literal"><span class="pre">everycolorbot_url</span></tt> which personalizes the response for Everycolorbot.</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>str, tweet for the color code-name pair. If no tweet can be constructed, returns None.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="tweets.contexts.TextContext">
 <em class="property">class </em><tt class="descclassname">tweets.contexts.</tt><tt class="descname">TextContext</tt><a class="reference internal" href="../_modules/tweets/contexts.html#TextContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.contexts.TextContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic text context. Nothing fancy here, yet.</p>
@@ -166,7 +219,7 @@
         <a href="color_semantics.html" class="btn btn-neutral float-right" title="Color Semantics"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="framing.html" class="btn btn-neutral" title="Framing"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="muses.html" class="btn btn-neutral" title="Muses"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

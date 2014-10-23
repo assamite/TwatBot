@@ -63,13 +63,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="framing.html">Framing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color_utils.html">Color Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resources_utils.html">Resources Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-functionality">General Functionality</a></li>
 </ul>
 </li>
@@ -129,11 +128,9 @@
 <div><ul class="simple">
 <li><a class="reference internal" href="core.html#module-core" title="core (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt></a>: Core of the color tweets. Glues other modules&#8217; functionality together.</li>
 <li><a class="reference internal" href="muses.html#module-muses" title="muses (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">muses</span></tt></a>: Muses for the tweets, i.e. sources for color codes.</li>
-<li><a class="reference internal" href="framing.html#module-framing" title="framing: Tweet framing. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">framing</span></tt></a>: Framing of the color tweets</li>
 <li><a class="reference internal" href="contexts.html#module-contexts" title="contexts (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">contexts</span></tt></a>: Different contexts for framing</li>
 <li><a class="reference internal" href="color_semantics.html#module-color_semantics" title="color_semantics: Semantic informed color manipulations. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_semantics</span></tt></a>: Semantically informed color manipulations</li>
-<li><a class="reference internal" href="color_utils.html#module-color_utils" title="color_utils: Different utility functions for working with colors. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_utils</span></tt></a>: Semantic ignorant color utility functions</li>
-<li><a class="reference internal" href="resources_utils.html#module-resources_utils" title="resources_utils: Utility functions to populate Django models with resources. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">resources_utils</span></tt></a>: Functions to populate Django models with contents in <tt class="docutils literal"><span class="pre">resources/</span></tt></li>
+<li><a class="reference internal" href="new_age.html#module-new_age" title="new_age (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">new_age</span></tt></a>: New Age personality for the tweets</li>
 </ul>
 </div></blockquote>
 </li>
@@ -156,8 +153,8 @@ to only provide color codes, but can also give various framing &#8211; or other 
 information of the inspiration source, e.g. images, attitudes and such.</div></blockquote>
 <p><em>Contexts</em></p>
 <blockquote>
-<div>Contexts provide framings for the tweets. They provide actual contents of the
-tweet and should be versatile enough in their own right to prohibit meaningless
+<div>Contexts provide framings for the tweets. They generate actual tweet contents
+and should be versatile enough in their own right to prohibit meaningless
 repetition in the tweets. Good contexts accept and use different resources given
 by the muses.</div></blockquote>
 <p><em>Color Semantics</em></p>
@@ -170,7 +167,7 @@ tweets contents.</div></blockquote>
 <blockquote>
 <div>Core glues together color code - color name - context mappings and evaluates if
 they are good enough to be tweeted. It also compares given color codes and contexts
-to last tweets memory (to be implemented) so that TwatBot does not appear to be
+to last tweets in memory (to be implemented) so that TwatBot does not appear to be
 too repetitive.</div></blockquote>
 </div>
 </div>
