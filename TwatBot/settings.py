@@ -113,47 +113,68 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-#CRON_CLASSES = [
-#    "tweets.cron.TwitterAccountListener",
-#    # ...
-#]
+CRON_CLASSES = [
+    "tweets.cron.TwitterAccountListener",
+    "tweets.cron.NewAgeTweeter",
+    "tweets.cron.HomeTimelineCleaner"
+]
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'default': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+    },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },           
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'debug.log'),
+            'formatter': 'default',
         },
         'cron': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'logs', 'django_cron.log'),
+            'formatter': 'default',
         },
                  
-        'core': {
-            'level': 'DEBUG',
+        'default': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'tweets_core.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'tweets_default.log'),
+            'formatter': 'default'
         },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'tweets.cron': {
-            'handlers': ['cron'],
+        'django.cron': {
+            'handlers': ['cron', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
            'tweets.core': {
-            'handlers': ['core'],
+            'handlers': ['default', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
+        'tweets.default': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     },    
 }

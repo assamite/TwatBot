@@ -1,5 +1,5 @@
 Color Utilities
 ---------------
 
-.. automodule:: tweets.color_utils
+.. automodule:: tweets.utils.color
 	:members:

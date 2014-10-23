@@ -7,7 +7,7 @@ Django models to access and manipulate resources given on the course.
 """
 from django.db import models
 
-import color_utils as cu
+from tweets.utils import color as cu
 
 class GetOrNoneManager(models.Manager):
     """Manager which overrides Django's standard manager in all of the module's models.
@@ -210,6 +210,8 @@ class EveryColorBotTweet(models.Model):
         | color (ForeignKey): Reference to ``Color``-model object.
         | tweeted (BooleanField): Has the color been used in a tweet.
         | url (URLField): URL for the tweet.
+        | added (DateTimeField): Time when tweet was added to the database.
+        | tweet_id (CharField): Tweet's id_str from Twitter
          
     Sample entries:    
      
@@ -231,6 +233,9 @@ class EveryColorBotTweet(models.Model):
     
     def __str__(self):
         return " ".join((self.color.html, self.url))
+    
+    class Meta:
+        ordering = ['-added', 'color', 'url', 'tweeted']
     
 
 class PluralColorBigram(models.Model):
@@ -309,12 +314,39 @@ class Tweet(models.Model):
         | color_code (CharField): Color code of the tweet, in html format.
         | color_name (CharField): Color name. 
         | value (Float): Appreciation of the tweet, estimates color_code - color_name - message mapping's aptness.
+        | reasoning (TextField): Varying reasoning arguments.
         
     """
     tweeted = models.DateTimeField(auto_now_add = True)
     message = models.CharField(max_length = 160)
-    muse = models.CharField(max_length = 100)
-    context = models.CharField(max_length = 100)
-    color_code = models.CharField(max_length = 10)
-    color_name = models.CharField(max_length = 100)
+    muse = models.CharField(max_length = 100, default = "None")
+    context = models.CharField(max_length = 100, default = "None")
+    color_code = models.CharField(max_length = 10, default = "0xffffff")
+    color_name = models.CharField(max_length = 100, default = "None")
     value = models.FloatField(default = 0.0)
+    reasoning = models.TextField(default = "")
+    objects = GetOrNoneManager()
+    
+    class Meta:
+        ordering = ['-tweeted']
+     
+        
+class ReTweet(models.Model):
+    """Tweets retweeted by the bot.
+    
+    **Fields:**
+        | retweeted (DateTimeField): When the tweet was retweeted.
+        | tweet_url (URlField): Original Tweet's Twitter URL
+        | tweet_id (CharField): Original Tweet's Twitter id_str
+        | screen_name (CharField): Screen name of the original tweeter.
+        | tweet (ForeignKey): Reference to the bot's Tweet-model.
+    """ 
+    retweeted = models.DateTimeField(auto_now_add = True)
+    tweet_url  = models.URLField(max_length = 200, null = True)
+    screen_name = models.CharField(max_length = 200, null = True)
+    tweet = models.ForeignKey(Tweet)
+    objects = GetOrNoneManager()
+        
+    class Meta:
+        ordering = ['-retweeted']    
+    

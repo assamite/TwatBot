@@ -16,7 +16,7 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 from django.conf import settings
 
-from text_utils import prettify_sentence
+from tweets.utils.text import prettify_sentence
 
 
 class Context():
@@ -84,12 +84,15 @@ class DCContext(Context):
         **Args:**
             | color_name (str): Human readable name for the color.
             | wisdom_count (int): How many different wisdoms are considered in order to find the best framing.
-            | \**kwargs: Optional keyword arguments. Should have ``color_code`` -key and supports optionally at least ``everycolorbot_url`` which personalizes the response for Everycolorbot.
+            | \**kwargs: Optional keyword arguments. Should have ``color_code`` -key and supports optionally at least ``retweet``.
         
         **Returns:**
             str, tweet for the color code-name pair. If no tweet can be constructed (e.g. wisdomofchopra is down, no internet connection), 
             returns None.
         """
+        for k, v in kwargs.items():
+            print k, v
+        
         wisdoms = self._get_wisdoms(color_name, wisdom_count = wisdom_count)
         if not wisdoms: return None 
         tweets = []
@@ -100,7 +103,10 @@ class DCContext(Context):
             if ret is not None:
                 place, value = ret
                 tweet = self._prettify_tweet(color_name, tokenized, place)
-                tweets.append((tweet, value))
+                if 'retweet' in kwargs.keys(): 
+                    tweet = "RT @{} {} {}".format(kwargs['screen_name'], kwargs['original_tweet'], tweet) 
+                if len(tweet) <= 140:
+                    tweets.append((tweet, value))
          
         if len(tweets) > 0:
             sorted_tweets = sorted(tweets, key = operator.itemgetter(1), reverse = True)    
@@ -202,9 +208,8 @@ class NewAgeContext(Context):
         self.tokenizer = word_tokenize
         self.pos_tag = pos_tag
         self.wordnet = wordnet
-       
         
-    def build_tweet(self, color_name, wisdom_count = 3, **kwargs):
+    def build_tweet(self, color_name, wisdom_count = 10, **kwargs):
         """Build tweet for color name.
         
         **Args:**
@@ -219,13 +224,16 @@ class NewAgeContext(Context):
         if not wisdoms: return None 
         tweets = []
         for wis in wisdoms:
-            tokenized = self.tokenizer(wis)
-            tagged_wisdom = self.pos_tag(tokenized)
-            ret = self._get_color_place(color_name, tagged_wisdom)
-            if ret is not None:
-                place, value = ret
-                tweet = self._prettify_tweet(color_name, tokenized, place)
-                tweets.append((tweet, value))
+            places, parsed_wisdom = self._get_color_places(color_name, wis)
+            if places is not None:
+                ret = self._evaluate_color_places(color_name, places, parsed_wisdom)
+                if ret is not None:
+                    place, value = ret
+                    tweet = self._prettify_tweet(color_name, parsed_wisdom, place)
+                    if 'retweet' in kwargs.keys(): 
+                        tweet = 'RT @{} "{}" {}'.format(kwargs['screen_name'], kwargs['original_tweet'], tweet) 
+                    if len(tweet) <= 120:
+                        tweets.append((tweet, value))
          
         if len(tweets) > 0:
             sorted_tweets = sorted(tweets, key = operator.itemgetter(1), reverse = True)    
@@ -235,7 +243,7 @@ class NewAgeContext(Context):
                
             
     def _get_wisdoms(self, color_name, wisdom_count = 3):
-        """Get wisdoms from www.wisdomofchopra.com."""
+        """Get wisdoms from js/sentence.js"""
         if type(wisdom_count) is not int or wisdom_count < 1:
             raise ValueError("wisdom_count must be positive integer.")
         
@@ -246,33 +254,40 @@ class NewAgeContext(Context):
             for i in xrange(wisdom_count):
                 p = Popen(['node', js_path, "1"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
                 output, err = p.communicate(b"input data that is passed to subprocess' stdin")
-                wisdoms.append(output)
+                wisdoms.append(output.strip())
         except:
             return None
             
         return wisdoms
         
         
-    def _get_color_place(self, color_name, tagged_wisdom):
-        """Define place where to put the color name in the tagged sentence."""
+    def _get_color_places(self, color_name, sentence):
+        """Define place where to put the color name in the sentence."""
+        split_wisdom = sentence.split(" ")
+        parsed_wisdom = []
         place_candidates = []
-        for i in xrange(len(tagged_wisdom)):
-            if tagged_wisdom[i][1][:2] == 'JJ':
-                place_candidates.append(i)
-            if tagged_wisdom[i][1][:2] == 'NN':
-                if i == 0 or tagged_wisdom[i-i][1][:2] != 'NN':
-                    place_candidates.append(i)
+        removed = 0
+        for i in xrange(len(split_wisdom)):
+            if split_wisdom[i] == '<>':
+                place_candidates.append(i - removed)
+                removed += 1
+            else:
+                parsed_wisdom.append(split_wisdom[i])
            
+        print place_candidates, parsed_wisdom
         if len(place_candidates) == 0: 
-            return None   
+            return None, parsed_wisdom
         
+        return place_candidates, parsed_wisdom    
+         
+        
+    def _evaluate_color_places(self, color_name, place_candidates, tagged_wisdom): 
         color_split = color_name.split()  
         color_synsets = []   
         for c in color_split:
             cs = self.wordnet.synsets(c)
             if len(cs) > 0:
-                for synset in cs:
-                    color_synsets.append(synset)
+                color_synsets.append(cs[0])
            
         if len(color_synsets) == None:
             return None
@@ -280,8 +295,7 @@ class NewAgeContext(Context):
         place_fits = {}
         for place in place_candidates:
             place_fits[place] = 0.0
-            pos = self.wordnet.ADJ if tagged_wisdom[place][1][:2] == 'JJ' else self.wordnet.NOUN
-            place_synsets = self.wordnet.synsets(tagged_wisdom[place][0], pos = pos)
+            place_synsets = self.wordnet.synsets(tagged_wisdom[place])
             if len(place_synsets) > 0:
                 for place_synset in place_synsets:
                     for csynset in color_synsets:
@@ -298,11 +312,13 @@ class NewAgeContext(Context):
         
     
     def _prettify_tweet(self, color_name, tokenized, place):
+        print tokenized
         if place == 0:
             tokenized[0] = tokenized[0][0].lower() + tokenized[0][1:]
             color_name = color_name[0].upper() + color_name[1:]
-        
-        words = tokenized[:place] + color_name.split() + tokenized[place:]
+            words = color_name.split() + tokenized[place:]
+        else:
+            words = tokenized[:place] + color_name.split() + tokenized[place:]
         return prettify_sentence(words)
             
                 

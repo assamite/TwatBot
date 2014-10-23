@@ -58,14 +58,33 @@ def tweets(request, num = 1):
     tweets = []
     for i in xrange(int(num)):
         ret = TWEET_CORE.tweet(send_to_twitter = False)
-        tweet = ret['tweet']
-        color_code = ret['metadata']['color_code']
-        value = ret['value']
-        tweets.append({'tweet': tweet, 'color_code': color_code, 'value': value})
+        if ret['tweet'] is not "":
+            tweet = ret['tweet']
+            color_code = ret['metadata']['color_code']
+            value = ret['value']
+            tweets.append({'tweet': tweet, 'color_code': color_code, 'value': value})
         
     context = RequestContext(request, {'tweets': tweets})
     return render_to_response('tweets_test.html', context)
     
     
+def aura_color(request):
+    import numpy as np
+    import datetime
+    from new_age import NewAgePersonality as NAP
+    from tweets.utils import color
+    nap = NAP()
+    date = datetime.date.today()
+    auras = []
+    for i in xrange(365):
+        ret = nap.get_mood(date)
+        ac = color.rgb2html(ret['aura_color'])
+        phase = ret['moon_phase']
+        lunation = ret['lunation']
+        auras.append({'color_code': ac, 'date': date, 'moon_phase': phase, 'lunation': lunation })
+        date += datetime.timedelta(1, 0)
+    
+    context = RequestContext(request, {'auras': auras})
+    return render_to_response('aura_test.html', context)
     
     

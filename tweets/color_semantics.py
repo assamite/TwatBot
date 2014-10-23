@@ -12,8 +12,10 @@ import sys
 import os
 import operator
 import random
+import re
+from collections import OrderedDict
 
-import tweets.color_utils as cu
+from tweets.utils import color as cu
 
 if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -34,7 +36,9 @@ class ColorSemantics():
         loaded class instance available at ``tweets.core.COLOR_SEMANTICS``.
     """ 
     def __init__(self):
+        from nltk.corpus import wordnet as wn
         self.reload_resources()
+        self.wn = wn
         
                    
     def reload_resources(self):
@@ -243,6 +247,30 @@ class ColorSemantics():
         return (chead, cmodifier, color_blend)
     
     
+    def _modify_name(self, color_name):
+        """Modify color name based on wordnet lemma names. Only the parts that
+        have synset of 'color' in their hypernym-closures are altered."""
+        hyper = lambda s: s.hypernyms()
+        sscolor = self.wn.synsets('color')[0]
+        color_split = color_name.split()
+        modified_color_name = []
+        for c in color_split:
+            # Only modify color name with lemmas if the color name has 'color'
+            # synset as its parent.
+            ss = self.wn.synsets(c)                           
+            if ss and sscolor in list(ss[0].closure(hyper)):    
+                lemmas = ss[0].lemma_names()
+                choice = random.choice(lemmas)
+            else:
+                choice = c
+            choice_split = choice.split("_")
+            modified_color_name += choice_split
+        
+        # Remove possible duplicate names "blue green blue" -> "blue green"
+        ret = list(OrderedDict.fromkeys(modified_color_name))
+        return " ".join(ret)
+    
+    
     def name_color(self, color_code, k = 1, **kwargs):
         """Give name(s) for the given color code.
         
@@ -252,7 +280,7 @@ class ColorSemantics():
              | \**kwargs: Optional keyword arguments. Currently omitted.
         
         **Returns:**
-            List of (name, distance)-tuples, where name is str or unicode, human 
+            List of (name, color_code, distance)-tuples, where name is str or unicode, human 
             readable name for the color and distance is distance for the color code-name, 
             pairing.
         """
@@ -260,7 +288,7 @@ class ColorSemantics():
             raise ValueError('k should be positive integer.')
         ret = self.get_knn_blended_unigrams(color_code, k = k)
         names = []
-        for r in ret: names.append((r[2], r[1]))
+        for r in ret: names.append((self._modify_name(r[2]), r[1], r[0]))
         return names
         
         

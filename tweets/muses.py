@@ -18,6 +18,8 @@ mappings' values would suffer if no ``value``-key is added to the optional infor
 import os
 import sys
 import random
+import logging
+from datetime import date, datetime, timedelta
 from abc import ABCMeta
 
 
@@ -27,8 +29,15 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 from django.conf import settings
+from django.utils import timezone
 
+from new_age import NewAgePersonality
 from models import EveryColorBotTweet
+from models import Tweet
+
+from tweets.utils import color
+
+logger = logging.getLogger("tweets.default")
 
 class Muse():
     """Abstract base class for muses.
@@ -84,17 +93,78 @@ class EveryColorBotMuse(Muse):
     """
 
     def inspire(self):
-        """Select random color from the Everycolorbot's tweets, which TwatBot
-        has not tweeted yet.
+        """Define a mood for the muse and select a color from the Everycolorbot's 
+        tweets, which the bot has not tweeted yet.
+        
+        The color selected from choices is the closest to the current mood of the muse.
         
         **Returns:**
             Dict, which has ``color_code`` and ``everycolorbot_url`` -keys. If 
             all the colors has been tweeted, returns empty dict.
         """
-        untweeted = EveryColorBotTweet.objects.filter(tweeted=False)
-        if len(untweeted) == 0: 
+        choices = self.get_choices()
+        if len(choices) == 0: 
+            logger.info("EveryColorBotMuse could not find untweeted colors from its current choices. Tweet generation halted.")
+            return {}    
+        mood = NewAgePersonality().get_mood()
+        aura = mood['aura_color']
+        dist, choice = self.choose_color(aura, choices)
+        chtml = choice.color.html
+        logger.info("EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}".format(chtml, aura, dist))
+        if self.approve_color(chtml):   
+            chex = choice.color.hex
+            return {'color_code': chtml, 'url': choice.url, 'retweet': True,\
+                    'screen_name': 'everycolorbot', 'original_tweet':  chex,\
+                    'muse': 'EveryColorBotMuse', 'muse_value': dist,\
+                    'mood': mood}
+        else:
             return {}
-        choice = random.choice(untweeted)
-        return {'color_code': choice.color.html, 'everycolorbot_url': choice.url}
         
+        
+    def choose_color(self, aura_color, choices):
+        """Choose EveryColorBotTweet which is closest to the given aura color."""
+        color_list = []
+        map(lambda ch: color_list.append(ch.color.html), choices)
+        dist, color_code = color.get_closest(aura_color, color_list)
+        choice = choices.filter(color__html = color_code)[0]
+        return dist, choice 
+            
+        
+    def get_choices(self):
+        """Get possible EveryColorBotTweet choices depending on the bot's 
+        current activity.
+        
+        More recent tweets (based on database addition time) are emphasized.
+        """
+        # TODO: make activity depend on time of day / week.
+        activity = random.random()    
+        if activity <= 0.10:
+            logger.info("EveryColorBotMuse is lazily browsing all the untweeted tweets for perfect color.")
+            choices = EveryColorBotTweet.objects.filter(tweeted=False)
+        elif activity <= 0.25:
+            logger.info("EveryColorBotMuse is browsing all the untweeted tweets added in last 7 days for perfect color.")
+            choices = EveryColorBotTweet.objects.filter(tweeted = False, added__gte = timezone.now() - timedelta(7, 0))
+        elif activity <= 0.5:
+            logger.info("EveryColorBotMuse is browsing all the untweeted tweets added in last 2 days for perfect color.")
+            choices = EveryColorBotTweet.objects.filter(tweeted = False, added__gte = timezone.now() - timedelta(2, 0))
+        else: 
+            logger.info("EveryColorBotMuse is on the fast lane, browsing only the tweets added in last 3 hours for perfect color.")
+            choices = EveryColorBotTweet.objects.filter(tweeted = False, added__gte = timezone.now() - timedelta(0, 10800))
+        for ch in choices:
+            print ch.added    
+            
+        return choices
+    
+    
+    def approve_color(self, chtml):
+        """Confirm that not too similar color has been tweeted in recent
+        tweets."""
+        last_tweets = Tweet.objects.all()[:5]
+        for t in last_tweets:
+            dist = color.ed(t.color_code, chtml)
+            if  dist < 30:
+                logger.info("Similar color {} (distance: {}) was Tweeted recently. Tweet generation halted.".format(t.color_code, dist))
+                return False
+        return True
+            
         

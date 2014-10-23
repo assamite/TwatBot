@@ -11,59 +11,12 @@ certain color codes is easy to follow from a web site.
 
 Project's documentation can be found from `github pages <http://assamite.github.io/TwatBot>`_.
 
+.. warning:: 
+	If you have old version of the project, you should probably make a clean 
+	install because of the extensive changes, e.g. SQLite to MySQL.
 
-Weekly reports
------------------
-Here are some comments on weekly development during the course.
-
-Week 2
-****************
-I have made some color utilities into the ``tweets/color_utilities.py``, and
-added Django models for the resources given on the course. Otherwise
-the project is still a clean Django-project skeleton. Most of my week's work went 
-to setting up and learning Sphinx (and how to hook it to be
-nearly automatically served in github pages) as I haven't used it before, and now 
-seemed like a good time to start using it!
-
-Week 3
-****************
-I still got quite a lot of technical things to figure out and managed to get only 
-the most fundamental things to work. The app should be installable and usable 
-by using the install notes in documentation. Currently only one URL with
-meaningful content is served after Django's server is started (see install for
-details): 
-
-127.0.0.1:8000/blend 
-
-This page should serve all the different color blendings of the unigram splits.
-See the documentation for ``tweets.color_semantics.ColorSemantics.blend`` for details about the 
-blending operation.
-
-I tested the blending with different settings, but it seems that no single
-configuration is good for all the unigrams splits for the blending operation. 
-Mostly this has to do with the way the "head" and "modifier" words should be 
-selected from the unigram split. Sometimes head should be the first word and 
-sometimes the second word.
-
-Week 4
-*****************
-For this weeks changes to take place (if you are using ``git pull`) you have to 
-scracth content in the database (due to schema changes).
-
-	$> python manage.py sqlclear > drop.txt
-	
-	$> python manage.py dbshell < drop.txt
-	
-	$> python manage.py syncdb
-	
-	$> python manage.py loaddata tweets/fixtures/fixtures.json
-	
-This week I mostly set up general module layout and work flow, i.e. generated 
-a lot of dummy implementations for context framing, core mechanics and 
-tweet generation.
-	
 After starting the test server, Everycolorbot colors - new color name matches 
-can be found from (random 10 are :
+can be found from:
 
 	http://127.0.0.1:8000/names
 	
@@ -71,12 +24,5 @@ Test tweets can be found from:
 
 	http://127.0.0.1:8000/tweets
 	
-Although nothing is tweeted yet, but the functionality is in place (and one flag set away from tweeting). 
-The url generates one tweet for one random everycolorbot color / refresh. As you can see, it is 
-just a dummy template still.
-
-The project's documentation is little bit dragging behind, will try to fix this in the upcoming week.
-
-
 
 

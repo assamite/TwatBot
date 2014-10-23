@@ -7,7 +7,7 @@ Some tests for app's core functionalities, i.e. color manipulations.
 from django.utils import unittest
 from django.test import TestCase
 
-import color_utils as cu
+from tweets.utils import color as cu
 from color_semantics import ColorSemantics
 
 class ColorUtilsTestCase(TestCase):

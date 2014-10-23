@@ -6,7 +6,6 @@ Tweets Package
 	
 	core
 	muses
-	framing
 	contexts
 	color_semantics
 	color_utils
@@ -29,7 +28,6 @@ Main package of the project, developed as a Django app. The app has currently fo
 
 	* :py:mod:`core`: Core of the color tweets. Glues other modules' functionality together.
 	* :py:mod:`muses`: Muses for the tweets, i.e. sources for color codes.
-	* :py:mod:`framing`: Framing of the color tweets
 	* :py:mod:`contexts`: Different contexts for framing
 	* :py:mod:`color_semantics`: Semantically informed color manipulations
 	* :py:mod:`color_utils`: Semantic ignorant color utility functions
@@ -72,7 +70,7 @@ partial contents and act in different roles in the building of the tweets.
 
 	Core glues together color code - color name - context mappings and evaluates if 
 	they are good enough to be tweeted. It also compares given color codes and contexts
-	to last tweets memory (to be implemented) so that TwatBot does not appear to be
+	to last tweets in memory (to be implemented) so that TwatBot does not appear to be
 	too repetitive.
 
 

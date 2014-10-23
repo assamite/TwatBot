@@ -25,7 +25,14 @@ using this project.
 	$> cd project_root/
 	$> pip install -r requirements.txt // you might need root privileges
 	
-* Create MySQL database::
+* From dependencies, `nltk <http://www.nltk.org/>`_-package needs wordnet and `textblob <https://textblob.readthedocs.org/en/dev/>`_ some other corporas to be able to function. You can download them using following commands::
+	
+	$>python -m textblob.download_corpora
+	$>python -c "import nltk; nltk.download()"
+	
+* Install `Node.js <http://nodejs.org/>`_, it is needed for some of the context generators.
+	
+* Install `MySQL <http://www.mysql.com/>`_ and create MySQL database::
 
 	$>mysql -u root -p
 	mysql> create database your_db_name character set 'utf8' collate 'utf8_general_ci';
@@ -61,19 +68,23 @@ using this project.
 	
 * Configure project's cronjobs to be run every 5 minutes (or so)
 
+	.. warning::
+		This will make your bot to Tweet every once in a while, so only do this
+		when you are ready to face the consequences.
+		
+		**If you just want to test the bot locally, don't enable cronjobs.**
+
 	* Open crontab in new editor from terminal::
 
 		$> env EDITOR=nano crontab -e
 		
-	* Write the cronjob (you need to change the paths to bash profile and project)::
+	* Write the cronjob on new line (you need to change the paths to your bash profile and project)::
 	
 		*/5 * * * * source ~/.bash_profile && python path/to/TwatBot/manage.py runcrons > path/to/TwatBot/logs/cronjob.log
 		
 	* Save and exit. Now the terminal should say something like::
 	
 		crontab: installing new crontab
-	
-* Install `Node.js <http://nodejs.org/>`_, it is needed for some of the context generators.
 	
 **Local Usage:**
 	
