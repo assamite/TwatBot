@@ -74,12 +74,12 @@ class TweetCore():
         ret = semantics.name_color(k = 1, **inspiration)
         if len(ret) == 0: return None     
         name, color_code, distance = ret[0]
-        inspiration['color_name'] = name
         inspiration['values']['color_semantics'] = distance
         
         t = context.build_tweet(color_name = name, wisdom_count = 10,  **inspiration)
         if t is None: return None      
         tweet, value = t
+        inspiration['color_name'] = name
         inspiration['values']['context'] = value
         appreciation = self._calculate_appreciation(inspiration)        
         return (tweet, appreciation, inspiration)
@@ -174,7 +174,7 @@ class TweetCore():
     
     def _save_to_db(self, tweet, value, reasoning):
         """Save the tweet to db."""
-        logger.info("Tweet was send succesfully. Saving the tweet to database.")
+        logger.info("Saving the tweet to database.")
         try: 
             context = reasoning['context']
             muse = reasoning['muse']   
@@ -200,7 +200,7 @@ class TweetCore():
                     reinst.save()
         except Exception:
             e = traceback.format_exc()
-            logger.error("Could not save Tweet to database, because of error: {}".format(e))
+            logger.error("Could not save tweet to database, because of error: {}".format(e))
  
     
 TWEET_CORE = TweetCore()
