@@ -192,8 +192,6 @@ class ColorSemantics():
         if type(k) is not int or k < 1:
             raise ValueError('k should be positive integer.')
         tweets = Tweet.objects.all()
-        for t in tweets[:3]:
-            print t, t.color_name
         # Color atoms (words) in remembered (recently tweeted) color names
         color_atoms = set()
         map(lambda t: map(lambda x: color_atoms.add(x), t.color_name.split(" ")) ,tweets[:self.memory_length])
@@ -293,7 +291,6 @@ class ColorSemantics():
     
     
     def _approve_color_name(self, color_name, color_atoms, tweeted_colors):
-        print color_atoms
         c_split = color_name.split(" ")
         for c in c_split:
             if c in color_atoms:
@@ -307,13 +304,12 @@ class ColorSemantics():
         return True
 
     
-    def name_color(self, color_code, k = 1, **kwargs):
+    def name_color(self, reasoning, k = 1):
         """Give name(s) for the given color code.
         
         **Args:**
-             | color_code:  Color code in any supported format. See supported formats from ``color_utils``-module. 
-             | k (int): How many best names are retrieved.
-             | \**kwargs: Optional keyword arguments. Currently omitted.
+             | k (int): amount of names to retrieve
+             | reasoning (Reasoning): ``Reasoning`` object which has at least the color_code specified
         
         **Returns:**
             List of (name, color_code, distance)-tuples, where name is str or unicode, human 
@@ -322,10 +318,15 @@ class ColorSemantics():
         """
         if type(k) is not int or k < 1:
             raise ValueError('k should be positive integer.')
-        ret = self.get_knn_blended_unigrams(color_code, k = k)
+        ret = self.get_knn_blended_unigrams(reasoning.color_code, k = k)
         names = []
         for r in ret: 
             if r[0] <= self.color_threshold:
                 names.append((r[2], r[1], r[0] / self.color_threshold))
-        return names
+                
+        if len(names) == 0:
+            return False
+        reasoning.values['color_semantics'] = names[0][2]
+        reasoning.color_name = names[0][0]
+        return True
         

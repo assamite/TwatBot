@@ -215,7 +215,7 @@ class NewAgeContext(Context):
         self.tweet_similarity_threshold = 3
         self.memory_length = 15
         
-    def build_tweet(self, color_name, wisdom_count = 10, **kwargs):
+    def build_tweet(self, reasoning, wisdom_count = 10):
         """Build tweet for color name.
         
         **Args:**
@@ -226,6 +226,7 @@ class NewAgeContext(Context):
         **Returns:**
             str, tweet for the color code-name pair. If no tweet can be constructed, returns None.
         """
+        color_name = reasoning.color_name
         wisdoms = self._get_wisdoms(color_name, wisdom_count = wisdom_count)
         if not wisdoms: 
             return None 
@@ -237,17 +238,19 @@ class NewAgeContext(Context):
                 if ret is not None:
                     place, value = ret
                     tweet = self._prettify_tweet(color_name, parsed_wisdom, place)
-                    if 'retweet' in kwargs.keys(): 
-                        tweet = 'RT @{} "{}" {}'.format(kwargs['screen_name'], kwargs['original_tweet'], tweet) 
-                    tweet_len = 118 if 'image' in kwargs.keys() else 140   
+                    if reasoning.retweet: 
+                        tweet = 'RT @{} "{}" {}'.format(reasoning.screen_name, reasoning.original_tweet, tweet) 
+                    tweet_len = 118 if reasoning.media else 140   
                     if len(tweet) <= tweet_len:
                         tweets.append((tweet, 1.0 - value))
          
         if len(tweets) == 0:
-            return None
-            
-        sorted_tweets = sorted(tweets, key = operator.itemgetter(1))    
-        return sorted_tweets[0]
+            return False
+                
+        sorted_tweets = sorted(tweets, key = operator.itemgetter(1))  
+        reasoning.set_attr('tweet', sorted_tweets[0][0])  
+        reasoning.values['context'] = sorted_tweets[0][1]
+        return True
                
             
     def _get_wisdoms(self, color_name, wisdom_count = 3):

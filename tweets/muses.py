@@ -31,6 +31,7 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
 from django.conf import settings
 from django.utils import timezone
 
+from reasoning import Reasoning
 from new_age import NewAgePersonality
 from models import EveryColorBotTweet
 from models import Tweet
@@ -106,26 +107,29 @@ class EveryColorBotMuse(Muse):
             all the colors has been tweeted, returns empty dict.
         """
         choices = self.get_choices()
+        reasoning = Reasoning()
         if len(choices) == 0: 
             logger.info("EveryColorBotMuse could not find untweeted colors from its current choices. Tweet generation halted.")
-            return {}    
+            return reasoning 
         mood = NewAgePersonality().get_mood()
         aura = mood['aura_color']
         dist, choice = self.choose_color(aura, choices)
-        if choice == None:
+        if choice is None:
             logger.info("EveryColorBot could not find color close (closest:  ) enough its aura. Tweet generation halted".format(dist))
-            return {}
+            return reasoning
         
         chtml = choice.color.html
         logger.info("EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}".format(chtml, color.rgb2html(aura), dist))
         if not self.approve_color(chtml):  
-            return {}
+            return reasoning
          
         chex = choice.color.hex
-        return {'color_code': chtml, 'url': choice.url, 'retweet': True,\
-                'screen_name': 'everycolorbot', 'original_tweet':  chex,\
-                'muse': 'EveryColorBotMuse', 'values': {'muse': dist / 100},\
-                'mood': mood, 'image': None}
+        d = {'color_code': chtml, 'retweet':True, 'retweet_url':choice.url,\
+             'screen_name': 'everycolorbot', 'original_tweet': chex,\
+             'muse': 'EveryColorBotMuse', 'values': {'muse': dist / 100},\
+             'mood': mood,  'media': None}
+        reasoning.set_attrs(d)      
+        return reasoning
         
         
     def choose_color(self, aura_color, choices):

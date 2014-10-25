@@ -55,45 +55,40 @@ class TweetCore():
         self.threshold = 0.6
     
     
-    def _get_new_tweet(self, inspiration):
-        """Build a new tweet for the bot with given inspiration.
+    def _get_new_tweet(self, reasoning):
+        """Build a new tweet for the bot with given reasoning.
         
         **Returns:**
-            Tuple (str, float, dict), (tweet, value, inspiration) where ``tweet`` 
+            Tuple (str, float, dict), (tweet, value, reasoning) where ``tweet`` 
             is the generated tweet, ``value`` is estimated value for the tweet 
-            and ``inspiration`` is a dictionary returned by used muse.
+            and ``reasoning`` is a dictionary returned by used muse.
         """
-        semantics = self.color_semantics
-        if 'color_semantics' in inspiration:
-            semantics = inspiration['color_semantics']
-        context = self.context    
-        if 'context' in inspiration:
-            context = inspiration['context'] 
-        inspiration['context'] = context.__class__.__name__
+        if not hasattr(reasoning, 'color_semantics'):
+            reasoning.set_attr('color_semantics', self.color_semantics)
+        semantics = reasoning.color_semantics  
+        if not hasattr(reasoning, 'context'):
+            reasoning.set_attr('context', self.context)
+        context = reasoning.context
             
-        ret = semantics.name_color(k = 1, **inspiration)
-        if len(ret) == 0: return None     
-        name, color_code, distance = ret[0]
-        inspiration['values']['color_semantics'] = distance
+        ret = semantics.name_color(reasoning)
+        if not ret: return False    
         
-        t = context.build_tweet(color_name = name, wisdom_count = 10,  **inspiration)
-        if t is None: return None      
-        tweet, value = t
-        inspiration['color_name'] = name
-        inspiration['values']['context'] = value
-        appreciation = self._calculate_appreciation(inspiration)        
-        return (tweet, appreciation, inspiration)
+        ret = context.build_tweet(reasoning, wisdom_count = 10)
+        if not ret: return False    
+        
+        self._calculate_appreciation(reasoning)  
+        return True      
     
     
-    def _calculate_appreciation(self, inspiration):
+    def _calculate_appreciation(self, reasoning):
         appr = 0.0
-        values_count = len(inspiration['values'].keys())
-        for k, v in inspiration['values'].items():
+        values_count = len(reasoning.values.keys())
+        for k, v in reasoning.values.items():
             appr += v ** 2
         
         appr = math.sqrt(appr)
         appr /= math.sqrt(values_count)
-        return appr
+        reasoning.set_attr('appreciation', appr)
              
     
     def _tweet(self, tweet, img_name = None):
@@ -146,62 +141,26 @@ class TweetCore():
             
             If no tweet could be generated, then returns empty string as tweet. 
         """
-        inspiration = self.muse.inspire()
-        if not inspiration: return {'tweet': "", 'sended': False, 'value': 0.0, 'metadata': {}}    
-        ret = self._get_new_tweet(inspiration)
-        rdict = {'tweet': "", 'sended': False, 'metadata': {}}
-        if ret is None: return rdict
-        tweet, value, reasoning = ret
-        logger.info('Built tweet: "{}" with value: {}'.format(tweet, value))
+        reasoning = self.muse.inspire()
+        if reasoning.color_code == '': 
+            return reasoning
+        ret = self._get_new_tweet(reasoning)
+        if not ret:
+            return reasoning
+        logger.info('Built tweet: "{}" with value: {}'.format(reasoning.tweet, reasoning.appreciation))
         tweeted = False
-        if value < self.threshold and send_to_twitter:
+        if reasoning.appreciation < self.threshold and send_to_twitter:
             logger.info("Value of the tweet was below threshold ({}). Trying to tweet it.".format(self.threshold))     
-            if 'image' in reasoning and reasoning['image'] is None:     
-                img = create_temp_image((524, 360), reasoning['color_code'])
-            else:
-                img = reasoning['image']
-            tweeted, tweet = self._tweet(tweet, img_name = img.name)
-            img.close() # delete possible temp image
+            if not reasoning.media:     
+                reasoning.set_attr('media', create_temp_image((524, 360), reasoning['color_code']))
+            tweeted, tweet = self._tweet(reasoning.tweet, img_name = reasoning.media)
+            reasoning.set_attr('tweet', tweet)
+            reasoning.set_attr('tweeted', tweeted)
             if tweeted:
-                self._save_to_db(tweet, value, reasoning)
+                reasoning.save()
            
-        rdict['tweet'] = tweet
-        rdict['sended'] = tweeted
-        rdict['value'] = value
-        rdict['metadata'] = reasoning
-        return rdict
-    
-    
-    def _save_to_db(self, tweet, value, reasoning):
-        """Save the tweet to db."""
-        logger.info("Saving the tweet to database.")
-        try: 
-            context = reasoning['context']
-            muse = reasoning['muse']   
-            color_code = reasoning['color_code']
-            color_name = reasoning['color_name']
-            if not DEBUG:
-                twinst = Tweet(message = tweet, value = value, muse = muse,\
-                             context = context, color_code = color_code,\
-                             color_name = color_name)
-                twinst.save()
-                
-                retweet = reasoning['retweet'] if 'retweet' in reasoning else False
-                if retweet:
-                    screen_name = reasoning['screen_name']
-                    if screen_name == 'everycolorbot':
-                        inst = EveryColorBotTweet.objects.get_or_none(url = reasoning['url'])
-                        if inst:
-                            inst.tweeted = True
-                            inst.save()
-                            
-                    reinst = ReTweet(tweet_url = reasoning['url'],\
-                                     screen_name = screen_name, tweet = twinst)
-                    reinst.save()
-        except Exception:
-            e = traceback.format_exc()
-            logger.error("Could not save tweet to database, because of error: {}".format(e))
- 
+        return reasoning
+
     
 TWEET_CORE = TweetCore()
         

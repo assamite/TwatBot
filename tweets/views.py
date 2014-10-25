@@ -58,10 +58,10 @@ def tweets(request, num = 1):
     tweets = []
     for i in xrange(int(num)):
         ret = TWEET_CORE.tweet(send_to_twitter = False)
-        if ret['tweet'] is not "":
-            tweet = ret['tweet']
-            color_code = ret['metadata']['color_code']
-            value = ret['value']
+        if ret.tweet:
+            tweet = ret.tweet
+            color_code = ret.color_code
+            value = ret.appreciation
             tweets.append({'tweet': tweet, 'color_code': color_code, 'value': value})
         
     context = RequestContext(request, {'tweets': tweets})
