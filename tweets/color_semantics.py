@@ -170,10 +170,11 @@ class ColorSemantics():
     
     
     def get_knn_blended_unigrams(self, color_code, k = 1):
-        """Retrieve k-nearest color codes, and names, for given color code from 
+        """Retrieve k-nearest color names based on color codes from 
         blended unigram colors. 
         
-        Excludes out those color codes whose names have been already tweeted.
+        Excludes names that are already tweeted or which have part of the name 
+        tweeted recently.
         
         .. note:: 
             This function is not optimalized in anyway and thus may take quite
@@ -190,15 +191,17 @@ class ColorSemantics():
         """
         if type(k) is not int or k < 1:
             raise ValueError('k should be positive integer.')
-        tweeted_colors = [t.color_name for t in Tweet.objects.all()]
+        tweets = Tweet.objects.all()
+        for t in tweets[:3]:
+            print t, t.color_name
         # Color atoms (words) in remembered (recently tweeted) color names
         color_atoms = set()
-        map(lambda c: map(lambda x: color_atoms.add(x), c.split(" ")) ,tweeted_colors[:self.memory_length])
+        map(lambda t: map(lambda x: color_atoms.add(x), t.color_name.split(" ")) ,tweets[:self.memory_length])
         color_dict = self.blended_unigram_splits
         dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, self._modify_name(color_dict[c][0] + " " + color_dict[c][1])), color_dict.keys()))
         ret = []
         for i in range(len(dists)):
-            if self._approve_color_name(dists[i][2], color_atoms, tweeted_colors):
+            if self._approve_color_name(dists[i][2], color_atoms, tweets):
                 ret.append(dists[i])
             if len(ret) == k:
                 break
@@ -290,6 +293,7 @@ class ColorSemantics():
     
     
     def _approve_color_name(self, color_name, color_atoms, tweeted_colors):
+        print color_atoms
         c_split = color_name.split(" ")
         for c in c_split:
             if c in color_atoms:
@@ -320,9 +324,8 @@ class ColorSemantics():
             raise ValueError('k should be positive integer.')
         ret = self.get_knn_blended_unigrams(color_code, k = k)
         names = []
-        for r in ret: names.append((r[2], r[1], r[0]))
-        if names[0][2] > self.color_threshold:
-            return []
+        for r in ret: 
+            if r[0] <= self.color_threshold:
+                names.append((r[2], r[1], r[0] / self.color_threshold))
         return names
         
-          

@@ -724,7 +724,6 @@ var adjPresent = [
     'prominent',
     'present',
     'evident',
-    'clear',
     'current',
     'in process',
     'extant',

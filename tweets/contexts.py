@@ -247,7 +247,6 @@ class NewAgeContext(Context):
             return None
             
         sorted_tweets = sorted(tweets, key = operator.itemgetter(1))    
-        print sorted_tweets
         return sorted_tweets[0]
                
             

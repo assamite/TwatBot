@@ -72,16 +72,13 @@ class TweetCore():
         inspiration['context'] = context.__class__.__name__
             
         ret = semantics.name_color(k = 1, **inspiration)
-        if len(ret) == 0:
-            return None
-        
+        if len(ret) == 0: return None     
         name, color_code, distance = ret[0]
-        distance = distance / 100
+        inspiration['color_name'] = name
         inspiration['values']['color_semantics'] = distance
+        
         t = context.build_tweet(color_name = name, wisdom_count = 10,  **inspiration)
-        if t is None:
-            return None
-            
+        if t is None: return None      
         tweet, value = t
         inspiration['values']['context'] = value
         appreciation = self._calculate_appreciation(inspiration)        
@@ -155,7 +152,7 @@ class TweetCore():
         rdict = {'tweet': "", 'sended': False, 'metadata': {}}
         if ret is None: return rdict
         tweet, value, reasoning = ret
-        logger.debug('Build tweet: "{}" with value: {}'.format(tweet, value))
+        logger.info('Built tweet: "{}" with value: {}'.format(tweet, value))
         tweeted = False
         if value < self.threshold and send_to_twitter:
             logger.info("Value of the tweet was below threshold ({}). Trying to tweet it.".format(self.threshold))     
@@ -178,28 +175,32 @@ class TweetCore():
     def _save_to_db(self, tweet, value, reasoning):
         """Save the tweet to db."""
         logger.info("Tweet was send succesfully. Saving the tweet to database.")
-        context = reasoning['context']
-        muse = reasoning['muse']   
-        color_code = reasoning['color_code']
-        color_name = reasoning['color_name']
-        if not DEBUG:
-            twinst = Tweet(message = tweet, value = value, muse = muse,\
-                         context = context, color_code = color_code,\
-                         color_name = color_name)
-            twinst.save()
-            
-            retweet = reasoning['retweet'] if 'retweet' in reasoning else False
-            if retweet:
-                screen_name = reasoning['screen_name']
-                if screen_name == 'everycolorbot':
-                    inst = EveryColorBotTweet.objects.get_or_none(url = reasoning['url'])
-                    if inst:
-                        inst.tweeted = True
-                        inst.save()
-                        
-                reinst = ReTweet(tweet_url = reasoning['url'],\
-                                 screen_name = screen_name, tweet = twinst)
-                reinst.save()
+        try: 
+            context = reasoning['context']
+            muse = reasoning['muse']   
+            color_code = reasoning['color_code']
+            color_name = reasoning['color_name']
+            if not DEBUG:
+                twinst = Tweet(message = tweet, value = value, muse = muse,\
+                             context = context, color_code = color_code,\
+                             color_name = color_name)
+                twinst.save()
+                
+                retweet = reasoning['retweet'] if 'retweet' in reasoning else False
+                if retweet:
+                    screen_name = reasoning['screen_name']
+                    if screen_name == 'everycolorbot':
+                        inst = EveryColorBotTweet.objects.get_or_none(url = reasoning['url'])
+                        if inst:
+                            inst.tweeted = True
+                            inst.save()
+                            
+                    reinst = ReTweet(tweet_url = reasoning['url'],\
+                                     screen_name = screen_name, tweet = twinst)
+                    reinst.save()
+        except Exception:
+            e = traceback.format_exc()
+            logger.error("Could not save Tweet to database, because of error: {}".format(e))
  
     
 TWEET_CORE = TweetCore()
