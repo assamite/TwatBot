@@ -126,9 +126,10 @@ class EveryColorBotMuse(Muse):
         chex = choice.color.hex
         d = {'color_code': chtml, 'retweet':True, 'retweet_url':choice.url,\
              'screen_name': 'everycolorbot', 'original_tweet': chex,\
-             'muse': 'EveryColorBotMuse', 'values': {'muse': dist / 100},\
+             'muse': self, 'values': {'muse': dist / 100},\
              'mood': mood,  'media': None}
-        reasoning.set_attrs(d)      
+        reasoning.set_attrs(d)  
+        reasoning.set_attr('media', color.create_temp_image((524, 360), reasoning.color_code))    
         return reasoning
         
         

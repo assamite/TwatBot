@@ -40,6 +40,9 @@ class Reasoning():
         self.retweet = False
         self.retweet_url = ""
         self.original_tweet = ""
+        self.muse = None
+        self.context = None
+        self.color_semantics = None
         self.muse_classname = ""
         self.color_semantics_classname = ""
         self.context_classname = ""
@@ -95,11 +98,12 @@ class Reasoning():
         """Save tweet to database."""
         from models import EveryColorBotTweet, Tweet, ReTweet
         
-        logger.info("Saving the tweet to database.")
         try: 
-            twinst = Tweet(message = self.tweet, value = self.value, muse = self.muse__classname,\
-                         context = self.context__classname, color_code = self.color_code,\
-                         color_name = self.color_name)
+            twinst = Tweet(message = self.tweet, value = self.appreciation,\
+                           muse = self.muse_classname,\
+                           context = self.context_classname,\
+                           color_code = self.color_code,\
+                           color_name = self.color_name)
             twinst.save()
             
             if self.retweet:
@@ -113,6 +117,7 @@ class Reasoning():
                 reinst = ReTweet(tweet_url = self.retweet_url,\
                                  screen_name = screen_name, tweet = twinst)
                 reinst.save()
+            logger.info("Tweet saved to database: {}".format(self.tweet))
         except Exception:
             e = traceback.format_exc()
             logger.error("Could not save tweet to database, because of error: {}".format(e))

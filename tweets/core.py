@@ -63,10 +63,10 @@ class TweetCore():
             is the generated tweet, ``value`` is estimated value for the tweet 
             and ``reasoning`` is a dictionary returned by used muse.
         """
-        if not hasattr(reasoning, 'color_semantics'):
+        if reasoning.color_semantics is None:
             reasoning.set_attr('color_semantics', self.color_semantics)
         semantics = reasoning.color_semantics  
-        if not hasattr(reasoning, 'context'):
+        if reasoning.context is None:
             reasoning.set_attr('context', self.context)
         context = reasoning.context
             
@@ -151,15 +151,14 @@ class TweetCore():
         tweeted = False
         if reasoning.appreciation < self.threshold and send_to_twitter:
             logger.info("Value of the tweet was below threshold ({}). Trying to tweet it.".format(self.threshold))     
-            if not reasoning.media:     
-                reasoning.set_attr('media', create_temp_image((524, 360), reasoning['color_code']))
-            tweeted, tweet = self._tweet(reasoning.tweet, img_name = reasoning.media)
+            tweeted, tweet = self._tweet(reasoning.tweet, img_name = reasoning.media.name)
             reasoning.set_attr('tweet', tweet)
             reasoning.set_attr('tweeted', tweeted)
             if tweeted:
                 reasoning.save()
-           
+                
         return reasoning
+
 
     
 TWEET_CORE = TweetCore()
