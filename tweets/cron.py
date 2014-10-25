@@ -64,7 +64,7 @@ class TwitterAccountListener(CronJobBase):
                     
 
 class NewAgeTweeter(CronJobBase):
-    RUN_EVERY_MINS = 30
+    RUN_EVERY_MINS = 60
     RETRY_AFTER_FAILURE_MINS = 5
     _tak = settings.TWITTER_API_KEY
     _tas = settings.TWITTER_API_SECRET
@@ -79,14 +79,16 @@ class NewAgeTweeter(CronJobBase):
            
         try:
             TWEET_CORE.tweet(send_to_twitter = True)
-        except:
+        except Exception:
+            e = traceback.format_exc()
+            logger.error("NewAgeTweeter cronjob crashed because of error: {}".format(e))
             return False
         
         return True
                 
                 
 class HomeTimelineCleaner(CronJobBase):
-    RUN_EVERY_MINS = 30
+    RUN_EVERY_MINS = 60
     RETRY_AFTER_FAILURE_MINS = 5
     _tak = settings.TWITTER_API_KEY
     _tas = settings.TWITTER_API_SECRET
@@ -102,6 +104,7 @@ class HomeTimelineCleaner(CronJobBase):
             auth = tweepy.OAuthHandler(self._tak, self._tas)
             auth.set_access_token(self._tat, self._tats)
             api = tweepy.API(auth)
+            screen_name = api.me().screen_name
             timeline = api.home_timeline()
         except Exception:
             e = traceback.format_exc()
@@ -109,18 +112,19 @@ class HomeTimelineCleaner(CronJobBase):
             return False
         
         for t in timeline:
-            msg = t.text
-            if msg.startswith('RT @everycolorbot'):
-                chex = msg.split()[2].strip("\"")
-                evcinst = EveryColorBotTweet.objects.get_or_none(color__hex = chex)
-                if evcinst is not None:
-                    evcinst.tweeted = True
-                    evcinst.save()
-            inst = Tweet.objects.get_or_none(message = msg)
-            if inst is None:
-                logger.info('Cronjob encountered unsaved tweet: "{}" Saving it to database.'.format(msg))
-                inst = Tweet(color_code = chex, message = msg) 
-                inst.save()
+            if t.user.screen_name == screen_name:
+                msg = t.text
+                if msg.startswith('RT @everycolorbot'):
+                    chex = msg.split()[2].strip("\"")
+                    evcinst = EveryColorBotTweet.objects.get_or_none(color__hex = chex)
+                    if evcinst is not None:
+                        evcinst.tweeted = True
+                        evcinst.save()      
+                inst = Tweet.objects.get_or_none(message = msg)
+                if inst is None:
+                    logger.info('Cronjob encountered unsaved tweet: "{}" Saving it to database.'.format(msg))
+                    inst = Tweet(color_code = chex, message = msg) 
+                    inst.save()
                 
             
                 

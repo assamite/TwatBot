@@ -67,8 +67,7 @@ class Color(models.Model):
         
     
     def __str__(self):
-        return self.html + " RGB: (" + ",".join((str(self.rgb_r), str(self.rgb_g), str(self.rgb_b))) + ")" +\
-            " Lab: (" + ",".join((str(self.l), str(self.a), str(self.b))) + ")"
+        return self.html
             
     class Meta:
         unique_together = ('rgb_r', 'rgb_g', 'rgb_b')
@@ -324,8 +323,11 @@ class Tweet(models.Model):
     color_code = models.CharField(max_length = 10, default = "0xffffff")
     color_name = models.CharField(max_length = 100, default = "None")
     value = models.FloatField(default = 0.0)
-    reasoning = models.TextField(default = "")
+    reasoning = models.TextField(default = "", null = True)
     objects = GetOrNoneManager()
+    
+    def __str__(self):
+        return self.message
     
     class Meta:
         ordering = ['-tweeted']

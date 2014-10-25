@@ -13,7 +13,7 @@ and context generation algorithms, which are passed as is by the underlying
 tweet-motor, i.e. one could create a muse which would name the selected color 
 itself. However, as the underlying tweet-motor would not know how well the name
 represents the color, it might produce undesired results as color code-name-framing
-mappings' values would suffer if no ``value``-key is added to the optional information. 
+mappings' values would suffer if no ``muse_value``-key is added to the optional information. 
 '''
 import os
 import sys
@@ -91,7 +91,10 @@ class EveryColorBotMuse(Muse):
     The saving of the tweeted status happens only after the tweet has been 
     successfully made by the core.
     """
-
+    def __init__(self):
+        self.color_threshold = 100.0
+        
+        
     def inspire(self):
         """Define a mood for the muse and select a color from the Everycolorbot's 
         tweets, which the bot has not tweeted yet.
@@ -109,16 +112,20 @@ class EveryColorBotMuse(Muse):
         mood = NewAgePersonality().get_mood()
         aura = mood['aura_color']
         dist, choice = self.choose_color(aura, choices)
-        chtml = choice.color.html
-        logger.info("EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}".format(chtml, aura, dist))
-        if self.approve_color(chtml):   
-            chex = choice.color.hex
-            return {'color_code': chtml, 'url': choice.url, 'retweet': True,\
-                    'screen_name': 'everycolorbot', 'original_tweet':  chex,\
-                    'muse': 'EveryColorBotMuse', 'muse_value': dist,\
-                    'mood': mood}
-        else:
+        if choice == None:
+            logger.info("EveryColorBot could not find color close (closest:  ) enough its aura. Tweet generation halted".format(dist))
             return {}
+        
+        chtml = choice.color.html
+        logger.info("EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}".format(chtml, color.rgb2html(aura), dist))
+        if not self.approve_color(chtml):  
+            return {}
+         
+        chex = choice.color.hex
+        return {'color_code': chtml, 'url': choice.url, 'retweet': True,\
+                'screen_name': 'everycolorbot', 'original_tweet':  chex,\
+                'muse': 'EveryColorBotMuse', 'values': {'muse': dist / 100},\
+                'mood': mood, 'image': None}
         
         
     def choose_color(self, aura_color, choices):
@@ -127,7 +134,9 @@ class EveryColorBotMuse(Muse):
         map(lambda ch: color_list.append(ch.color.html), choices)
         dist, color_code = color.get_closest(aura_color, color_list)
         choice = choices.filter(color__html = color_code)[0]
-        return dist, choice 
+        if dist > self.color_threshold:
+            return (0, None)
+        return (dist, choice)
             
         
     def get_choices(self):
@@ -150,9 +159,6 @@ class EveryColorBotMuse(Muse):
         else: 
             logger.info("EveryColorBotMuse is on the fast lane, browsing only the tweets added in last 3 hours for perfect color.")
             choices = EveryColorBotTweet.objects.filter(tweeted = False, added__gte = timezone.now() - timedelta(0, 10800))
-        for ch in choices:
-            print ch.added    
-            
         return choices
     
     
@@ -162,7 +168,7 @@ class EveryColorBotMuse(Muse):
         last_tweets = Tweet.objects.all()[:5]
         for t in last_tweets:
             dist = color.ed(t.color_code, chtml)
-            if  dist < 30:
+            if  dist < 15:
                 logger.info("Similar color {} (distance: {}) was Tweeted recently. Tweet generation halted.".format(t.color_code, dist))
                 return False
         return True

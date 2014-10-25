@@ -166,7 +166,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-           'tweets.core': {
+        'tweets.core': {
             'handlers': ['default', 'console'],
             'level': 'DEBUG',
             'propagate': True,

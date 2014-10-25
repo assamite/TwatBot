@@ -8,10 +8,10 @@ Tweets Package
 	muses
 	contexts
 	color_semantics
-	color_utils
-	resources_utils
+	new_age
 	models
 	views
+	utils/index
 	
 	
 Main package of the project, developed as a Django app. The app has currently following modules.
@@ -30,8 +30,7 @@ Main package of the project, developed as a Django app. The app has currently fo
 	* :py:mod:`muses`: Muses for the tweets, i.e. sources for color codes.
 	* :py:mod:`contexts`: Different contexts for framing
 	* :py:mod:`color_semantics`: Semantically informed color manipulations
-	* :py:mod:`color_utils`: Semantic ignorant color utility functions
-	* :py:mod:`resources_utils`: Functions to populate Django models with contents in ``resources/``
+	* :py:mod:`new_age`: New Age personality for the tweets
 	
 
 General Functionality

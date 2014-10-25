@@ -13,6 +13,7 @@ import os
 import operator
 import random
 import re
+import logging
 from collections import OrderedDict
 
 from tweets.utils import color as cu
@@ -23,7 +24,9 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
 
 from tweets.models import ColorMap, UnbracketedColorBigram
 from tweets.models import ColorUnigramSplit, ColorUnigram, PluralColorBigram
-from tweets.models import Color
+from tweets.models import Color, Tweet
+
+logger = logging.getLogger('tweets.default')
 
 class ColorSemantics():
     """Master class for semantic informed color manipulations.
@@ -39,6 +42,8 @@ class ColorSemantics():
         from nltk.corpus import wordnet as wn
         self.reload_resources()
         self.wn = wn
+        self.memory_length = 15
+        self.color_threshold = 40
         
                    
     def reload_resources(self):
@@ -165,7 +170,10 @@ class ColorSemantics():
     
     
     def get_knn_blended_unigrams(self, color_code, k = 1):
-        """Retrieve k-nearest color codes for given color code from blended unigram colors.
+        """Retrieve k-nearest color codes, and names, for given color code from 
+        blended unigram colors. 
+        
+        Excludes out those color codes whose names have been already tweeted.
         
         .. note:: 
             This function is not optimalized in anyway and thus may take quite
@@ -182,10 +190,20 @@ class ColorSemantics():
         """
         if type(k) is not int or k < 1:
             raise ValueError('k should be positive integer.')
+        tweeted_colors = [t.color_name for t in Tweet.objects.all()]
+        # Color atoms (words) in remembered (recently tweeted) color names
+        color_atoms = set()
+        map(lambda c: map(lambda x: color_atoms.add(x), c.split(" ")) ,tweeted_colors[:self.memory_length])
         color_dict = self.blended_unigram_splits
-        dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, color_dict[c][0] + " " + color_dict[c][1]), color_dict.keys()))
-        return dists[:k]
-    
+        dists =  sorted(map(lambda c: (cu.ed(color_code, c), c, self._modify_name(color_dict[c][0] + " " + color_dict[c][1])), color_dict.keys()))
+        ret = []
+        for i in range(len(dists)):
+            if self._approve_color_name(dists[i][2], color_atoms, tweeted_colors):
+                ret.append(dists[i])
+            if len(ret) == k:
+                break
+        return ret
+
     
     def blend_all_unigram_splits(self, frmt = 'html', **blend_options):
         """Convenience function to blend all loaded ``ColorUnigramSplit`` s. 
@@ -259,7 +277,7 @@ class ColorSemantics():
             # synset as its parent.
             ss = self.wn.synsets(c)                           
             if ss and sscolor in list(ss[0].closure(hyper)):    
-                lemmas = ss[0].lemma_names()
+                lemmas = [l for l in ss[0].lemma_names() if len(l.split("_")) == 1 and l[-3:] != 'ess']              
                 choice = random.choice(lemmas)
             else:
                 choice = c
@@ -270,6 +288,20 @@ class ColorSemantics():
         ret = list(OrderedDict.fromkeys(modified_color_name))
         return " ".join(ret)
     
+    
+    def _approve_color_name(self, color_name, color_atoms, tweeted_colors):
+        c_split = color_name.split(" ")
+        for c in c_split:
+            if c in color_atoms:
+                logger.debug("ColorSemantics refused color name '{}' because word '{}' was in recently tweeted color names.".format(color_name, c))
+                return False
+        if color_name in tweeted_colors:
+            logger.debug("ColorSemantics refused color name '{}' because it has been already tweeted.".format(color_name))
+            return False
+        
+        logger.debug("ColorSemantics approved color name '{}'".format(color_name))
+        return True
+
     
     def name_color(self, color_code, k = 1, **kwargs):
         """Give name(s) for the given color code.
@@ -288,11 +320,9 @@ class ColorSemantics():
             raise ValueError('k should be positive integer.')
         ret = self.get_knn_blended_unigrams(color_code, k = k)
         names = []
-        for r in ret: names.append((self._modify_name(r[2]), r[1], r[0]))
+        for r in ret: names.append((r[2], r[1], r[0]))
+        if names[0][2] > self.color_threshold:
+            return []
         return names
         
-        
-        
-        
-    
-        
+          

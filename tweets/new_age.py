@@ -202,6 +202,20 @@ class NewAgePersonality():
         return phase_strings[i][1]
     
     def get_mood(self, date = datetime.date.today()):
+        """Current mood of the personality.
+        
+        Mood is a dictionary with at least the following keys:
+        
+            | lunation: current lunation in the interval of [0, 1]
+            | moon_phase: current moon phase as a string
+            | aura_color: current aura color
+            
+        **Args:**
+            | date (date): Date for the mood. Date affects mood traits, see e.g. ``get_aura_color``.
+        
+        **Returns:**
+            dict, current mood traits.
+        """
         lunation = self.get_phase_on_day(date)
         moon_phase = self.get_phase_string(lunation)
         aura_color = self.get_aura_color(lunation, date)

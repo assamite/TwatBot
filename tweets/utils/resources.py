@@ -74,7 +74,7 @@ def populate_colormap(filepath = "../resources/color_map.tsv"):
     """
     __set_django()
     from tweets.models import ColorMap, Color
-    import tweets.color_utils as cu
+    import color as cu
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()
@@ -139,7 +139,7 @@ def populate_everycolorbot_tweets(filepath = "../resources/everycolorbot_tweets.
     """
     __set_django()
     from tweets.models import EveryColorBotTweet, Color
-    import tweets.color_utils as cu
+    import color as cu
     
     with open(filepath, 'r') as filehandle:
         entries = filehandle.readlines()

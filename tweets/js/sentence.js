@@ -152,7 +152,6 @@ var nMassBad = [
   'suffering',
   'stagnation',
   'desire',
-  'bondage',
   'greed',
   'selfishness',
   'ego',
@@ -554,13 +553,14 @@ var vTraverse = [
 
 var advAlways = [
   'always',
-  'noticeably',
-  'measurably',
   'wholly',
   'consistently',
   'repeatedly',
   'everlastingly',
-  'eternally'
+  'eternally',
+  'endlessly',
+  'perpetually',
+  'forever'
 ];
 
 var advPartly = [
@@ -658,6 +658,8 @@ var vThink = [
    'understand',
    'acknowledge',
    'approve',
+   'realize',
+   'believe'
 ];
 
 var nReason = [
@@ -680,6 +682,88 @@ var nInstitution = [
    'society'
 ];
 
+var nSign = [
+   'sign',
+   'symbol',
+   'omen',
+   'premonition',
+   'harbinger',
+   'auspice',
+   'augury'
+];
+
+var vCome = [
+   'come',
+   'manifest',
+   'materialize',
+   'transpire',
+   'occur'
+];
+
+var nPersonLife = [
+    'day',
+    'life',
+    'mind',
+    'soul',
+    'existence',
+    'third eye',
+    'heart',
+    'thruth'
+];
+
+var nBattle = [
+    'battle',
+    'confrontation',
+    'conflict',
+    'struggle',
+    'collision',
+    'disharmony'
+];
+
+var adjPresent = [
+    'prominent',
+    'present',
+    'evident',
+    'clear',
+    'current',
+    'in process',
+    'extant',
+];
+
+var nExploration = [
+     'exploration',
+     'research',
+     'analysis',
+     'expedition',
+     'study',
+     'inspection',
+     'introspection',
+     'examination'
+];
+
+var adjCareful = [
+     'careful',
+     'meticulous',
+     'rigorous',
+     'vigilant',
+     'cautious',
+     'mindful',
+     'conscious',
+     'sensible',
+     'enlightened'
+];
+
+var vFound = [
+     'found',
+     'started',
+     'begun',
+     'created',
+     'formed',
+     'initiated',
+     'realized',
+     'planted'
+];
+
 var sentencePatterns = new Array();
 
 //explaining
@@ -691,15 +775,13 @@ sentencePatterns[0] = [
 'We viPerson, we viPerson, we are reborn in <> nCosmos',
 'Nothing is impossible for <> nPerson',
 'This <> life is nothing short of a <> ing nOf of adj <> nMass',
-'<> consciousness consists of fixedNP of <> quantum nEnergy. "Quantum" means a <> ing of the <> adj',
+'<> consciousness consists of fixedNP of <> quantum nEnergy',
+'nMass means a <> ing of the <> adj',
 'The <> nReason of fixedNP is to plant the <> seeds of <> nMass rather than <> nMassBad',
 '<> nMass is a <> constant',
 'By <> ing, we viPerson as <> beings',
 'This <> nCosmos is adjWith fixedNP',
-'To vTraverse the <> nPath is to become one with it',
-'Today, nInstitution tells us that the <> essence of <> nature is <> nMass',
-'This <> nMass requires exploration',
-'The nReason of <> nInstitution is to advAlways vBegin <> nOf of <> nMass. Are you with us, <> nPerson?'
+'To vTraverse the <> nPath is to become one with it'
 ];
 
 //warnings
@@ -723,7 +805,7 @@ sentencePatterns[2] = [
 'It is time to take <> nMass to the next <> level',
 'Imagine a <> ing of what could be',
 '<> Eons from now, we <> nPersonPlural will viPerson like never before as we are ppPerson by the <> nCosmos',
-'This is a <> sign of <> things to come',
+'This is a <> nSign of <> timesPlural to vCome',
 'The <> future will be a adj <> ing of <> nMass',
 'This <> nPath never ends',
 'We must learn how to lead adj <> lives in the face of <> nMassBad',
@@ -731,22 +813,22 @@ sentencePatterns[2] = [
 'The nOf of <> nMass is now happening worldwide',
 'We are being called to explore the <> nCosmos itself as a <> interface between <> nMass and <> nMass',
 'It is in <> ing that we are ppPerson',
-'This <> nCosmos is approaching a <> tipping point',
-'For every ppPerson <> nPerson there comes a <> time when one needs to viPerson oneself',
-'Everything is within your <> grasp, <> adj <> nPerson'
+'This <> nCosmos is approaching a <> tipping point'
 ];
 
 //you and your problems
 sentencePatterns[3] = [
-'Although you, myFriend, may not realize it, you are <> adj',
+'Although you, myFriend, may not vThink it, you are <> adj',
 '<> nPerson, look within and vtPerson yourself',
-'vGreeting, <> nPerson, have you found your <> nPath?',
+'vGreeting, <> nPerson, have you vFound your <> nPath?',
 'How should you vTraverse this <> adj <> nCosmos?',
 'It can be difficult to know where to vBegin your <> nPath',
 'If you have never experienced this <> nOf fixedAdvP, it can be difficult to viPerson',
 'This <> nCosmos is vCallingTo you via fixedNP. Can you vFeel it?',
 'vGreeting, adj <> nPerson, are you able to vFeel the <> nCosmos? Do you really vFeel it?',
-'vGreeting, myFriend. Do you vThink that our <> nOurPlural are ppThingPrep adj <> nMassBad? How does <> ing one vFeel it?'
+'vGreeting, myFriend. Do you vThink that our <> nOurPlural are ppThingPrep adj <> nMassBad?',
+'myFriend, how does ing <> one vFeel this, adj <> nMass?',
+'vGreeting, <> nPerson, is your nPersonLife full of adj <> nEnergy?'
 ];
 
 //history
@@ -754,10 +836,11 @@ sentencePatterns[4] = [
 'Throughout <> history, <> humans have been interacting with the <> nCosmos via fixedNP',
 '<> nCosmos has advAlways been adjWith <> nPersonPlural whose <> nOurPlural are ppThingPrep <> nMass',
 'Our adj <> conversations with other <> nPersonPlural have led to a ing of adjPrefix adj <> consciousness',
-'ing, <> humankind has nothing to lose',
 'vGreeting, we are in the midst of a adj <> ing of <> nMass that will vOpenUp the <> nCosmos itself',
 'Who are we, <> nPersonPlural? Where on the great <> nPath will we be ppPerson?',
-'vGreeting, we are at a <> crossroads of <> nMass and <> nMassBad'
+'vGreeting, we are at a <> crossroads of <> nMass and <> nMassBad',
+'Today, nInstitution tells us that the <> essence of <> nature is <> nMass',
+'This adj <> nMass requires adjCareful <> nExploration'
 // 'Even nProphet '
 ];
 
@@ -765,8 +848,13 @@ sentencePatterns[4] = [
 sentencePatterns[5] = [
 'Through <> nSubject, our <> nOurPlural are ppThingPrep nMass',
 'nSubject may be the <> solution to what\'s holding you back from a adjBig nOf of <> nMass',
-'vGreeting, you will soon be ppPerson by a <> nEnergy deep within yourself -- a <> nEnergy that is adj, adj',
-'As you viPerson, you will enter into infinite <> nMass that transcends <> understanding'
+'myFriend, you will soon be ppPerson by a <> nEnergy deep within yourself -- a <> nEnergy that is adj, adj',
+'As you viPerson, you will enter into infinite <> nMass that transcends <> understanding',
+'The <> nBattle between adj <> nMass and ingBad <> nMassBad is advAlways adjPresent',
+'The nReason of <> nInstitution is to advAlways vBegin <> nOf of <> nMass',
+'Are you with us, myFriend, the adj <> nPerson?',
+'For every ppPerson <> nPerson there comes a <> time when one needs to viPerson oneself',
+'Do you see this adj <> nMass within your grasp adj nPerson?'
 ];
 
 // deepCopy function taken from:
@@ -807,20 +895,10 @@ function randomInt(max) {
 
 
 function retrieveRandomWordOfType(type) {
-
-  // find how long the array of words is for given type
   var max = type.length - 1;
-
-  // get a random number to represent a word in the array
   var rand = randomInt(max);
-
   var result = type[rand];
-
-  // type.splice(rand,1); 
-  // console.log(type);
-
   return result;
-
 }
 
 function generateSentence(topic) {
@@ -829,11 +907,7 @@ function generateSentence(topic) {
 
   // generate random sentence pattern
   var patternNumber = randomInt(length - 1);
-
-  // console.log('sentencePatternsClone[' + topic + '].length = ' + (patternNumber+1));
-
   var pattern = sentencePatternsClone[topic][patternNumber];
-
 
   if (typeof pattern == 'undefined') {
     console.log('ran out.');
@@ -939,6 +1013,22 @@ function generateSentence(topic) {
       case 'nReason': result += retrieveRandomWordOfType(nReason);
       break;
       case 'nInstitution': result += retrieveRandomWordOfType(nInstitution);
+      break;
+      case 'nSign': result += retrieveRandomWordOfType(nSign);
+      break;
+      case 'vCome': result += retrieveRandomWordOfType(vCome);
+      break;
+      case 'nPersonLife': result += retrieveRandomWordOfType(nPersonLife);
+      break;
+      case 'nBattle': result += retrieveRandomWordOfType(nBattle);
+      break;
+      case 'adjPresent': result += retrieveRandomWordOfType(adjPresent);
+      break;
+      case 'nExploration': result += retrieveRandomWordOfType(nExploration);
+      break;
+      case 'adjCareful': result += retrieveRandomWordOfType(adjCareful);
+      break;
+      case 'vFound': result += retrieveRandomWordOfType(vFound);
       break;
       default: result += pattern[x];
     }

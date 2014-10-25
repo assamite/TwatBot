@@ -14,9 +14,7 @@ def prettify_sentence(words):
     Kinda hackish code, which could be looked into in some point of time.
     
     **Args:**
-        | words (iterable): Iterable with sentence's words and other characters.
-        This iterable is considered to be created by nltk >=2.04
-        part of speech tagging (and replacing some words in it).
+        | words (iterable): Iterable with sentence's words and other characters. This iterable is considered to be created by nltk >=2.04 part of speech tagging (and replacing some words in it).
         
     **Returns:**
         str or unicode, prettified sentence as one string.
@@ -47,6 +45,17 @@ def prettify_sentence(words):
     pretty_sentence = pretty_sentence.strip()
     return pretty_sentence[0].upper() + pretty_sentence[1:]
 
+
+def same_words(sentence1, sentence2):
+    """Amount of same words in sentences. 
+    
+    Some stop words are excluded from the count.
+    """
+    stops = {'a', 'an', 'the', 'of', 'in'}
+    A = set(TextBlob(sentence1.lower()).words) - stops
+    B = set(TextBlob(sentence2.lower()).words) - stops
+    return len(A & B)
+    
 
 def sentiment(text):
     """Text's sentiment analysis.

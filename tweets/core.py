@@ -10,7 +10,9 @@ if the stars are right and everything is well in the kingdom.
 """
 import os
 import sys
+import math
 import logging
+import operator
 import traceback
 
 # In case we are not running these through Django, let module know
@@ -29,7 +31,7 @@ from color_semantics import ColorSemantics
 from tweets.utils.color import create_temp_image
 
 COLOR_SEMANTICS = ColorSemantics()
-logger = logging.getLogger('tweets.core')
+logger = logging.getLogger('tweets.default')
 
 DEBUG = False
 
@@ -50,7 +52,7 @@ class TweetCore():
         self.color_semantics = color_semantics
         self.muse = muse
         self.context = context
-        self.threshold = 1.0
+        self.threshold = 0.6
     
     
     def _get_new_tweet(self, inspiration):
@@ -69,26 +71,33 @@ class TweetCore():
             context = inspiration['context'] 
         inspiration['context'] = context.__class__.__name__
             
-        names = semantics.name_color(k = 1, **inspiration)
-        
-        tweets = []
-        for name, code, distance in names: 
-            distance = distance / 100
-            t = context.build_tweet(color_name = name, wisdom_count = 10,  **inspiration)
-            if t is not None:
-                tweet, value = t
-                value = 1.0 - value
-                value += distance 
-                tweets.append((tweet, value))
-                inspiration['color_name'] = name
-            
-        if len(tweets) == 0:
+        ret = semantics.name_color(k = 1, **inspiration)
+        if len(ret) == 0:
             return None
-
-        #TODO: See value of the tweet and the tweet memory and allow the tweet
-        #if the stars are right.
-        return (tweets[0][0], tweets[0][1], inspiration)
+        
+        name, color_code, distance = ret[0]
+        distance = distance / 100
+        inspiration['values']['color_semantics'] = distance
+        t = context.build_tweet(color_name = name, wisdom_count = 10,  **inspiration)
+        if t is None:
+            return None
+            
+        tweet, value = t
+        inspiration['values']['context'] = value
+        appreciation = self._calculate_appreciation(inspiration)        
+        return (tweet, appreciation, inspiration)
     
+    
+    def _calculate_appreciation(self, inspiration):
+        appr = 0.0
+        values_count = len(inspiration['values'].keys())
+        for k, v in inspiration['values'].items():
+            appr += v ** 2
+        
+        appr = math.sqrt(appr)
+        appr /= math.sqrt(values_count)
+        return appr
+             
     
     def _tweet(self, tweet, img_name = None):
         """Tweet to the twitter.
@@ -98,26 +107,30 @@ class TweetCore():
             the bot's memory.
         
         **Returns:**
-            True if the tweet was send successfully, False otherwise.
+            Tuple (tweeted, tweet), where tweeted is True if the tweet was send 
+            successfully, False otherwise. The tweet is the actual tweet returned
+            from the Twitter; in case image was specified, it is modified to 
+            contain image URL at the end of the tweet.
         """
         if DEBUG: 
             logger.info("DEBUG mode on, choosing not to tweet.")
-            return False
+            return (True, tweet)
             
         try:
             auth = tweepy.OAuthHandler(self.tak, self.tas)
             auth.set_access_token(self.tat, self.tats)
             api = tweepy.API(auth)
             if img_name:
-                api.update_with_media(filename = img_name,status = tweet)
+                ret = api.update_with_media(filename = img_name,status = tweet)
+                tweet = ret.text
             else:
                 api.update_status(status = tweet)
         except Exception:
             e = traceback.format_exc()
             logger.error("Could not tweet to Twitter. Error: {}".format(e))
-            return False
+            return (False, "")
         
-        return True
+        return (True, tweet)
     
     
     def tweet(self, send_to_twitter = False, inspiration = None):
@@ -142,15 +155,16 @@ class TweetCore():
         rdict = {'tweet': "", 'sended': False, 'metadata': {}}
         if ret is None: return rdict
         tweet, value, reasoning = ret
-        if send_to_twitter:
-            logger.info('Build tweet: "{}" with value: {}'.format(tweet, value))
+        logger.debug('Build tweet: "{}" with value: {}'.format(tweet, value))
         tweeted = False
-        if value < self.threshold:
-            if send_to_twitter:
-                logger.info("Value of the tweet was below threshold ({}). Trying to tweet it.".format(self.threshold))          
-                tmp_img = create_temp_image((480, 360), reasoning['color_code'])
-                tweeted = self._tweet(tweet, img_name = tmp_img.name)
-                tmp_img.close()
+        if value < self.threshold and send_to_twitter:
+            logger.info("Value of the tweet was below threshold ({}). Trying to tweet it.".format(self.threshold))     
+            if 'image' in reasoning and reasoning['image'] is None:     
+                img = create_temp_image((524, 360), reasoning['color_code'])
+            else:
+                img = reasoning['image']
+            tweeted, tweet = self._tweet(tweet, img_name = img.name)
+            img.close() # delete possible temp image
             if tweeted:
                 self._save_to_db(tweet, value, reasoning)
            
@@ -168,24 +182,24 @@ class TweetCore():
         muse = reasoning['muse']   
         color_code = reasoning['color_code']
         color_name = reasoning['color_name']
-
-        twinst = Tweet(message = tweet, value = value, muse = muse,\
-                     context = context, color_code = color_code,\
-                     color_name = color_name)
-        twinst.save()
-        
-        retweet = reasoning['retweet'] if 'retweet' in reasoning else False
-        if retweet:
-            screen_name = reasoning['screen_name']
-            if screen_name == 'everycolorbot':
-                inst = EveryColorBotTweet.objects.get_or_none(url = reasoning['url'])
-                if inst:
-                    inst.tweeted = True
-                    inst.save()
-                    
-            reinst = ReTweet(tweet_url = reasoning['url'],\
-                             screen_name = screen_name, tweet = twinst)
-            reinst.save()
+        if not DEBUG:
+            twinst = Tweet(message = tweet, value = value, muse = muse,\
+                         context = context, color_code = color_code,\
+                         color_name = color_name)
+            twinst.save()
+            
+            retweet = reasoning['retweet'] if 'retweet' in reasoning else False
+            if retweet:
+                screen_name = reasoning['screen_name']
+                if screen_name == 'everycolorbot':
+                    inst = EveryColorBotTweet.objects.get_or_none(url = reasoning['url'])
+                    if inst:
+                        inst.tweeted = True
+                        inst.save()
+                        
+                reinst = ReTweet(tweet_url = reasoning['url'],\
+                                 screen_name = screen_name, tweet = twinst)
+                reinst.save()
  
     
 TWEET_CORE = TweetCore()

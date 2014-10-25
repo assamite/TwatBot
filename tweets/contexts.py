@@ -9,6 +9,7 @@ import os
 from abc import ABCMeta
 import urllib2
 import operator
+import logging
 from subprocess import Popen, PIPE
 
 if 'DJANGO_SETTINGS_MODULE' not in os.environ:
@@ -16,7 +17,10 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     os.environ['DJANGO_SETTINGS_MODULE'] = 'TwatBot.settings'
 from django.conf import settings
 
-from tweets.utils.text import prettify_sentence
+from tweets.models import Tweet
+from tweets.utils import text 
+
+logger = logging.getLogger("tweets.default")
 
 
 class Context():
@@ -189,7 +193,7 @@ class DCContext(Context):
             color_name = color_name[0].upper() + color_name[1:]
         
         words = tokenized[:place] + color_name.split() + tokenized[place:]
-        return prettify_sentence(words)
+        return text.prettify_sentence(words)
             
         
     
@@ -208,6 +212,8 @@ class NewAgeContext(Context):
         self.tokenizer = word_tokenize
         self.pos_tag = pos_tag
         self.wordnet = wordnet
+        self.tweet_similarity_threshold = 3
+        self.memory_length = 15
         
     def build_tweet(self, color_name, wisdom_count = 10, **kwargs):
         """Build tweet for color name.
@@ -221,7 +227,8 @@ class NewAgeContext(Context):
             str, tweet for the color code-name pair. If no tweet can be constructed, returns None.
         """
         wisdoms = self._get_wisdoms(color_name, wisdom_count = wisdom_count)
-        if not wisdoms: return None 
+        if not wisdoms: 
+            return None 
         tweets = []
         for wis in wisdoms:
             places, parsed_wisdom = self._get_color_places(color_name, wis)
@@ -232,14 +239,16 @@ class NewAgeContext(Context):
                     tweet = self._prettify_tweet(color_name, parsed_wisdom, place)
                     if 'retweet' in kwargs.keys(): 
                         tweet = 'RT @{} "{}" {}'.format(kwargs['screen_name'], kwargs['original_tweet'], tweet) 
-                    if len(tweet) <= 120:
-                        tweets.append((tweet, value))
+                    tweet_len = 118 if 'image' in kwargs.keys() else 140   
+                    if len(tweet) <= tweet_len:
+                        tweets.append((tweet, 1.0 - value))
          
-        if len(tweets) > 0:
-            sorted_tweets = sorted(tweets, key = operator.itemgetter(1), reverse = True)    
-            return sorted_tweets[0]
-        else:
+        if len(tweets) == 0:
             return None
+            
+        sorted_tweets = sorted(tweets, key = operator.itemgetter(1))    
+        print sorted_tweets
+        return sorted_tweets[0]
                
             
     def _get_wisdoms(self, color_name, wisdom_count = 3):
@@ -247,14 +256,19 @@ class NewAgeContext(Context):
         if type(wisdom_count) is not int or wisdom_count < 1:
             raise ValueError("wisdom_count must be positive integer.")
         
+        last_tweets = Tweet.objects.all()[:self.memory_length]
         wisdoms = []
         js_path = os.path.join(settings.BASE_DIR, 'tweets', 'js', 'sentence.js')
         
         try:
-            for i in xrange(wisdom_count):
+            while len(wisdoms) < wisdom_count:
                 p = Popen(['node', js_path, "1"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
                 output, err = p.communicate(b"input data that is passed to subprocess' stdin")
-                wisdoms.append(output.strip())
+                wisdom = output.strip()
+                logger.debug("Generated wisdom: {}".format(wisdom))
+                # Filter wisdoms too similar to latest tweets out
+                if self._approve_wisdom(wisdom, last_tweets): 
+                    wisdoms.append(wisdom.strip())
         except:
             return None
             
@@ -274,7 +288,6 @@ class NewAgeContext(Context):
             else:
                 parsed_wisdom.append(split_wisdom[i])
            
-        print place_candidates, parsed_wisdom
         if len(place_candidates) == 0: 
             return None, parsed_wisdom
         
@@ -310,16 +323,23 @@ class NewAgeContext(Context):
         else:
             return sorted_sim[0]
         
+    def _approve_wisdom(self, wisdom, last_tweets):
+        for t in last_tweets:
+            sw = text.same_words(wisdom, t.message)
+            if sw > self.tweet_similarity_threshold:
+                logger.debug("Discarding wisdom, because it was too similar ({}) with recent tweet: {}".format(sw, t.message))
+                return False
+        return True              
+        
     
     def _prettify_tweet(self, color_name, tokenized, place):
-        print tokenized
         if place == 0:
             tokenized[0] = tokenized[0][0].lower() + tokenized[0][1:]
             color_name = color_name[0].upper() + color_name[1:]
             words = color_name.split() + tokenized[place:]
         else:
             words = tokenized[:place] + color_name.split() + tokenized[place:]
-        return prettify_sentence(words)
+        return text.prettify_sentence(words)
             
                 
 
