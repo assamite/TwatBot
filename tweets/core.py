@@ -24,11 +24,8 @@ from django.conf import settings
 import tweepy
 
 from muses import EveryColorBotMuse
-from models import EveryColorBotTweet
-from models import ReTweet, Tweet
 from contexts import NewAgeContext
 from color_semantics import ColorSemantics
-from tweets.utils.color import create_temp_image
 
 COLOR_SEMANTICS = ColorSemantics()
 logger = logging.getLogger('tweets.default')
@@ -52,7 +49,7 @@ class TweetCore():
         self.color_semantics = color_semantics
         self.muse = muse
         self.context = context
-        self.threshold = 0.6
+        self.threshold = 0.55
     
     
     def _get_new_tweet(self, reasoning):

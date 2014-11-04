@@ -95,8 +95,17 @@ class Reasoning():
                 
             
     def save(self):
-        """Save tweet to database."""
+        """Save tweet to database.
+        
+        **Returns:**
+            True is the save was made, False if tweet was empty or errors 
+            happened during the save.
+        """
         from models import EveryColorBotTweet, Tweet, ReTweet
+        
+        if self.tweet == "":
+            logger.info("Saving called for empty tweet. Skipping.")
+            return False
         
         try: 
             twinst = Tweet(message = self.tweet, value = self.appreciation,\
@@ -121,4 +130,6 @@ class Reasoning():
         except Exception:
             e = traceback.format_exc()
             logger.error("Could not save tweet to database, because of error: {}".format(e))
+            return False
+        return True
     
