@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Core Functionality &mdash; Twatbot 0.0.1 documentation</title>
+  <title>Reasoning &mdash; Twatbot 0.0.1 documentation</title>
   
 
   
@@ -28,10 +28,7 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Tweets Package" href="index.html"/>
-        <link rel="next" title="Muses" href="muses.html"/>
-        <link rel="prev" title="Tweets Package" href="index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -58,7 +55,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul class="current">
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../project.html">Project</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#current-status">Current Status</a></li>
@@ -66,8 +63,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Core Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
@@ -101,12 +98,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">Tweets Package</a> &raquo;</li>
-      
-    <li>Core Functionality</li>
+    <li>Reasoning</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/tweets/core.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/tweets/reasoning.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -114,40 +109,69 @@
 </div>
           <div role="main">
             
-  <div class="section" id="module-tweets.core">
-<span id="core-functionality"></span><h1>Core Functionality<a class="headerlink" href="#module-tweets.core" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-core"></span><p>Core of the color tweets.</p>
-<p>Class TweetCore defined in the module glues muses, framing contexts and other 
-tweet related stuff together and allows the constructed messages to be tweeted,
-if the stars are right and everything is well in the kingdom.</p>
+  <div class="section" id="module-tweets.reasoning">
+<span id="reasoning"></span><h1>Reasoning<a class="headerlink" href="#module-tweets.reasoning" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-reasoning"></span><p>Reasoning object for the tweets.</p>
 <dl class="class">
-<dt id="tweets.core.TweetCore">
-<em class="property">class </em><tt class="descclassname">tweets.core.</tt><tt class="descname">TweetCore</tt><big>(</big><em>color_semantics=&lt;tweets.color_semantics.ColorSemantics instance at 0x109f47248&gt;</em>, <em>muse=&lt;tweets.muses.EveryColorBotMuse instance at 0x10d2a7d40&gt;</em>, <em>context=&lt;tweets.contexts.NewAgeContext instance at 0x10d689758&gt;</em><big>)</big><a class="reference internal" href="../_modules/tweets/core.html#TweetCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.core.TweetCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Core of the color tweets.</p>
-<p>Class attachs muses and framing contexts together to single functionality.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">At the moment class is quite deterministic. It should not be somewhere 
-in the future.</p>
-</div>
+<dt id="tweets.reasoning.Reasoning">
+<em class="property">class </em><tt class="descclassname">tweets.reasoning.</tt><tt class="descname">Reasoning</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/reasoning.html#Reasoning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.reasoning.Reasoning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reasoning for the tweets.</p>
+<p>Class is used to hold information about the tweet&#8217;s construction, and contains 
+few utility functions for convenience.</p>
+<p>After the tweet has been constructed, the class should hold at least 
+following attributes:</p>
+<ul class="simple">
+<li>color_code (str or unicode): color of the tweet in html-format.</li>
+<li>color_name (str or unicode: name constructed for the color code</li>
+<li>tweet (str or unicode): text of the tweet</li>
+<li>tweeted (bool): Was the constructed tweet send to twitter</li>
+<li>retweet (bool): is the tweet a retweet</li>
+<li>retweet_url (str or unicode): URL for the retweet (if any)</li>
+<li>original_tweet (str or unicode): Original tweet if this is a retweet</li>
+<li>muse: class instance of the used Muse</li>
+<li>context: class instance of the used Context</li>
+<li>color_semantics: class instance of the used ColorSemantics.</li>
+<li>values (dict): dictionary of the appreciation values generated during the</li>
+</ul>
+<p>tweet&#8217;s construction.</p>
 <dl class="method">
-<dt id="tweets.core.TweetCore.tweet">
-<tt class="descname">tweet</tt><big>(</big><em>send_to_twitter=False</em>, <em>inspiration=None</em><big>)</big><a class="reference internal" href="../_modules/tweets/core.html#TweetCore.tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.core.TweetCore.tweet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a tweet for the bot and optionally send it to twitter and store it to bot&#8217;s memory.</p>
+<dt id="tweets.reasoning.Reasoning.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/tweets/reasoning.html#Reasoning.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.reasoning.Reasoning.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save tweet to database.</p>
+<dl class="docutils">
+<dt><strong>Returns:</strong></dt>
+<dd>True is the save was made, False if tweet was empty or errors 
+happened during the save.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.reasoning.Reasoning.set_attr">
+<tt class="descname">set_attr</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="../_modules/tweets/reasoning.html#Reasoning.set_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.reasoning.Reasoning.set_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define new or change old attribute value.</p>
+<p>Caller should take care of the possible conflicts when changing existing
+attribute values.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
 <dd><div class="first last line-block">
-<div class="line">send_to_twitter (bool): Is succesfully generated and enough appreciation gained tweet send to twitter.</div>
-<div class="line">inspiration (dict): Optional, given inspiration for this tweet, should contain at least &#8216;color_code&#8217;-key. If no inspiration is given, the standard muse is used to provide inspiration.</div>
+<div class="line">name (str): Name of the attribute</div>
+<div class="line">value: New attribute value</div>
 </div>
 </dd>
-<dt><strong>Returns:</strong></dt>
-<dd><p class="first">Dictionary, with following keys: tweet, sended, value, metadata. 
-Tweet is the generated tweet and sended is True if the tweet was send 
-successfully, False otherwise. Value is estimated appreciation of the
-code-name-tweet mapping. Metadata contains other information of the 
-tweet generation process, including used color code and name, etc.</p>
-<p class="last">If no tweet could be generated, then returns empty string as tweet.</p>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tweets.reasoning.Reasoning.set_attrs">
+<tt class="descname">set_attrs</tt><big>(</big><em>dict</em><big>)</big><a class="reference internal" href="../_modules/tweets/reasoning.html#Reasoning.set_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.reasoning.Reasoning.set_attrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define new or change old attribute values in a patch.</p>
+<p>Caller should take care of the possible conflicts when changing existing
+attribute values.</p>
+<dl class="docutils">
+<dt><strong>Args:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">dict (dict): Attribute mappings</div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -159,15 +183,6 @@ tweet generation process, including used color code and name, etc.</p>
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="muses.html" class="btn btn-neutral float-right" title="Muses"/>Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral" title="Tweets Package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

@@ -59,12 +59,18 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reasoning.html">Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
@@ -130,6 +136,7 @@
 <li><a class="reference internal" href="muses.html#module-muses" title="muses (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">muses</span></tt></a>: Muses for the tweets, i.e. sources for color codes.</li>
 <li><a class="reference internal" href="contexts.html#module-contexts" title="contexts (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">contexts</span></tt></a>: Different contexts for framing</li>
 <li><a class="reference internal" href="color_semantics.html#module-color_semantics" title="color_semantics: Semantic informed color manipulations. (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">color_semantics</span></tt></a>: Semantically informed color manipulations</li>
+<li><a class="reference internal" href="reasoning.html#module-reasoning" title="reasoning (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">reasoning</span></tt></a>: Reasoning for the generated tweets.</li>
 <li><a class="reference internal" href="new_age.html#module-new_age" title="new_age (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">new_age</span></tt></a>: New Age personality for the tweets</li>
 </ul>
 </div></blockquote>
@@ -137,10 +144,6 @@
 </ul>
 <div class="section" id="general-functionality">
 <h2>General Functionality<a class="headerlink" href="#general-functionality" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">A lot of this is still in dummy implementations.</p>
-</div>
 <p>General functionality and data flow of the package starts from the <a class="reference internal" href="core.html#module-core" title="core (Unix)"><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt></a> -module.
 It gathers and unifies other modules&#8217; functionality together and also acts
 as a jury which allows or does no allow tweets to be made. Other modules provide

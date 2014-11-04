@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tweets.reasoning &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/reasoning.html">Reasoning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>tweets.reasoning</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for tweets.reasoning</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. py:module:: reasoning</span>
+<span class="sd">    :platform: Unix</span>
+<span class="sd">    </span>
+<span class="sd">Reasoning object for the tweets.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;tweets.default&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Reasoning"><a class="viewcode-back" href="../../tweets/reasoning.html#tweets.reasoning.Reasoning">[docs]</a><span class="k">class</span> <span class="nc">Reasoning</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Reasoning for the tweets.</span>
+<span class="sd">    </span>
+<span class="sd">    Class is used to hold information about the tweet&#39;s construction, and contains </span>
+<span class="sd">    few utility functions for convenience.</span>
+<span class="sd">    </span>
+<span class="sd">    After the tweet has been constructed, the class should hold at least </span>
+<span class="sd">    following attributes:</span>
+<span class="sd">    </span>
+<span class="sd">    * color_code (str or unicode): color of the tweet in html-format.</span>
+<span class="sd">    * color_name (str or unicode: name constructed for the color code</span>
+<span class="sd">    * tweet (str or unicode): text of the tweet </span>
+<span class="sd">    * tweeted (bool): Was the constructed tweet send to twitter</span>
+<span class="sd">    * retweet (bool): is the tweet a retweet </span>
+<span class="sd">    * retweet_url (str or unicode): URL for the retweet (if any)</span>
+<span class="sd">    * original_tweet (str or unicode): Original tweet if this is a retweet</span>
+<span class="sd">    * muse: class instance of the used Muse</span>
+<span class="sd">    * context: class instance of the used Context</span>
+<span class="sd">    * color_semantics: class instance of the used ColorSemantics.</span>
+<span class="sd">    * values (dict): dictionary of the appreciation values generated during the </span>
+<span class="sd">    tweet&#39;s construction.</span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_code</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tweet</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tweeted</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retweet</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retweet_url</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_tweet</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">muse</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_semantics</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">muse_classname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_semantics_classname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_classname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appreciation</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+    
+        
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">return</span> <span class="n">ret</span> 
+            
+            
+<div class="viewcode-block" id="Reasoning.set_attr"><a class="viewcode-back" href="../../tweets/reasoning.html#tweets.reasoning.Reasoning.set_attr">[docs]</a>    <span class="k">def</span> <span class="nf">set_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define new or change old attribute value. </span>
+<span class="sd">        </span>
+<span class="sd">        Caller should take care of the possible conflicts when changing existing</span>
+<span class="sd">        attribute values.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | name (str): Name of the attribute</span>
+<span class="sd">            | value: New attribute value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;muse&#39;</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;muse_classname&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;context&#39;</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;context_classname&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;color_semantics&#39;</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;color_semantics_classname&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        
+        </div>
+<div class="viewcode-block" id="Reasoning.set_attrs"><a class="viewcode-back" href="../../tweets/reasoning.html#tweets.reasoning.Reasoning.set_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">set_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define new or change old attribute values in a patch.</span>
+<span class="sd">        </span>
+<span class="sd">        Caller should take care of the possible conflicts when changing existing</span>
+<span class="sd">        attribute values.</span>
+<span class="sd">        </span>
+<span class="sd">        **Args:**</span>
+<span class="sd">            | dict (dict): Attribute mappings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                
+            </div>
+<div class="viewcode-block" id="Reasoning.save"><a class="viewcode-back" href="../../tweets/reasoning.html#tweets.reasoning.Reasoning.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save tweet to database.</span>
+<span class="sd">        </span>
+<span class="sd">        **Returns:**</span>
+<span class="sd">            True is the save was made, False if tweet was empty or errors </span>
+<span class="sd">            happened during the save.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span><span class="p">,</span> <span class="n">Tweet</span><span class="p">,</span> <span class="n">ReTweet</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweet</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Saving called for empty tweet. Skipping.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        
+        <span class="k">try</span><span class="p">:</span> 
+            <span class="n">twinst</span> <span class="o">=</span> <span class="n">Tweet</span><span class="p">(</span><span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweet</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">appreciation</span><span class="p">,</span>\
+                           <span class="n">muse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">muse_classname</span><span class="p">,</span>\
+                           <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context_classname</span><span class="p">,</span>\
+                           <span class="n">color_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_code</span><span class="p">,</span>\
+                           <span class="n">color_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_name</span><span class="p">)</span>
+            <span class="n">twinst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">retweet</span><span class="p">:</span>
+                <span class="n">screen_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_name</span>
+                <span class="k">if</span> <span class="n">screen_name</span> <span class="o">==</span> <span class="s">&#39;everycolorbot&#39;</span><span class="p">:</span>
+                    <span class="n">inst</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retweet_url</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">inst</span><span class="p">:</span>
+                        <span class="n">inst</span><span class="o">.</span><span class="n">tweeted</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="n">inst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        
+                <span class="n">reinst</span> <span class="o">=</span> <span class="n">ReTweet</span><span class="p">(</span><span class="n">tweet_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retweet_url</span><span class="p">,</span>\
+                                 <span class="n">screen_name</span> <span class="o">=</span> <span class="n">screen_name</span><span class="p">,</span> <span class="n">tweet</span> <span class="o">=</span> <span class="n">twinst</span><span class="p">)</span>
+                <span class="n">reinst</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Tweet saved to database: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tweet</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Could not save tweet to database, because of error: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    </div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Project &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="Code Layout" href="code_layout.html"/>
+        <link rel="prev" title="Installing" href="install.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/reasoning.html">Reasoning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/utils/index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tweets/index.html#general-functionality">General Functionality</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Project</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/project.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="project">
+<h1>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h1>
+<p>Here is short explanation of the project work going to be done in the second
+period.</p>
+<div class="section" id="current-status">
+<h2>Current Status<a class="headerlink" href="#current-status" title="Permalink to this headline">¶</a></h2>
+<p>Current status of the color naming Twitter bot lays somewhere in the between of
+acceptable and inadequate. The bot is acceptable in the sense, that it has been coded quite
+modularly, i.e. it should be easy to plug new functionalities in the existing core.
+On the other hand, it is inadequate because the currently coded bot&#8217;s main
+functionalities are not good enough to represent a dynamic and truly (in the
+computational creativity sense) self-creating system.</p>
+<p>Currently, the bot&#8217;s instantiation consists of five main objects, each of which
+contributes to the functionality in their own way:</p>
+<p><strong>Reasoning:</strong></p>
+<blockquote>
+<div>Reasoning-class contains accumulated information about the
+generated Tweet during its construction. Other modules take it as an input and
+alter its contents on the fly.</div></blockquote>
+<p><strong>Muse:</strong></p>
+<blockquote>
+<div>Muse is an object, which on demand inspires the bot to create new content.
+In its most basic form it will give and new color code for the bot (inside the
+Reasoning-object), which other modules will flesh out to make a complete new Tweet.
+However, Muse can also add other information, such as mood or image, to go with
+the Reasoning-object.</div></blockquote>
+<p><strong>ColorSemantics:</strong></p>
+<blockquote>
+<div>ColorSemantics-object names the color code given to it.
+It can take into account other side information in the Reasoning-object if it seems
+it necessary.</div></blockquote>
+<p><strong>Context:</strong></p>
+<blockquote>
+<div>Context-object gives framing for the Tweet. It handles the
+information in the Reasoning-object in order to create good context for the Tweet.
+In its most basic form, the context is a text output where the name of the color
+appears, but it can also contain created images.</div></blockquote>
+<p><strong>Core:</strong></p>
+<blockquote>
+<div>TweetCore is the main class which should mostly appear as an invisible glue
+between other modules. It handles passing of the Reasoning-object to other
+modules in right order and takes care of tweeting for the Tweets that are
+seen good enough.</div></blockquote>
+<p>It should be noted, that Muse, ColorSemantics and Context objects are easily
+replaceable by instantiations of derived classes which conform to same interfaces.</p>
+<div class="section" id="personality">
+<h3>Personality<a class="headerlink" href="#personality" title="Permalink to this headline">¶</a></h3>
+<p>In its current form, the bot tries to show a personality that is interested in
+new age and other spiritual concepts. This is mostly done by the Context-object
+which creates an semi-random sentence template from its possible choices and
+adds the color name to a suitable place in the template. Furthermore, the Muse
+adds a slight twist to the color name picking as it generates a random mood and
+aura color, both of which vary with the moon phase and time of the year. The
+color codes are more appreciated, if they are closer to the current aura color,
+if no close enough color is found, then the Tweet generation is halted.</p>
+</div>
+</div>
+<div class="section" id="project-s-contributions">
+<h2>Project&#8217;s Contributions<a class="headerlink" href="#project-s-contributions" title="Permalink to this headline">¶</a></h2>
+<p>As in its current form, the Twitter bot merely generates new Tweets and has very
+little sense, or knowledge, of the world: <strong>the main contribution of the project
+will be to add more knowledge and more sophisticated appreciation methods for the
+different phases in the Tweet generation (to make the personality more prominent).</strong>
+These might include, e.g.</p>
+<ul>
+<li><p class="first">Add at least one more knowledge source for the bot. Possible sources:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Use one/some of the Tony&#8217;s resources</li>
+<li>Use Google search / bigrams / trigrams (more exhaustively)</li>
+<li>Use Wikipedia&#8217;s category information for colors</li>
+<li>Do Wikipedia searches of the interesting topics on the fly</li>
+<li>Mine WordNet more thoroughly</li>
+<li>Use (from the New Age perspective) interesting corpuses</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Alter color name creation to build more spiritual names:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Automatically (how?)</li>
+<li>Construct vocabulary by hand</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Alter sentence generation to be more personal and show more clearly the current mood of the bot:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Add attribute (sentiment, etc.) analysis to the sentences constructed by Context-object</li>
+<li>Use a heuristic search algorithm to find the sentence which most suits the current mood of the bot</li>
+<li>Add notes of the aura colors and characteristics associated with that color to the textual framing</li>
+<li>Add more sentence templates</li>
+<li>Alter sentence vocabularies</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Make the bot more social in Twitter, by adding Muses which:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Listen other specific accounts</li>
+<li>React to the most recent Tweets with certain keywords (color names?)</li>
+<li>React to certain (fixed) hashtags</li>
+<li>React to currently trending topics</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Change the image added to the Tweet:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Create new interesting image to go with the Tweet</p>
+<blockquote>
+<div><ul class="simple">
+<li>Make &#8220;motivational images&#8221; with the Tweet as a text</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Search for the best image to go with the Tweet and add it</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="code_layout.html" class="btn btn-neutral float-right" title="Code Layout"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installing"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

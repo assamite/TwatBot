@@ -58,12 +58,18 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../code_layout.html">Code Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tweets/reasoning.html">Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tweets/views.html">Views</a></li>
@@ -153,6 +159,17 @@
     <span class="n">pretty_sentence</span> <span class="o">=</span> <span class="n">pretty_sentence</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">pretty_sentence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">pretty_sentence</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
+</div>
+<div class="viewcode-block" id="same_words"><a class="viewcode-back" href="../../../tweets/utils/text_utils.html#tweets.utils.text.same_words">[docs]</a><span class="k">def</span> <span class="nf">same_words</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Amount of same words in sentences. </span>
+<span class="sd">    </span>
+<span class="sd">    Some stop words are excluded from the count.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stops</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;an&#39;</span><span class="p">,</span> <span class="s">&#39;the&#39;</span><span class="p">,</span> <span class="s">&#39;of&#39;</span><span class="p">,</span> <span class="s">&#39;in&#39;</span><span class="p">}</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">TextBlob</span><span class="p">(</span><span class="n">sentence1</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="n">stops</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">TextBlob</span><span class="p">(</span><span class="n">sentence2</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="n">stops</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span> <span class="o">&amp;</span> <span class="n">B</span><span class="p">)</span>
+    
 </div>
 <div class="viewcode-block" id="sentiment"><a class="viewcode-back" href="../../../tweets/utils/text_utils.html#tweets.utils.text.sentiment">[docs]</a><span class="k">def</span> <span class="nf">sentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Text&#39;s sentiment analysis.</span>

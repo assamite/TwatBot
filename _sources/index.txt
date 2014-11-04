@@ -21,6 +21,7 @@ Contents:
 	:includehidden:
 	
 	install
+	project
 	code_layout
 	tweets/index
 

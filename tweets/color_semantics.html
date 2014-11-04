@@ -60,6 +60,11 @@
         
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
@@ -233,7 +238,10 @@ is non-negative float.</dd>
 <dl class="method">
 <dt id="tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams">
 <tt class="descname">get_knn_blended_unigrams</tt><big>(</big><em>color_code</em>, <em>k=1</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.get_knn_blended_unigrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.get_knn_blended_unigrams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve k-nearest color codes for given color code from blended unigram colors.</p>
+<dd><p>Retrieve k-nearest color names based on color codes from 
+blended unigram colors.</p>
+<p>Excludes names that are already tweeted or which have part of the name 
+tweeted recently.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is not optimalized in anyway and thus may take quite
@@ -255,14 +263,13 @@ is non-negative float and color name is the... name of the color.</dd>
 
 <dl class="method">
 <dt id="tweets.color_semantics.ColorSemantics.name_color">
-<tt class="descname">name_color</tt><big>(</big><em>color_code</em>, <em>k=1</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.name_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.name_color" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">name_color</tt><big>(</big><em>reasoning</em>, <em>k=1</em><big>)</big><a class="reference internal" href="../_modules/tweets/color_semantics.html#ColorSemantics.name_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.color_semantics.ColorSemantics.name_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Give name(s) for the given color code.</p>
 <dl class="docutils">
 <dt><strong>Args:</strong></dt>
 <dd><div class="first last line-block">
-<div class="line">color_code:  Color code in any supported format. See supported formats from <tt class="docutils literal"><span class="pre">color_utils</span></tt>-module. </div>
-<div class="line">k (int): How many best names are retrieved.</div>
-<div class="line">**kwargs: Optional keyword arguments. Currently omitted.</div>
+<div class="line">k (int): amount of names to retrieve</div>
+<div class="line">reasoning (Reasoning): <tt class="docutils literal"><span class="pre">Reasoning</span></tt> object which has at least the color_code specified</div>
 </div>
 </dd>
 <dt><strong>Returns:</strong></dt>

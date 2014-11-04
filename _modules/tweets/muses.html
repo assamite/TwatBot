@@ -58,12 +58,18 @@
         
             <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/reasoning.html">Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
@@ -139,6 +145,7 @@
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 
+<span class="kn">from</span> <span class="nn">reasoning</span> <span class="kn">import</span> <span class="n">Reasoning</span>
 <span class="kn">from</span> <span class="nn">new_age</span> <span class="kn">import</span> <span class="n">NewAgePersonality</span>
 <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">EveryColorBotTweet</span>
 <span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Tweet</span>
@@ -199,7 +206,10 @@
 <span class="sd">    The saving of the tweeted status happens only after the tweet has been </span>
 <span class="sd">    successfully made by the core.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span> <span class="o">=</span> <span class="mf">100.0</span>
+        
+        
 <div class="viewcode-block" id="EveryColorBotMuse.inspire"><a class="viewcode-back" href="../../tweets/muses.html#tweets.muses.EveryColorBotMuse.inspire">[docs]</a>    <span class="k">def</span> <span class="nf">inspire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Define a mood for the muse and select a color from the Everycolorbot&#39;s </span>
 <span class="sd">        tweets, which the bot has not tweeted yet.</span>
@@ -211,22 +221,30 @@
 <span class="sd">            all the colors has been tweeted, returns empty dict.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">choices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_choices</span><span class="p">()</span>
+        <span class="n">reasoning</span> <span class="o">=</span> <span class="n">Reasoning</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;EveryColorBotMuse could not find untweeted colors from its current choices. Tweet generation halted.&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{}</span>    
+            <span class="k">return</span> <span class="n">reasoning</span> 
         <span class="n">mood</span> <span class="o">=</span> <span class="n">NewAgePersonality</span><span class="p">()</span><span class="o">.</span><span class="n">get_mood</span><span class="p">()</span>
         <span class="n">aura</span> <span class="o">=</span> <span class="n">mood</span><span class="p">[</span><span class="s">&#39;aura_color&#39;</span><span class="p">]</span>
         <span class="n">dist</span><span class="p">,</span> <span class="n">choice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_color</span><span class="p">(</span><span class="n">aura</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;EveryColorBot could not find color close (closest:  ) enough its aura. Tweet generation halted&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dist</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">reasoning</span>
+        
         <span class="n">chtml</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chtml</span><span class="p">,</span> <span class="n">aura</span><span class="p">,</span> <span class="n">dist</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">approve_color</span><span class="p">(</span><span class="n">chtml</span><span class="p">):</span>   
-            <span class="n">chex</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">hex</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;color_code&#39;</span><span class="p">:</span> <span class="n">chtml</span><span class="p">,</span> <span class="s">&#39;url&#39;</span><span class="p">:</span> <span class="n">choice</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s">&#39;retweet&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>\
-                    <span class="s">&#39;screen_name&#39;</span><span class="p">:</span> <span class="s">&#39;everycolorbot&#39;</span><span class="p">,</span> <span class="s">&#39;original_tweet&#39;</span><span class="p">:</span>  <span class="n">chex</span><span class="p">,</span>\
-                    <span class="s">&#39;muse&#39;</span><span class="p">:</span> <span class="s">&#39;EveryColorBotMuse&#39;</span><span class="p">,</span> <span class="s">&#39;muse_value&#39;</span><span class="p">:</span> <span class="n">dist</span><span class="p">,</span>\
-                    <span class="s">&#39;mood&#39;</span><span class="p">:</span> <span class="n">mood</span><span class="p">}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{}</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;EveryColorBotMuse choose color {} because it was closest to aura color {}, distance: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chtml</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">rgb2html</span><span class="p">(</span><span class="n">aura</span><span class="p">),</span> <span class="n">dist</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">approve_color</span><span class="p">(</span><span class="n">chtml</span><span class="p">):</span>  
+            <span class="k">return</span> <span class="n">reasoning</span>
+         
+        <span class="n">chex</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">hex</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;color_code&#39;</span><span class="p">:</span> <span class="n">chtml</span><span class="p">,</span> <span class="s">&#39;retweet&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">,</span> <span class="s">&#39;retweet_url&#39;</span><span class="p">:</span><span class="n">choice</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>\
+             <span class="s">&#39;screen_name&#39;</span><span class="p">:</span> <span class="s">&#39;everycolorbot&#39;</span><span class="p">,</span> <span class="s">&#39;original_tweet&#39;</span><span class="p">:</span> <span class="n">chex</span><span class="p">,</span>\
+             <span class="s">&#39;muse&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;values&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;muse&#39;</span><span class="p">:</span> <span class="n">dist</span> <span class="o">/</span> <span class="mi">100</span><span class="p">},</span>\
+             <span class="s">&#39;mood&#39;</span><span class="p">:</span> <span class="n">mood</span><span class="p">,</span>  <span class="s">&#39;media&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+        <span class="n">reasoning</span><span class="o">.</span><span class="n">set_attrs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>  
+        <span class="n">reasoning</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s">&#39;media&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">create_temp_image</span><span class="p">((</span><span class="mi">524</span><span class="p">,</span> <span class="mi">360</span><span class="p">),</span> <span class="n">reasoning</span><span class="o">.</span><span class="n">color_code</span><span class="p">))</span>    
+        <span class="k">return</span> <span class="n">reasoning</span>
         
         </div>
 <div class="viewcode-block" id="EveryColorBotMuse.choose_color"><a class="viewcode-back" href="../../tweets/muses.html#tweets.muses.EveryColorBotMuse.choose_color">[docs]</a>    <span class="k">def</span> <span class="nf">choose_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aura_color</span><span class="p">,</span> <span class="n">choices</span><span class="p">):</span>
@@ -235,7 +253,9 @@
         <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ch</span><span class="p">:</span> <span class="n">color_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">html</span><span class="p">),</span> <span class="n">choices</span><span class="p">)</span>
         <span class="n">dist</span><span class="p">,</span> <span class="n">color_code</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">get_closest</span><span class="p">(</span><span class="n">aura_color</span><span class="p">,</span> <span class="n">color_list</span><span class="p">)</span>
         <span class="n">choice</span> <span class="o">=</span> <span class="n">choices</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">color__html</span> <span class="o">=</span> <span class="n">color_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">choice</span> 
+        <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">choice</span><span class="p">)</span>
             
         </div>
 <div class="viewcode-block" id="EveryColorBotMuse.get_choices"><a class="viewcode-back" href="../../tweets/muses.html#tweets.muses.EveryColorBotMuse.get_choices">[docs]</a>    <span class="k">def</span> <span class="nf">get_choices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -258,9 +278,6 @@
         <span class="k">else</span><span class="p">:</span> 
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;EveryColorBotMuse is on the fast lane, browsing only the tweets added in last 3 hours for perfect color.&quot;</span><span class="p">)</span>
             <span class="n">choices</span> <span class="o">=</span> <span class="n">EveryColorBotTweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tweeted</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">added__gte</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10800</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
-            <span class="k">print</span> <span class="n">ch</span><span class="o">.</span><span class="n">added</span>    
-            
         <span class="k">return</span> <span class="n">choices</span>
     
     </div>
@@ -270,7 +287,7 @@
         <span class="n">last_tweets</span> <span class="o">=</span> <span class="n">Tweet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mi">5</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">last_tweets</span><span class="p">:</span>
             <span class="n">dist</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">ed</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">color_code</span><span class="p">,</span> <span class="n">chtml</span><span class="p">)</span>
-            <span class="k">if</span>  <span class="n">dist</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="k">if</span>  <span class="n">dist</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Similar color {} (distance: {}) was Tweeted recently. Tweet generation halted.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">color_code</span><span class="p">,</span> <span class="n">dist</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
         <span class="k">return</span> <span class="bp">True</span>
