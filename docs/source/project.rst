@@ -25,8 +25,8 @@ contributes to the functionality in their own way:
 
 **Muse:** 
 
-	Muse is an object, which on demand inspires the bot to create new content.
-	In its most basic form it will give and new color code for the bot (inside the 
+	Muse is an object which on demand inspires the bot to create new content.
+	In its most basic form it will give a new color code for the bot (inside the 
 	Reasoning-object), which other modules will flesh out to make a complete new Tweet.
 	However, Muse can also add other information, such as mood or image, to go with
 	the Reasoning-object.
@@ -59,7 +59,7 @@ Personality
 
 In its current form, the bot tries to show a personality that is interested in 
 new age and other spiritual concepts. This is mostly done by the Context-object
-which creates an semi-random sentence template from its possible choices and
+which creates a semi-random sentence template from possible set of choices and
 adds the color name to a suitable place in the template. Furthermore, the Muse 
 adds a slight twist to the color name picking as it generates a random mood and
 aura color, both of which vary with the moon phase and time of the year. The 

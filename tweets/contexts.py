@@ -10,7 +10,6 @@ from abc import ABCMeta
 import urllib2
 import operator
 import logging
-from subprocess import Popen, PIPE
 
 if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -19,6 +18,7 @@ from django.conf import settings
 
 from tweets.models import Tweet
 from tweets.utils import text 
+from sentence import generate_text
 
 logger = logging.getLogger("tweets.default")
 
@@ -254,19 +254,16 @@ class NewAgeContext(Context):
                
             
     def _get_wisdoms(self, color_name, wisdom_count = 3):
-        """Get wisdoms from js/sentence.js"""
+        """Get wisdoms from sentence module"""
         if type(wisdom_count) is not int or wisdom_count < 1:
             raise ValueError("wisdom_count must be positive integer.")
         
         last_tweets = Tweet.objects.all()[:self.memory_length]
         wisdoms = []
-        js_path = os.path.join(settings.BASE_DIR, 'tweets', 'js', 'sentence.js')
         
         try:
             while len(wisdoms) < wisdom_count:
-                p = Popen(['node', js_path, "1"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-                output, err = p.communicate(b"input data that is passed to subprocess' stdin")
-                wisdom = output.strip()
+                wisdom = generate_text(1).strip()
                 logger.debug("Generated wisdom: {}".format(wisdom))
                 # Filter wisdoms too similar to latest tweets out
                 if self._approve_wisdom(wisdom, last_tweets): 

@@ -30,8 +30,6 @@ using this project.
 	$>python -m textblob.download_corpora
 	$>python -c "import nltk; nltk.download()"
 	
-* Install `Node.js <http://nodejs.org/>`_, it is needed for some of the context generators.
-	
 * Install `MySQL <http://www.mysql.com/>`_ and create MySQL database::
 
 	$>mysql -u root -p
