@@ -793,6 +793,7 @@ def _random_word(pos):
 
 
 def _fix_format(sentence):
+    sentence = sentence.strip()
     # Capitalize
     sentence = sentence[0].upper() + sentence[1:]
     # Add last punctuation if missing.
@@ -810,8 +811,7 @@ def _fix_format(sentence):
 
 
 def generate_sentence():
-    r = random.randint(0, len(templates) -1)
-    template = templates[r]
+    template = random.choice(templates)
     template = re.sub('[.,;?!]', lambda x: " "+x.group(0), template)
     template = template.split(" ")
     result = ""
@@ -823,7 +823,7 @@ def generate_sentence():
             result += s;
         result += ' ';
     
-    return _fix_format(result)
+    return _fix_format()
 
 
 def generate_text(ns):
@@ -832,7 +832,7 @@ def generate_text(ns):
 
 
 if __name__ == '__main__':
-    print generate_text(1)
+    print generate_sentence()
 
 
 
