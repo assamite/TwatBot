@@ -63,7 +63,8 @@ def categories(word1, word2 = None):
     Does a web query to http://ngrams.ucd.ie/therex2/
     
     **Attrs:**
-        | word1 (str or unicode)
+        | word1 (str or unicode): first word
+        | word2 (str or unicode): optional, second word for the shared category query
     
     **Returns:**
         dict, xml response from Thesaurus Rex converted into dictionary, or None 
