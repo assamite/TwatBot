@@ -1,6 +1,6 @@
 Therex
 ------
 
-.. automodule: tweets.therex
+.. automodule:: tweets.therex
 	:members:
 	

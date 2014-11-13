@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tweets.therex &mdash; Twatbot 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Twatbot</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../project.html#project-s-contributions">Project&#8217;s Contributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_layout.html">Code Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tweets/index.html">Tweets Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/core.html">Core Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/muses.html">Muses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/contexts.html">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/color_semantics.html">Color Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/reasoning.html">Reasoning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/new_age.html">New Age Personality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/therex.html">Therex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/utils/index.html">Utils Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tweets/index.html#general-functionality">General Functionality</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Twatbot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>tweets.therex</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for tweets.therex</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. py:module:: therex</span>
+<span class="sd">    :platform: Unix</span>
+<span class="sd">    </span>
+<span class="sd">Interface for accessing `Thesaurus Rex &lt;http://ngrams.ucd.ie/therex2/&gt;`_. </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">unidecode</span> <span class="kn">import</span> <span class="n">unidecode</span>
+<span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span> <span class="k">as</span> <span class="n">ET</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;tweets.default&#39;</span><span class="p">)</span>
+<span class="n">THESAURUS_REX_MEMBER_URL</span> <span class="o">=</span> <span class="s">&quot;http://ngrams.ucd.ie/therex2/common-nouns/member.action?member={0}&amp;kw={0}&amp;needDisamb=true&amp;xml=true&quot;</span>
+<span class="n">THESAURUS_REX_SHARE_URL</span> <span class="o">=</span> <span class="s">&quot;http://ngrams.ucd.ie/therex2/common-nouns/share.action?word1={0}&amp;word2={1}&amp;xml=true&quot;</span>
+
+<span class="k">def</span> <span class="nf">_build_url</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="c"># Convert unicode strings to normal ones as URL cannot have unicode chars.</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">unicode</span><span class="p">:</span>
+        <span class="n">word1</span> <span class="o">=</span> <span class="n">unidecode</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">unicode</span><span class="p">:</span>
+        <span class="n">word2</span> <span class="o">=</span> <span class="n">unidecode</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">word2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">THESAURUS_REX_MEMBER_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">THESAURUS_REX_SHARE_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">)</span>
+    
+    
+<span class="k">def</span> <span class="nf">_get_dict</span><span class="p">(</span><span class="n">element_tree</span><span class="p">,</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">word2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;Categories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;Modifiers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;CategoryHeads&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;Categories&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;Modifiers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;CategoryHeads&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>       
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;Categories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">u&#39;{0}-&gt;{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">u&#39;{1}-&gt;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word2</span><span class="p">,</span> <span class="n">word1</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;Categories&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">u&#39;{0}-&gt;{1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_tree</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">u&#39;{1}-&gt;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word2</span><span class="p">,</span> <span class="n">word1</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;weight&#39;</span><span class="p">])))</span>  
+            
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">d</span>
+        
+
+<div class="viewcode-block" id="categories"><a class="viewcode-back" href="../../tweets/therex.html#tweets.therex.categories">[docs]</a><span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Thesaurus rex categories for single word or categories shared by two words.</span>
+<span class="sd">    </span>
+<span class="sd">    Does a web query to http://ngrams.ucd.ie/therex2/</span>
+<span class="sd">    </span>
+<span class="sd">    **Attrs:**</span>
+<span class="sd">        | word1 (str or unicode): first word</span>
+<span class="sd">        | word2 (str or unicode): optional, second word for the shared category query</span>
+<span class="sd">    </span>
+<span class="sd">    **Returns:**</span>
+<span class="sd">        dict, xml response from Thesaurus Rex converted into dictionary, or None </span>
+<span class="sd">        if the web query was not successful. Dictionary values are lists ordered</span>
+<span class="sd">        by weight of the category. Dictionary keys depend on the amount of words </span>
+<span class="sd">        used in the query.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;word1 must be str or unicode. Got {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">word1</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">word2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;If specified, word2 must be str or unicode. Got {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">word2</span><span class="p">)))</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">_build_url</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">et</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Could not get Thesaurus Rex categories, because of error: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">None</span> 
+    <span class="k">return</span> <span class="n">_get_dict</span><span class="p">(</span><span class="n">et</span><span class="p">,</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Simo Linkola.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

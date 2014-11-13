@@ -28,7 +28,10 @@
   
 
   
-    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/> 
+    <link rel="top" title="Twatbot 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Tweets Package" href="index.html"/>
+        <link rel="next" title="Models" href="models.html"/>
+        <link rel="prev" title="New Age Personality" href="new_age.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -55,7 +58,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../project.html">Project</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#current-status">Current Status</a></li>
@@ -63,13 +66,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../code_layout.html">Code Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Tweets Package</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tweets Package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">Core Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="muses.html">Muses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contexts.html">Contexts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color_semantics.html">Color Semantics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reasoning.html">Reasoning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="new_age.html">New Age Personality</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Therex</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils/index.html">Utils Package</a></li>
@@ -99,6 +103,8 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
+          <li><a href="index.html">Tweets Package</a> &raquo;</li>
+      
     <li>Therex</li>
       <li class="wy-breadcrumbs-aside">
         
@@ -110,13 +116,43 @@
 </div>
           <div role="main">
             
-  <div class="section" id="therex">
-<h1>Therex<a class="headerlink" href="#therex" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-tweets.therex">
+<span id="therex"></span><h1>Therex<a class="headerlink" href="#module-tweets.therex" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-therex"></span><p>Interface for accessing <a class="reference external" href="http://ngrams.ucd.ie/therex2/">Thesaurus Rex</a>.</p>
+<dl class="function">
+<dt id="tweets.therex.categories">
+<tt class="descclassname">tweets.therex.</tt><tt class="descname">categories</tt><big>(</big><em>word1</em>, <em>word2=None</em><big>)</big><a class="reference internal" href="../_modules/tweets/therex.html#categories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tweets.therex.categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thesaurus rex categories for single word or categories shared by two words.</p>
+<p>Does a web query to <a class="reference external" href="http://ngrams.ucd.ie/therex2/">http://ngrams.ucd.ie/therex2/</a></p>
+<dl class="docutils">
+<dt><strong>Attrs:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">word1 (str or unicode): first word</div>
+<div class="line">word2 (str or unicode): optional, second word for the shared category query</div>
+</div>
+</dd>
+<dt><strong>Returns:</strong></dt>
+<dd>dict, xml response from Thesaurus Rex converted into dictionary, or None 
+if the web query was not successful. Dictionary values are lists ordered
+by weight of the category. Dictionary keys depend on the amount of words 
+used in the query.</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="models.html" class="btn btn-neutral float-right" title="Models"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="new_age.html" class="btn btn-neutral" title="New Age Personality"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
