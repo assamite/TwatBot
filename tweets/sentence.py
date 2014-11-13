@@ -737,7 +737,8 @@ templates = [
     'vGreeting, <> nPerson, you must take a stand against <> nMassBad',
     'nConfirmation, it is possible to vtDestroy the <> things that can vtDestroy us, but not without <> nMass on our side',
     '<> nMassBad is the <> antithesis of <> nMass',
-    'vGreeting, you may be ruled by <> nMassBad without realizing it. Do not let it vtDestroy the nTheXOf of your <> nPath',
+    'vGreeting, you may be ruled by <> nMassBad without realizing it',
+    'Do not let <> vtDestroy the nTheXOf of your <> nPath',
     'the <> complexity of the present <> time seems to demand a ing of our <> nOurPlural if we are going to survive',
     '<> nMassBad is born in the <> gap where <> nMass has been excluded',
     'Where there is <> nMassBad, <> nMass cannot thrive',
@@ -786,19 +787,32 @@ templates = [
 ]
 
 
-def _capitalize(string):
-    return string[0].upper() + string[1:]
-
-
 def _random_word(pos):
     r = random.randint(0, len(vocabs[pos]) - 1)
     return vocabs[pos][r]
 
 
+def _fix_format(sentence):
+    # Capitalize
+    sentence = sentence[0].upper() + sentence[1:]
+    # Add last punctuation if missing.
+    if sentence[-1] not in '.!?':
+        sentence += '.';
+    
+    # Strip possible spaces before punctuation
+    result = re.sub('( [,.;\?!])', lambda x: x.group(0)[-1], sentence);
+    # Try to fix 'a epic' to 'an epic'. Not fool proof as naively only considers
+    # if the next word starts with a vowel or not.
+    result = re.sub('(^|\W)([Aa]) ([aeiou])', lambda x: x.group(1)+x.group(2)+"n "+x.group(3), result)
+    # take care of prefixes (delete the space after the hyphen)
+    result = re.sub('([^- ])- ', lambda x: x.group(1)+'-', result);
+    return result
+
+
 def generate_sentence():
     r = random.randint(0, len(templates) -1)
     template = templates[r]
-    template = re.sub('[.,;?]', lambda x: " "+x.group(0), template)
+    template = re.sub('[.,;?!]', lambda x: " "+x.group(0), template)
     template = template.split(" ")
     result = ""
     
@@ -809,24 +823,12 @@ def generate_sentence():
             result += s;
         result += ' ';
     
-    result = result.strip();
-    result = _capitalize(result);
-    
-    if result[-1] not in '!?':
-        result += '.';
-    
-    result = re.sub('( [,.;\?])', lambda x: x.group(0)[-1], result);
-    return result
+    return _fix_format(result)
 
 
 def generate_text(ns):
     text = reduce(lambda x,y: " ".join([x,generate_sentence()]), xrange(ns), "")
-    text = re.sub('(^|\W)([Aa]) ([aeiou])', lambda x: x.group(1)+x.group(2)+"n "+x.group(3), text)
-
-    # take care of prefixes (delete the space after the hyphen)
-    text = re.sub('- ', '-', text);
-    return text.strip();
-
+    return text.strip()
 
 
 if __name__ == '__main__':
