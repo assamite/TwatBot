@@ -2,23 +2,22 @@
 .. py:module:: text_utils
     :platform: Unix
     
-Some utility functions for working with texts.
+Utility functions for working with texts.
 '''
+from collections import Counter
 from textblob import TextBlob
+from pattern.en import parse
+from nltk.corpus import stopwords
 
-def prettify_sentence(words):
-    """Prettify given iterable that represents words and part of words and
-    other characters of the sentence. ie, there can be indeces with only
-    "'ll" or "'" in them.
-    
-    Kinda hackish code, which could be looked into in some point of time.
-    
-    **Args:**
-        | words (iterable): Iterable with sentence's words and other characters. This iterable is considered to be created by nltk >=2.04 part of speech tagging (and replacing some words in it).
-        
-    **Returns:**
-        str or unicode, prettified sentence as one string.
-    """
+def prettify(words):
+    '''Prettify given iterable that represents words, part of words and
+    other characters in the text::
+
+    :param words: Sentence's words and other characters
+    :type words: iterable
+    :returns: str or unicode -- prettified text as one string
+    '''
+    #TODO: Kinda hackish code, which could be modified to use regex at some point.
     pretty_sentence = ""
     last_word = ""
     enc_hyphen = False
@@ -28,7 +27,7 @@ def prettify_sentence(words):
             pretty_sentence += " \""
         elif w == "''":
             pretty_sentence += "\""
-        elif w in [',', '!', '?', '.', '%', '\"', "n't", "'re", "'s", ";", ":", ")", "]", "}", "'m", "'ll", "'s", "'d"]:
+        elif w in [',', '!', '?', '.', '%', '\"', "n't", "'re", "'s", ";", ":", ")", "]", "}", "'m", "'ll", "'s", "'d", "\n"]:
             pretty_sentence += w
         elif w in ['\'']: 
             if enc_hyphen:
@@ -47,10 +46,10 @@ def prettify_sentence(words):
 
 
 def same_words(sentence1, sentence2):
-    """Amount of same words in sentences. 
+    '''Amount of same words in sentences. 
     
     Some stop words are excluded from the count.
-    """
+    '''
     stops = {'a', 'an', 'the', 'of', 'in'}
     A = set(TextBlob(sentence1.lower()).words) - stops
     B = set(TextBlob(sentence2.lower()).words) - stops
@@ -58,22 +57,79 @@ def same_words(sentence1, sentence2):
     
 
 def sentiment(text):
-    """Text's sentiment analysis.
+    '''Text's sentiment analysis.
     
-    Calculates a sum of all the text's sentences sentiment.
+    Calculates the mean sentiment of the sentences in the text. Sentiment is 
+    returned as a (subjectivity, polarity)-tuple of floats, where subjectivity
+    is in [0, 1] and polarity in [-1, 1].
     
-    **Args:**
-        | text (str or unicode): Text to analyse
-        
-    **Returns:**
-        Tuple (subjectivity, polarity), where subjectivity is float in [0, 1]
-        and polarity is float in [-1, 1]. 
-    """
+    :param text: Text to analyze.
+    :type text: str or unicode
+    :returns: tuple -- (subjectivity, polarity) 
+    '''
     sent = [0.0, 0.0]
     blob = TextBlob(text)  
     for s in blob.sentences:
         sent[0] += s.sentiment.subjectivity
         sent[1] += s.sentiment.polarity
      
-    sent[0] /= len(blob.sentences)   
+    sent[0] /= len(blob.sentences)  
+    sent[1] /= len(blob.sentences) 
     return tuple(sent)
+
+
+def bag_of_words(text, counts = False):
+    '''Extract bag-of-words from given text.
+    
+    Typical English stopwords are excluded from the bag-of-words.
+    
+    :param text: Text to extract bag-of-words
+    :returns: list -- words, if counts is True then word, count pairs in descending count order
+    '''
+    sentences = parse(text.lower(), lemmata = True, tags = False, chunks = False).split()
+    words = reduce(lambda x,y: x + y, sentences, [])
+    words = reduce(lambda x,y: x + [y[0]], filter(lambda x: len(x[0]) > 2, words), [])
+    ctr = Counter(words)
+    sw = set(stopwords.words('english'))
+    for c in ctr.keys():
+        if c in sw:
+            del ctr[c]
+    
+    if counts:
+        ret = sorted(ctr.items(), key = lambda x: x[1], reverse = True)
+    else:
+        ret = ctr.keys()
+    return ret
+
+
+def bow(text, counts = False):
+    '''Shorthand for :py:func:`bag_of_words`.
+    '''
+    return bag_of_words(text, counts)
+
+
+def get_NNPs(text, counts = False):
+    '''Extract proper nouns from text.
+    
+    :param text: Text to parse
+    :type text: str
+    :param counts: Return counts for each extracted NNP
+    :type counts: bool
+    :returns: list -- List containing either only the extracted NNP's or (NNP, count) -pairs sorted by count.
+    '''
+    parsed_text = parse(text).split()
+    nnps = [] 
+    for sent in parsed_text:
+        for word in sent:
+            if word[1].startswith('NNP'):
+                nnps.append(word[0])
+                
+    ctr = Counter(nnps)
+    if counts:
+        ctri = ctr.items()
+        ctri = sorted(ctri, key = lambda x: x[1], reverse = True)
+    else:
+        ctri = ctr.keys()
+    return ctri
+    
+    

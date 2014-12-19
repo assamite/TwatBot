@@ -1,0 +1,5 @@
+CC in the project
+Principals of the project -- what problems are solved, how they are achieved
+Best results
+Evaluation - what was done good and what not so good
+Future Work

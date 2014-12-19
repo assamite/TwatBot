@@ -54,7 +54,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Twatbot'
+project = u'Botox For Brains (Twitter bot)'
 copyright = u'2014, Simo Linkola'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -109,7 +109,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#html_theme = 'sphinx_rtd_theme'
+html_theme = 'default'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -157,7 +157,7 @@ html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -197,7 +197,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Twatbotdoc'
+htmlhelp_basename = 'Twitterbotdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -261,8 +261,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Twatbot', u'Twatbot Documentation',
-   u'Simo Linkola', 'Twatbot', 'One line description of project.',
+  ('index', 'Botox For Brains', u'Botox For Brains Documentation',
+   u'Simo Linkola', 'Botox For Brains', 'One line description of project.',
    'Miscellaneous'),
 ]
 

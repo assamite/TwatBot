@@ -5,8 +5,8 @@
 Core of the color tweets. 
 
 Class TweetCore defined in the module glues muses, framing contexts and other 
-tweet related stuff together and allows the constructed messages to be tweeted,
-if the stars are right and everything is well in the kingdom.
+tweet related functionalities together and allows the constructed messages to be 
+tweeted, if the stars are right and everything is well in the kingdom.
 """
 import os
 import sys
@@ -55,10 +55,14 @@ class TweetCore():
     def _get_new_tweet(self, reasoning):
         """Build a new tweet for the bot with given reasoning.
         
-        **Returns:**
-            Tuple (str, float, dict), (tweet, value, reasoning) where ``tweet`` 
-            is the generated tweet, ``value`` is estimated value for the tweet 
-            and ``reasoning`` is a dictionary returned by used muse.
+        Builds new tweet by calling separately appropriate color and context 
+        objects. The generated tweet is stored into the given :py:class:`tweets.Reasoning`
+        object's tweet-value. After successful tweet generation the ``reasoning`` 
+        also holds other information accumulated during the generation process
+        
+        :param reasoning: Reasoning object where the color code has been set
+        :type reasoning: :py:class:`tweets.Reasoning`
+        :returns: bool -- True is the building was successful, False otherwise.
         """
         if reasoning.color_semantics is None:
             reasoning.set_attr('color_semantics', self.color_semantics)
@@ -70,7 +74,7 @@ class TweetCore():
         ret = semantics.name_color(reasoning)
         if not ret: return False    
         
-        ret = context.build_tweet(reasoning, wisdom_count = 10)
+        ret = context.build_tweet(reasoning)
         if not ret: return False    
         
         self._calculate_appreciation(reasoning)  
@@ -89,18 +93,17 @@ class TweetCore():
              
     
     def _tweet(self, tweet, img_name = None):
-        """Tweet to the twitter.
+        '''Tweet to the twitter.
         
         .. warning:: 
             Don't use this method directly as the sent tweets are not stored in
             the bot's memory.
         
-        **Returns:**
-            Tuple (tweeted, tweet), where tweeted is True if the tweet was send 
-            successfully, False otherwise. The tweet is the actual tweet returned
-            from the Twitter; in case image was specified, it is modified to 
-            contain image URL at the end of the tweet.
-        """
+        :returns: tuple -- (bool, str), where bool is True if the tweet was send,
+        and False otherwise. str contains the actual tweet returned by Twitter,
+        it can be altered from the given tweet by, e.g. adding short URL for the
+        given image.
+        '''
         if DEBUG: 
             logger.info("DEBUG mode on, choosing not to tweet.")
             return (True, tweet)
@@ -122,23 +125,17 @@ class TweetCore():
         return (True, tweet)
     
     
-    def tweet(self, send_to_twitter = False, inspiration = None):
-        """Build a tweet for the bot and optionally send it to twitter and store it to bot's memory.
+    def tweet(self, send_to_twitter = False, reasoning = None):
+        '''Build a tweet for the bot and optionally send it to twitter and store it to bot's memory.
         
-        **Args:**
-            | send_to_twitter (bool): Is succesfully generated and enough appreciation gained tweet send to twitter.
-            | inspiration (dict): Optional, given inspiration for this tweet, should contain at least 'color_code'-key. If no inspiration is given, the standard muse is used to provide inspiration.
-        
-        **Returns:**
-            Dictionary, with following keys: tweet, sended, value, metadata. 
-            Tweet is the generated tweet and sended is True if the tweet was send 
-            successfully, False otherwise. Value is estimated appreciation of the
-            code-name-tweet mapping. Metadata contains other information of the 
-            tweet generation process, including used color code and name, etc.
-            
-            If no tweet could be generated, then returns empty string as tweet. 
-        """
-        reasoning = self.muse.inspire()
+        :param send_to_twitter: Send succesfully generated, and enough appreciated tweet to Twitter
+        :type send_to_twitter: bool
+        :param reasoning: Optional, custom reasoning for this tweet, should containt at least key *color_code*.
+        :type reasoning: :py:class:`tweets.Reasoning`
+        :returns: :py:class:`.tweets.Reasoning` -- Reasoning object containing information about the tweet generation process
+        '''  
+        if reasoning is None:
+            reasoning = self.muse.inspire()
         if reasoning.color_code == '': 
             return reasoning
         ret = self._get_new_tweet(reasoning)

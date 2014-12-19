@@ -1,14 +1,13 @@
 {% extends 'home.html' %}
 
 {% block body %}
-<h1>Test for tweets for Everycolorbot color codes</h1>
-
-N color tweets are sampled at random to tackle the load times.
+<h1>Bot's Mood Test</h1>
 
 <table>
 <tr>
 	<td><div class='blend_title'>Aura Color</div></td>
 	<td><div class='blend_title'>Date</div></td>
+	<td><div class='blend_title'>Mood</div></td>
 	<td><div class='blend_title'>Moon Phase</div></td>
 	<td><div class='blend_title'>Lunation</div></td>
 </tr>
@@ -16,6 +15,7 @@ N color tweets are sampled at random to tackle the load times.
 <tr>
 	<td style="height:40;width:100;margin-left:5px;background-color:{{ a.color_code }}"></td>
 	<td height=40 width=100>{{ a.date }}</td>
+	<td height=40 width=100>{{ a.mood }}</td>
 	<td height=40 width=150>{{ a.moon_phase }}</td>
 	<td height=40 width=100>{{ a.lunation }}</td>
 </tr>

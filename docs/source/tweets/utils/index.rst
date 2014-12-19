@@ -3,6 +3,7 @@ Utils Package
 
 .. toctree::
 	:hidden:
+	:maxdepth: 5
 	
 	color_utils
 	text_utils

@@ -21,10 +21,22 @@ ROOT_DIR = os.path.join(BASE_DIR, '..')
 SECRET_KEY = ls.SECRET_KEY
 
 # Twitter API keys
-TWITTER_API_KEY = ls.TWITTER_API_KEY
-TWITTER_API_SECRET = ls.TWITTER_API_SECRET
-TWITTER_ACCESS_TOKEN = ls.TWITTER_ACCESS_TOKEN
-TWITTER_ACCESS_TOKEN_SECRET = ls.TWITTER_ACCESS_TOKEN_SECRET
+TWITTER_API_KEY = ls.TWITTER_API_KEY or ''
+TWITTER_API_SECRET = ls.TWITTER_API_SECRET or ''
+TWITTER_ACCESS_TOKEN = ls.TWITTER_ACCESS_TOKEN or ''
+TWITTER_ACCESS_TOKEN_SECRET = ls.TWITTER_ACCESS_TOKEN_SECRET or ''
+
+FLICKR_API_KEY = ls.FLICKR_API_KEY
+FLICKR_API_SECRET = ls.FLICKR_API_SECRET
+
+UCLASSIFY_API_READ = ls.UCLASSIFY_API_READ or ''
+UCLASSIFY_API_WRITE = ls.UCLASSIFY_API_WRITE or ''
+
+WORD2VEC_MODEL_PATH = '/Users/pihatonttu/nltk_data/gensim/googlenews_gensim_v2w.model'
+WORD2VEC_MODEL = None
+if len(WORD2VEC_MODEL_PATH) > 0:
+    import gensim
+    WORD2VEC_MODEL = gensim.models.Word2Vec.load(WORD2VEC_MODEL_PATH)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +44,9 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -111,13 +126,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 CRON_CLASSES = [
     "tweets.cron.TwitterAccountListener",
     "tweets.cron.NewAgeTweeter",
     "tweets.cron.HomeTimelineCleaner"
 ]
+
+ORIGINAL_IMAGE_UPLOAD_PATH = os.path.join('images', 'original')
+PROCESSED_IMAGE_UPLOAD_PATH = os.path.join('images', 'processed')
 
 LOGGING = {
     'version': 1,
@@ -174,7 +192,7 @@ LOGGING = {
         'tweets.default': {
             'handlers': ['default', 'console'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         }
     },    
 }

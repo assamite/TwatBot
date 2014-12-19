@@ -26,6 +26,7 @@ Furthermore, three light weight color definitions are supported for convenience:
     point operations.
 """
 import re
+from random import gauss
 from math import sqrt
 from colormath.color_objects import sRGBColor, LabColor 
 from colormath.color_conversions import convert_color
@@ -263,6 +264,17 @@ def get_closest(color_code, color_list):
             min_ed = cur_ed
             cur = c
     return (min_ed, cur)
+
+
+def add_noise(color_code):
+    '''Add some noise to the given color.'''
+    lab_color = _2lab(color_code).get_value_tuple()
+    nc = []
+    for c in lab_color:
+        nc.append(c + gauss(0, 10)) 
+    labc = LabColor(nc[0], nc[1], nc[2])
+    return _lab2rgb(labc)
+    
     
     
 def create_temp_image(size, color_code):

@@ -3,6 +3,7 @@ Tweets Package
 
 .. toctree::
 	:hidden:
+	:maxdepth: 5
 	
 	core
 	muses
@@ -10,9 +11,10 @@ Tweets Package
 	color_semantics
 	reasoning
 	new_age
-	therex
+	interjections
 	models
 	views
+	web/index
 	utils/index
 	
 	
@@ -34,7 +36,6 @@ Main package of the project, developed as a Django app. The app has currently fo
 	* :py:mod:`color_semantics`: Semantically informed color manipulations
 	* :py:mod:`reasoning`: Reasoning for the generated tweets.
 	* :py:mod:`new_age`: New Age personality for the tweets
-	* :py:mod:`therex`: Simple interface for making queries to Thesaurus Rex web service
 	
 
 General Functionality

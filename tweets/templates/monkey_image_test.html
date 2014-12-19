@@ -1,0 +1,24 @@
+{% extends 'home.html' %}
+
+{% block body %}
+<h1>Monkey Image Reaction Test</h1>
+
+<table>
+<tr>
+	<td><div class='blend_title'>Title</div></td>
+	<td><div class='blend_title'>Emotion</div></td>
+	<td><div class='blend_title'>Tweet</div></td>
+	<td><div class='blend_title'>Image</div></td>
+</tr>
+{% for r in reactions %}
+<tr>
+	<td >{{ r.title }}</td>
+	<td >{{ r.emotion }}</td>
+	<td >{{ r.tweet }}</td>
+	<td ><img src={{ r.image }}></td>
+
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

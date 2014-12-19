@@ -10,7 +10,7 @@ import traceback
 logger = logging.getLogger('tweets.default')
 
 class Reasoning():
-    """Reasoning for the tweets.
+    '''Reasoning for the tweets.
     
     Class is used to hold information about the tweet's construction, and contains 
     few utility functions for convenience.
@@ -28,10 +28,8 @@ class Reasoning():
     * muse: class instance of the used Muse
     * context: class instance of the used Context
     * color_semantics: class instance of the used ColorSemantics.
-    * values (dict): dictionary of the appreciation values generated during the 
-    tweet's construction.
-     
-    """
+    * values (dict): dictionary of the appreciation values generated during the tweet's construction.   
+    '''
     def __init__(self, **kwargs):
         self.color_code = ""
         self.color_name = ""
@@ -63,15 +61,16 @@ class Reasoning():
             
             
     def set_attr(self, name, value):
-        """Define new or change old attribute value. 
+        '''Define new or change old attribute value. 
         
         Caller should take care of the possible conflicts when changing existing
         attribute values.
         
-        **Args:**
-            | name (str): Name of the attribute
-            | value: New attribute value
-        """
+        :param name: Name of the attribute
+        :type name: str
+        :param value: New attribute value
+        :type value: Object
+        '''
         setattr(self, name, value)
         if name == 'muse':
             setattr(self, 'muse_classname', value.__class__.__name__)
@@ -81,26 +80,24 @@ class Reasoning():
             setattr(self, 'color_semantics_classname', value.__class__.__name__)
         
         
-    def set_attrs(self, dict):
-        """Define new or change old attribute values in a patch.
+    def set_attrs(self, mappings):
+        '''Define new or change old attribute values in a patch.
         
         Caller should take care of the possible conflicts when changing existing
         attribute values.
         
-        **Args:**
-            | dict (dict): Attribute mappings
-        """
-        for k, v in dict.items():
+        :param mappings: Attribute mappings
+        :type mappings: dict
+        '''
+        for k, v in mappings.items():
             self.set_attr(k, v)
                 
             
     def save(self):
-        """Save tweet to database.
+        '''Save tweet to database.
         
-        **Returns:**
-            True is the save was made, False if tweet was empty or errors 
-            happened during the save.
-        """
+        :returns: bool -- True is the save was made, False if not exceptions happened during the save
+        '''
         from models import EveryColorBotTweet, Tweet, ReTweet
         
         if self.tweet == "":

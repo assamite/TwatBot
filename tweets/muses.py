@@ -17,11 +17,11 @@ mappings' values would suffer if no ``muse_value``-key is added to the optional 
 '''
 import os
 import sys
+import math
 import random
 import logging
 from datetime import date, datetime, timedelta
 from abc import ABCMeta
-
 
 # In case we are not running these through Django, let module know
 # the correct twitter app settings from TwatBot's settings file.
@@ -35,7 +35,9 @@ from reasoning import Reasoning
 from new_age import NewAgePersonality
 from models import EveryColorBotTweet
 from models import Tweet
+from models import ArticleTweet
 
+from tweets.web import rss
 from tweets.utils import color
 
 logger = logging.getLogger("tweets.default")
@@ -93,7 +95,7 @@ class EveryColorBotMuse(Muse):
     successfully made by the core.
     """
     def __init__(self):
-        self.color_threshold = 100.0
+        self.color_threshold = 60.0
         
         
     def inspire(self):
@@ -178,4 +180,42 @@ class EveryColorBotMuse(Muse):
                 return False
         return True
             
+            
+class RSSMuse(Muse):
+    
+    def inspire(self):
+        from contexts import MonkeyImageContext
+        mic = MonkeyImageContext()
+        
+        reasoning = Reasoning()
+        a = self.select_article()
+        if a is None: return reasoning
+        logger.info("RSSMuse choose article: {} ({})".format(a['title'], a['url']))
+            
+        nap = NewAgePersonality()
+        mood = nap.get_mood()
+        em, nn, vec = nap.react(a['text'], settings.WORD2VEC_MODEL)
+        logger.info("Developed reaction '{}' for article '{}...'".format(em, a['title'][:30]))
+        vlen = math.sqrt(vec[0]**2 + vec[1]**2 + vec[2]**2)
+        d = {'color_code': '#ffffff', 'retweet':False, 'muse': self,\
+             'values': {'muse': vlen}, 'mood': mood,  'media': None, \
+             'reaction': em, 'words': nn, 'article': a, 'context': mic }
+        reasoning.set_attrs(d)
+        return reasoning
+        
+    def select_article(self):
+                # Read articles
+        logging.info("RSSMuse is reading articles from top news") 
+        articles = rss.get_articles(rss.REUTERS_RSS_FEEDS['arts & culture'], amount = 10)
+        untweeted = []
+        for ar in articles:
+            mar = ArticleTweet.objects.get_or_none(article = ar['url'])
+            if mar is None:
+                untweeted.append(ar)
+                
+        if len(untweeted) == 0: return None
+        a = random.choice(untweeted)
+        return a
+        
+        
         

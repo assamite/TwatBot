@@ -1,0 +1,28 @@
+{% extends 'home.html' %}
+
+{% block body %}
+<h1>Emotion - Reaction (Color) Test</h1>
+
+<table>
+<tr>
+	<td><div class='blend_title'>Query</div></td>
+	<td><div class='blend_title'>Reaction</div></td>
+	<td><div class='blend_title'>Color1</div></td>
+	<td><div class='blend_title'>Emotion1</div></td>
+	<td><div class='blend_title'>Similarity1</div></td>
+	<td><div class='blend_title'>Reaction</div></td>
+</tr>
+{% for e in emotions %}
+<tr>
+	<td height=40 width=150>{{ e.emotion }}</td>
+	<td height=40 width=100>{{ e.i1 }}</td>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ e.c1 }}"></td>
+	<td height=40 width=100>{{ e.e1 }}</td>
+	<td height=40 width=100>{{ e.s1 }}</td>
+	<td height=40 width=100>{{ e.i2 }}</td>		
+
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

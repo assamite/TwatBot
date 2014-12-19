@@ -6,6 +6,7 @@
 Django models to access and manipulate resources given on the course.
 """
 from django.db import models
+from django.conf import settings
 
 from tweets.utils import color as cu
 
@@ -303,6 +304,59 @@ class UnbracketedColorBigram(models.Model):
         ordering = ['-f']
         
         
+class TweetImage(models.Model):
+    '''Basic models for images used in tweets.'''
+    created = models.DateTimeField(auto_now_add = True)
+    # Original image 
+    original = models.ImageField(upload_to = settings.ORIGINAL_IMAGE_UPLOAD_PATH, max_length = 1000)
+    # Processed image (text added, filtered, etc.)
+    processed = models.ImageField(upload_to = settings.PROCESSED_IMAGE_UPLOAD_PATH, max_length = 1000, blank = True)
+    # Interjection used in processed image
+    interjection = models.CharField(max_length = 50, blank = True)
+    # Longer text used in processed image
+    text = models.CharField(max_length = 1000, blank = True)
+
+    objects = GetOrNoneManager()
+    
+    
+class URLTweetImage(TweetImage):
+    # URL to original image.
+    url = models.URLField()
+    
+    objects = GetOrNoneManager()
+    
+    
+class FlickrTweetImage(TweetImage):
+    ''' Tweet image from Flickr.'''
+    # Flickr ID of the image
+    flickr_id = models.CharField(max_length = 200)
+    # Flick user id
+    flickr_user_id = models.CharField(max_length = 200)
+    # Screen name of Flickr user.
+    flickr_user_name = models.CharField(max_length = 200)
+    # Flickr image secret
+    flickr_secret = models.CharField(max_length = 200)
+    # Flickr farm id
+    flickr_farm = models.CharField(max_length = 200)
+    # Flirck server id
+    flickr_server = models.CharField(max_length = 200)
+    # Title of the image
+    title = models.CharField(max_length = 1000)
+    # Longer description of the image
+    description = models.TextField(max_length = 20000)
+    
+    objects = GetOrNoneManager()
+    
+    
+    def get_flickr_url(self, size = 'z'):
+        '''Get direct URL to image with specified size. See Flickr API 
+        documentation for size strings.'''
+        return "http://farm%s.static.flickr.com/%s/%s_%s_%s.jpg" % \
+            (self.flickr_farm, self.flickr_server, self.flickr_id, self.flickr_secret, size)
+            
+    
+        
+        
 class Tweet(models.Model):
     """Tweets made by the bot.
     
@@ -331,6 +385,12 @@ class Tweet(models.Model):
     
     class Meta:
         ordering = ['-tweeted']
+        
+
+class ArticleTweet(Tweet):
+    image = models.ForeignKey(FlickrTweetImage)
+    article = models.URLField()
+    objects = GetOrNoneManager()
      
         
 class ReTweet(models.Model):
@@ -350,5 +410,5 @@ class ReTweet(models.Model):
     objects = GetOrNoneManager()
         
     class Meta:
-        ordering = ['-retweeted']    
-    
+        ordering = ['-retweeted']  
+        

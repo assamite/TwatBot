@@ -81,10 +81,103 @@ def aura_color(request):
         ac = color.rgb2html(ret['aura_color'])
         phase = ret['moon_phase']
         lunation = ret['lunation']
-        auras.append({'color_code': ac, 'date': date, 'moon_phase': phase, 'lunation': lunation })
+        mood = ret['mood']
+        auras.append({'color_code': ac, 'date': date, 'moon_phase': phase, 'lunation': lunation, 'mood': mood})
         date += datetime.timedelta(1, 0)
     
     context = RequestContext(request, {'auras': auras})
     return render_to_response('aura_test.html', context)
+
+
+def mood_color_test(request, category = 'negative'):
+    import gensim
+    import new_age
+    from web import therex
+    model = gensim.models.Word2Vec.load('../../nltk_data/gensim/googlenews_gensim_v2w.model')
+    mc = new_age.mood_colors.items()
+    ret = therex.categories('{}:emotion'.format(category))['Members']
+    negemo = []
+    for m in ret:
+        if len(m[0].split(" ")) == 1:
+            try:
+                sim = model.similarity('emotion', m[0])
+            except:
+                continue
+            negemo.append(m[0])
+    
+    d = []
+    for n in negemo:
+        sims = []
+        for k, v in mc:
+            sim = model.similarity(v['stereotype'][0], n)
+            sims.append((sim, v['stereotype'][0], k))
+        sims = sorted(sims, key = lambda x: x[0], reverse = True)
+        d.append({'emotion': n, 'c1': sims[0][2], 'e1': sims[0][1], 
+                  's1': sims[0][0], 'c2': sims[1][2], 'e2': sims[1][1], 
+                  's2': sims[1][0], 'c3': sims[2][2], 'e3': sims[2][1], 
+                  's3': sims[2][0]})
+        
+    context = RequestContext(request, {'emotions': d})
+    return render_to_response('mood_color_test.html', context)
+
+
+def interjection_test(request, category = 'negative'):
+    import gensim
+    import new_age
+    import interjections
+    from web import therex
+    model = gensim.models.Word2Vec.load('../../nltk_data/gensim/googlenews_gensim_v2w.model')
+    mc = new_age.mood_colors.items()
+    ret = therex.categories('{}:emotion'.format(category))['Members']
+    emotions = []
+    for m in ret:
+        if len(m[0].split(" ")) == 1:
+            try:
+                sim = model.similarity('emotion', m[0])
+            except:
+                continue
+            emotions.append(m[0])
+    
+    d = []
+    for n in emotions:
+        sims = []
+        for k, v in mc:
+            sim = model.similarity(v['stereotype'][0], n)
+            sims.append((sim, v['stereotype'][0], k))
+        sims = sorted(sims, key = lambda x: x[0], reverse = True)
+        d.append({'emotion': n, 'c1': sims[0][2], 'e1': sims[0][1], 
+                  's1': sims[0][0], 'i1': interjections.get(n, model = model), 
+                  'i2': interjections.get(sims[0][1], model = model)})
+        
+    context = RequestContext(request, {'emotions': d})
+    return render_to_response('interjections_test.html', context)
+    
+        
+def monkey_test(request, num = 1):
+    from muses import RSSMuse
+    import core   
+    muse = RSSMuse()
+    reasoning = muse.inspire()
+    TC = core.TWEET_CORE
+    ret = TC.tweet(send_to_twitter = False, reasoning = reasoning)
+    reactions = []
+    d = {}
+    d['emotion'] = ret.reaction
+    d['tweet'] = ret.tweet
+    d['title'] = ret.article['title']
+    d['image'] = ret.tweet_image.processed.url
+    reactions.append(d)
+    context = RequestContext(request, {'reactions': reactions})
+    return render_to_response('monkey_image_test.html', context)
+    
+            
+            
+def image_search_test(request, emotion = 'hope'):
+    from contexts import MonkeyImageContext
+    mic = MonkeyImageContext()
+    photo_url = mic.get_google_monkey_photo(emotion)
+    return HttpResponse("<img src='{}'>".format(photo_url))
+            
+            
     
     

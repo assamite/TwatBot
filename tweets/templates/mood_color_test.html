@@ -1,0 +1,35 @@
+{% extends 'home.html' %}
+
+{% block body %}
+<h1>Emotion - Mood Color Test</h1>
+
+<table>
+<tr>
+	<td><div class='blend_title'>Query</div></td>
+	<td><div class='blend_title'>Color1</div></td>
+	<td><div class='blend_title'>Emotion1</div></td>
+	<td><div class='blend_title'>Similarity1</div></td>
+	<td><div class='blend_title'>Color2</div></td>
+	<td><div class='blend_title'>Emotion2</div></td>
+	<td><div class='blend_title'>Similarity2</div></td>
+	<td><div class='blend_title'>Color3</div></td>
+	<td><div class='blend_title'>Emotion3</div></td>
+	<td><div class='blend_title'>Similarity3</div></td>
+</tr>
+{% for e in emotions %}
+<tr>
+	<td height=40 width=150>{{ e.emotion }}</td>
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ e.c1 }}"></td>
+	<td height=40 width=100>{{ e.e1 }}</td>
+	<td height=40 width=100>{{ e.s1 }}</td>	
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ e.c2 }}"></td>
+	<td height=40 width=100>{{ e.e2 }}</td>
+	<td height=40 width=100>{{ e.s2 }}</td>	
+	<td style="height:40;width:100;margin-left:5px;background-color:{{ e.c3 }}"></td>
+	<td height=40 width=100>{{ e.e3 }}</td>
+	<td height=40 width=100>{{ e.s3 }}</td>	
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
